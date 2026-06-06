@@ -9,6 +9,7 @@ import {
 import { AlertTriangleIcon } from "lucide-react";
 import { CustomButton } from "./button";
 import {
+  useCallback,
   useState,
   type Dispatch,
   type ReactNode,
@@ -32,7 +33,7 @@ const useConfirmDialog = ({
 }: Options) => {
   const [open, setOpen] = useState(false);
 
-  const InternalDialog = () => {
+  const InternalDialog = useCallback(() => {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="max-w-sm rounded-3xl border-0 shadow-2xl">
@@ -67,7 +68,7 @@ const useConfirmDialog = ({
         </DialogContent>
       </Dialog>
     );
-  };
+  }, [open]);
 
   type TriggerProps = {
     children: (

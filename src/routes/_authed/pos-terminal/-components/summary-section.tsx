@@ -1,5 +1,6 @@
 import { Separator } from "#/components/ui/separator";
 import { formatCurrencyIDR } from "#/lib/utils";
+import { TicketCheckIcon } from "lucide-react";
 import { usePosState } from "./use-pos";
 
 const SummarySection = () => {
@@ -20,14 +21,14 @@ const SummarySection = () => {
         </span>
       </div>
 
-      {/* {activePromotions.length > 0 && (
+      {/* {state.discountTotal && state.discountTotal > 0 && (
         <div className="flex justify-between text-sm text-purple-600">
           <span className="flex items-center gap-1">
             <TicketCheckIcon className="w-3 h-3" />
-            Promo
+            Total Diskon
           </span>
           <span className="font-semibold">
-            -{formatCurrencyIDR(promoDiscount)}
+            -{formatCurrencyIDR(state.discountTotal)}
           </span>
         </div>
       )} */}

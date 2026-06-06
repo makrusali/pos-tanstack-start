@@ -2,6 +2,13 @@ import type { PaymentMethod } from "#/generated/prisma/client";
 import { createContext, useContext, useReducer, type ReactNode } from "react";
 import { toast } from "sonner";
 
+type StockLocation = {
+  id: string;
+  name: string;
+  is_primary: boolean;
+  quantity: number;
+};
+
 type CartItem = {
   product_sku_id: string;
   product_image_path: null | string;
@@ -18,18 +25,16 @@ type CartItem = {
   price: number;
   subtotal: number;
 
+  selected_stock_location_id: null | string;
+  stock_locations: StockLocation[];
+
   discount_type: null | "percent" | "fixed";
   discount_value: number;
   discount_amount: number;
   discount_total: number;
+  price_after_discount: number;
 
   note: string | null;
-};
-
-type Customer = {
-  id: string;
-  name: string;
-  contact: string;
 };
 
 type OtherCostItem = {
@@ -53,6 +58,47 @@ type PosAction =
         newQty: number;
         product_sku_id: string;
       };
+    }
+  | {
+      type: "updateCartItemNote";
+      payload: {
+        product_sku_id: string;
+        note: string;
+      };
+    }
+  | {
+      type: "updateCartItemDiscountType";
+      payload: {
+        product_sku_id: string;
+        discountType: "percent" | "fixed" | null;
+      };
+    }
+  | {
+      type: "updateCartItemDiscountValue";
+      payload: {
+        product_sku_id: string;
+        discountValue: number;
+      };
+    }
+  | {
+      type: "updateCartItemPrice";
+      payload: {
+        product_sku_id: string;
+        price: number;
+      };
+    }
+  | {
+      type: "updateCartItemSelectedStockLocation";
+      payload: {
+        product_sku_id: string;
+        stock_location_id: string | null;
+      };
+    }
+  | {
+      type: "saveCartEditItem";
+    }
+  | {
+      type: "cancelCartEditItem";
     }
   | {
       type: "setProductSearchKeyword";
@@ -113,23 +159,42 @@ type PosAction =
   | {
       type: "changePaymentMethod";
       payload: PaymentMethod;
+    }
+  | {
+      type: "openDialogUpdateCartItem";
+      payload: {
+        sku_id: string;
+      };
+    }
+  | {
+      type: "closeDialogUpdateCartItem";
+    }
+  | {
+      type: "changeSelectedCustomer";
+      payload: {
+        id: null | string;
+      };
     };
 
 type PosData = {
   carts: CartItem[];
+  cartItemBeingEdited: null | CartItem;
+  isOpenEditingDialog: boolean;
+
   otherCosts: OtherCostItem[];
-  customer: null | Customer;
   subtotal: number;
   otherCostTotal: number;
   discountTotal: null | number;
   total: number;
 
-  pay_amount: number;
+  payAmount: number;
   charge: number;
 
   searchProductKeyword: string;
   selectedCategory: string;
   selectedPaymentMethod: null | PaymentMethod;
+
+  selectedCustomerId: null | string;
 
   mode: "none" | "barcode_scanner" | "camera_scanner";
   dialogMode:
@@ -154,26 +219,28 @@ type PosStateContext = {
 const initialState: PosData = {
   carts: [],
   otherCosts: [],
-  customer: null,
   selectedPaymentMethod: null,
   subtotal: 0,
   otherCostTotal: 0,
   discountTotal: null,
   total: 0,
-  pay_amount: 0,
+  payAmount: 0,
   charge: 0,
   searchProductKeyword: "",
   selectedCategory: "",
   mode: "none",
   dialogMode: "none",
   paymentStep: "selecting_payment_method",
+  cartItemBeingEdited: null,
+  isOpenEditingDialog: false,
+  selectedCustomerId: null,
 };
 
 const calculateSummary = (state: PosData): PosData => {
   const subtotal = state.carts.reduce((p, c) => p + c.subtotal, 0);
   const discountTotal = state.carts.reduce((p, c) => p + c.discount_total, 0);
   const otherCostsTotal = state.otherCosts.reduce((p, c) => p + c.amount, 0);
-  const total = subtotal + discountTotal + otherCostsTotal;
+  const total = subtotal + otherCostsTotal;
 
   return {
     ...state,
@@ -184,30 +251,23 @@ const calculateSummary = (state: PosData): PosData => {
   };
 };
 
-const calculateCartItem = ({
-  price,
-  quantity,
-  discountValue,
-  discountType,
-}: {
-  price: number;
-  quantity: number;
-  discountValue: number;
-  discountType: "fixed" | "percent" | null;
-}) => {
+const calculateCartItem = (item: CartItem): CartItem => {
   const discountAmount =
-    discountType === null
+    item.discount_type === null
       ? 0
-      : discountType == "fixed"
-        ? price - discountValue
-        : price * (discountValue / 100);
-  const subtotal = quantity * (price - discountAmount);
-  const discountTotal = quantity * discountAmount;
+      : item.discount_type === "fixed"
+        ? item.discount_value
+        : item.price * (item.discount_value / 100);
+  const priceAfterDiscount = item.price - discountAmount;
+  const subtotal = item.quantity * priceAfterDiscount;
+  const discountTotal = item.quantity * discountAmount;
 
   return {
-    subtotal,
-    discountTotal,
-    discountAmount,
+    ...item,
+    discount_amount: discountAmount,
+    subtotal: subtotal,
+    discount_total: discountTotal,
+    price_after_discount: priceAfterDiscount,
   };
 };
 
@@ -224,7 +284,9 @@ const reducer = (state: PosData, action: PosAction): PosData => {
       const addQty = 1;
 
       if (existingQuantity + addQty > product.stock_quantity) {
-        toast.error("Stok produk tidak mencukupi.");
+        toast.error("Stok produk tidak mencukupi.", {
+          position: "top-center",
+        });
         return state;
       }
 
@@ -232,20 +294,10 @@ const reducer = (state: PosData, action: PosAction): PosData => {
         const newCarts = state.carts.map((pi) => {
           if (pi.product_sku_id == existing.product_sku_id) {
             const newQty = pi.quantity + addQty;
-            const result = calculateCartItem({
-              discountType: pi.discount_type,
-              discountValue: pi.discount_value,
-              price: pi.price,
-              quantity: newQty,
-            });
-
-            return {
+            return calculateCartItem({
               ...pi,
               quantity: newQty,
-              subtotal: result.subtotal,
-              discount_amount: result.discountAmount,
-              discount_total: result.discountTotal,
-            };
+            });
           }
 
           return pi;
@@ -257,22 +309,15 @@ const reducer = (state: PosData, action: PosAction): PosData => {
         });
       }
 
-      const result = calculateCartItem({
-        discountType: product.discount_type,
-        discountValue: product.discount_value,
-        price: product.price,
-        quantity: addQty,
-      });
-
       const newCarts = [
         ...state.carts,
-        {
+        calculateCartItem({
           ...product,
-          subtotal: result.subtotal,
-          discount_amount: result.discountAmount,
-          discount_total: result.discountTotal,
           quantity: 1,
-        },
+          selected_stock_location_id:
+            product.stock_locations.find((sl) => sl.is_primary === true)?.id ??
+            null,
+        }),
       ];
 
       return calculateSummary({
@@ -291,19 +336,26 @@ const reducer = (state: PosData, action: PosAction): PosData => {
 
     case "updateCartItemQuantity": {
       const product_sku_id = action.payload.product_sku_id;
-      const newQty = action.payload.newQty;
+      let newQty = action.payload.newQty;
 
       const existing = state.carts.find(
         (ci) => ci.product_sku_id === product_sku_id,
       );
 
       if (!existing) {
-        toast.error("produk tidak ditemukan didalam keranjang.");
+        toast.error("produk tidak ditemukan didalam keranjang.", {
+          position: "top-center",
+        });
         return state;
       }
 
       if (newQty > existing.stock_quantity) {
-        toast.error("Stok produk tidak mencukupi.");
+        toast.error(
+          `Stok produk tidak mencukupi. jumlah stock tersedia adalah: ${existing.stock_quantity} ${existing.unit.name}.`,
+          {
+            position: "top-center",
+          },
+        );
         return state;
       }
 
@@ -319,20 +371,10 @@ const reducer = (state: PosData, action: PosAction): PosData => {
       } else {
         const newCarts = state.carts.map((pi) => {
           if (pi.product_sku_id == existing.product_sku_id) {
-            const result = calculateCartItem({
-              discountType: pi.discount_type,
-              discountValue: pi.discount_value,
-              price: pi.price,
-              quantity: newQty,
-            });
-
-            return {
+            return calculateCartItem({
               ...pi,
               quantity: newQty,
-              subtotal: result.subtotal,
-              discount_amount: result.discountAmount,
-              discount_total: result.discountTotal,
-            };
+            });
           }
 
           return pi;
@@ -343,6 +385,143 @@ const reducer = (state: PosData, action: PosAction): PosData => {
           carts: newCarts,
         });
       }
+    }
+
+    case "updateCartItemNote": {
+      const id = action.payload.product_sku_id;
+      const note = action.payload.note;
+
+      const newCarts = state.carts.map((pi) => {
+        if (pi.product_sku_id == id) {
+          return {
+            ...pi,
+            note: note,
+          };
+        }
+
+        return pi;
+      });
+
+      return {
+        ...state,
+        carts: newCarts,
+      };
+    }
+
+    case "updateCartItemDiscountType": {
+      const id = action.payload.product_sku_id;
+      const discountType = action.payload.discountType;
+
+      const newCarts = state.carts.map((pi) => {
+        if (pi.product_sku_id == id) {
+          return calculateCartItem({
+            ...pi,
+            discount_type: discountType,
+            discount_value: 0,
+          });
+        }
+
+        return pi;
+      });
+
+      return calculateSummary({
+        ...state,
+        carts: newCarts,
+      });
+    }
+
+    case "updateCartItemDiscountValue": {
+      const id = action.payload.product_sku_id;
+      const discountValue = action.payload.discountValue;
+
+      const newCarts = state.carts.map((pi) => {
+        if (pi.product_sku_id == id) {
+          return calculateCartItem({
+            ...pi,
+            discount_value: discountValue,
+          });
+        }
+
+        return pi;
+      });
+
+      return calculateSummary({
+        ...state,
+        carts: newCarts,
+      });
+    }
+
+    case "updateCartItemPrice": {
+      const id = action.payload.product_sku_id;
+      const price = action.payload.price;
+
+      const newCarts = state.carts.map((pi) => {
+        if (pi.product_sku_id == id) {
+          return calculateCartItem({
+            ...pi,
+            price: price,
+          });
+        }
+
+        return pi;
+      });
+
+      return calculateSummary({
+        ...state,
+        carts: newCarts,
+      });
+    }
+
+    case "updateCartItemSelectedStockLocation": {
+      const id = action.payload.product_sku_id;
+      const stock_location_id = action.payload.stock_location_id;
+
+      const newCarts = state.carts.map((pi) => {
+        if (pi.product_sku_id == id) {
+          return {
+            ...pi,
+            selected_stock_location_id: stock_location_id,
+          };
+        }
+
+        return pi;
+      });
+
+      return calculateSummary({
+        ...state,
+        carts: newCarts,
+      });
+    }
+
+    case "cancelCartEditItem": {
+      if (state.cartItemBeingEdited === null) {
+        return state;
+      }
+
+      const newCarts = state.carts.map((pi) => {
+        if (pi.product_sku_id == state.cartItemBeingEdited!.product_sku_id) {
+          return calculateCartItem({
+            ...state.cartItemBeingEdited!,
+          });
+        }
+
+        return pi;
+      });
+
+      return calculateSummary({
+        ...state,
+        carts: newCarts,
+        isOpenEditingDialog: false,
+        cartItemBeingEdited: null,
+      });
+    }
+
+    case "saveCartEditItem": {
+      return {
+        ...state,
+        isOpenEditingDialog: false,
+        cartItemBeingEdited: null,
+      };
     }
 
     case "setProductSearchKeyword": {
@@ -437,9 +616,11 @@ const reducer = (state: PosData, action: PosAction): PosData => {
     case "changeDialogMode": {
       const mode = action.payload.mode;
 
-      if (mode == "payment") {
+      if (mode === "payment") {
         if (state.carts.length == 0) {
-          toast.error("Keranjang masih kosong.");
+          toast.error("Keranjang masih kosong.", {
+            position: "top-center",
+          });
           return state;
         }
 
@@ -471,6 +652,39 @@ const reducer = (state: PosData, action: PosAction): PosData => {
         ...state,
         paymentStep: "input_amount",
         selectedPaymentMethod: action.payload,
+      };
+    }
+
+    case "openDialogUpdateCartItem": {
+      const sku_id = action.payload.sku_id;
+      const item = state.carts.find((ci) => ci.product_sku_id == sku_id);
+      if (!item) {
+        toast.error("Item tidak ditemukan dikeranjang.", {
+          position: "top-center",
+        });
+        return state;
+      }
+
+      return {
+        ...state,
+        isOpenEditingDialog: true,
+        cartItemBeingEdited: item,
+      };
+    }
+
+    case "closeDialogUpdateCartItem": {
+      return {
+        ...state,
+        isOpenEditingDialog: false,
+        cartItemBeingEdited: null,
+      };
+    }
+
+    case "changeSelectedCustomer": {
+      const id = action.payload.id;
+      return {
+        ...state,
+        selectedCustomerId: state.selectedCustomerId === id ? null : id,
       };
     }
 

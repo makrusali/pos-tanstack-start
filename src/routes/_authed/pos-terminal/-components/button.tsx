@@ -1,5 +1,5 @@
 import { cn } from "#/lib/utils";
-import type { ReactNode } from "react";
+import type { MouseEventHandler, ReactNode } from "react";
 
 const buttonVariants = {
   primary:
@@ -23,7 +23,7 @@ const buttonVariants = {
 type Props = {
   variant: Extract<keyof typeof buttonVariants, string>;
   className: string | null;
-  onClick?: () => void;
+  onClick?: MouseEventHandler<HTMLButtonElement>;
   children: ReactNode;
   disabled?: boolean;
 };

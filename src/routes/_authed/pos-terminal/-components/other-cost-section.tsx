@@ -2,7 +2,7 @@ import { PlusIcon, Trash2Icon } from "lucide-react";
 import { CustomButton } from "./button";
 import { Input } from "#/components/ui/input";
 import { usePosDispatch, usePosState } from "./use-pos";
-import { cn } from "#/lib/utils";
+import { cn, inputFormatRP, inputParseRP } from "#/lib/utils";
 
 const OtherCostSection = () => {
   const state = usePosState();
@@ -53,13 +53,13 @@ const OtherCostSection = () => {
               </span>
               <Input
                 type="text"
-                value={cost.amount}
+                value={inputFormatRP(cost.amount)}
                 onChange={(e) =>
                   dispatch({
                     type: "updateAmountOtherCost",
                     payload: {
                       id: cost.id,
-                      amount: Number(e.target.value),
+                      amount: inputParseRP(e.target.value),
                     },
                   })
                 }

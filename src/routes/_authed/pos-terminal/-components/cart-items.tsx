@@ -13,6 +13,7 @@ import { usePosDispatch, usePosState } from "./use-pos";
 import { cn, formatCurrencyIDR } from "#/lib/utils";
 import { CustomButton } from "./button";
 import { Input } from "#/components/ui/input";
+import { QuantityInput } from "./quantity-input";
 
 const CartItems = () => {
   const dispatch = usePosDispatch();
@@ -29,6 +30,9 @@ const CartItems = () => {
       ) : (
         <div className="space-y-3">
           {carts.map((item) => {
+            const selectedStockLocation = item.stock_locations.find(
+              (sl) => sl.id == item.selected_stock_location_id,
+            );
             return (
               <div
                 key={item.product_sku_id}
@@ -41,7 +45,14 @@ const CartItems = () => {
                   {/* Image */}
                   <div
                     className="w-16 h-16 rounded-xl bg-slate-100 flex items-center justify-center shrink-0 overflow-hidden cursor-pointer"
-                    // onClick={() => openEditItem(item)}
+                    onClick={() =>
+                      dispatch({
+                        type: "openDialogUpdateCartItem",
+                        payload: {
+                          sku_id: item.product_sku_id,
+                        },
+                      })
+                    }
                   >
                     {item.product_image_path ? (
                       <img
@@ -77,17 +88,17 @@ const CartItems = () => {
                         <span className="px-2 py-0.5 bg-emerald-50 text-emerald-700 text-[10px] font-medium rounded-lg flex items-center gap-1">
                           <TagIcon className="w-3 h-3" />{" "}
                           {item.discount_type == "fixed"
-                            ? `-${formatCurrencyIDR(item.discount_value)} - ${formatCurrencyIDR(item.discount_amount)} / ${item.unit.name}`
-                            : `${item.discount_value}% - ${formatCurrencyIDR(item.discount_amount)} / ${item.unit.name}`}
+                            ? `-${formatCurrencyIDR(item.discount_value)} - ${formatCurrencyIDR(item.price_after_discount)} / ${item.unit.name}`
+                            : `${item.discount_value}% - ${formatCurrencyIDR(item.price_after_discount)} / ${item.unit.name}`}
                         </span>
                       )}
 
-                      {/* {selectedLoc && (
+                      {selectedStockLocation && (
                         <span className="px-2 py-0.5 bg-slate-100 text-slate-500 text-[10px] font-medium rounded-lg flex items-center gap-1">
                           <MapPinIcon className="w-3 h-3" />
-                          {selectedLoc.name}
+                          {selectedStockLocation.name}
                         </span>
-                      )} */}
+                      )}
                     </div>
                   </div>
 
@@ -96,7 +107,14 @@ const CartItems = () => {
                     <CustomButton
                       variant="secondary"
                       className="w-9 h-9 rounded-xl"
-                      //   onClick={() => openEditItem(item)}
+                      onClick={() => {
+                        dispatch({
+                          type: "openDialogUpdateCartItem",
+                          payload: {
+                            sku_id: item.product_sku_id,
+                          },
+                        });
+                      }}
                     >
                       <PencilIcon className="w-4 h-4" />
                     </CustomButton>
@@ -137,25 +155,40 @@ const CartItems = () => {
                       <MinusIcon className="w-4 h-4" />
                     </CustomButton>
 
-                    <Input
+                    {/* <Input
                       type="text"
-                      value={item.quantity}
-                      onChange={(e) => {
-                        if (e.target.value !== "") {
+                      value={item.quantity.toString().replace(".", ",")}
+                      onInput={(e) => {
+                        if (e.currentTarget.value !== "") {
                           dispatch({
                             type: "updateCartItemQuantity",
                             payload: {
-                              newQty: Number(e.target.value),
+                              newQty: Number(
+                                e.currentTarget.value.replace(",", "."),
+                              ),
                               product_sku_id: item.product_sku_id,
                             },
                           });
                         }
                       }}
+                      /> */}
+
+                    <QuantityInput
                       className={cn(
                         "w-20 h-10 text-center font-bold text-slate-800 rounded-xl border-0 bg-white focus:ring-2 focus:ring-emerald-500",
                       )}
+                      value={item.quantity}
+                      type={item.unit.type}
+                      onChange={(value) => {
+                        dispatch({
+                          type: "updateCartItemQuantity",
+                          payload: {
+                            newQty: value,
+                            product_sku_id: item.product_sku_id,
+                          },
+                        });
+                      }}
                     />
-
                     <CustomButton
                       variant="secondary"
                       className="w-10 h-10 rounded-xl"

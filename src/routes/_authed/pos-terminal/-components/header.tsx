@@ -9,9 +9,11 @@ import {
 } from "lucide-react";
 import { CustomButton } from "./button";
 import { Input } from "#/components/ui/input";
-import { useConfirmDialog } from "./confirm-dialog";
+import { useConfirmDialog } from "./use-confirm-dialog";
 import { usePosDispatch, usePosState } from "./use-pos";
 import { toast } from "sonner";
+import { useCameraBaroceScanner } from "./use-camera-scanner-dialog";
+import { useBarcodeScanner } from "./use-barcode-scanner";
 
 const Header = () => {
   const state = usePosState();
@@ -28,19 +30,33 @@ const Header = () => {
       "Yakin ingin mengosongkan semua item di keranjang? Tindakan ini tidak dapat dibatalkan.",
   });
 
+  const cameraBarcodeScanner = useCameraBaroceScanner({
+    onScanned: () => {},
+  });
+
+  useBarcodeScanner({
+    onEnter: (code) => {
+      console.log("on scanned", code);
+    },
+    active: state.mode === "barcode_scanner",
+  });
+
   return (
     <div className="flex items-center p-3 sm:p-4 gap-2 sm:gap-3 shrink-0 bg-white/80 backdrop-blur-sm border-b border-slate-100">
       <resetDialog.Dialog />
+      <cameraBarcodeScanner.Dialog />
 
       <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
-        <div className="w-9 h-9 sm:w-10 sm:h-10 bg-gradient-to-br from-slate-800 to-slate-900 rounded-xl flex items-center justify-center text-white shrink-0 shadow-lg shadow-slate-900/20">
+        <div className="w-9 h-9 sm:w-10 sm:h-10 bg-linear-to-br from-slate-800 to-slate-900 rounded-xl flex items-center justify-center text-white shrink-0 shadow-lg shadow-slate-900/20">
           <StoreIcon className="w-5 h-5" />
         </div>
 
         <CustomButton
           variant={state.mode === "barcode_scanner" ? "primary" : "secondary"}
           className="h-10 px-3 sm:px-4 gap-2 text-sm shrink-0"
-          onClick={() => {
+          onClick={(e) => {
+            e.currentTarget.blur();
+
             dispatch({
               type: "setScanMode",
               payload:
@@ -57,19 +73,24 @@ const Header = () => {
           <span className="hidden sm:inline">Scan</span>
         </CustomButton>
 
-        <CustomButton
-          variant="secondary"
-          className="h-10 px-3 sm:px-4 gap-2 text-sm bg-slate-100 text-slate-600 hover:bg-slate-200 shrink-0"
-          onClick={() => {
-            dispatch({
-              type: "setScanMode",
-              payload: "camera_scanner",
-            });
-          }}
-        >
-          <CameraIcon className="w-4 h-4" />
-          <span className="hidden sm:inline">Kamera</span>
-        </CustomButton>
+        <cameraBarcodeScanner.Trigger>
+          {({ open, setOpen }) => (
+            <CustomButton
+              variant={open ? "primary" : "secondary"}
+              className="h-10 px-3 sm:px-4 gap-2 text-sm shrink-0"
+              onClick={() => {
+                dispatch({
+                  type: "setScanMode",
+                  payload: "camera_scanner",
+                });
+                setOpen(true);
+              }}
+            >
+              <CameraIcon className="w-4 h-4" />
+              <span className="hidden sm:inline">Kamera</span>
+            </CustomButton>
+          )}
+        </cameraBarcodeScanner.Trigger>
 
         <div className="relative flex-1 min-w-0">
           <SearchIcon className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400" />

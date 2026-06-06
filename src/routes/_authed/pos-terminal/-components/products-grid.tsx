@@ -33,6 +33,8 @@ const ProductGrid = () => {
                   dispatch({
                     type: "addToCart",
                     payload: {
+                      selected_stock_location_id: null,
+                      stock_locations: p.stock_locations,
                       product_sku_id: p.sku_id,
                       product_display_name: p.display_name,
                       product_image_path: p.sku_image_path,
@@ -46,6 +48,7 @@ const ProductGrid = () => {
                       discount_amount: 0,
                       subtotal: 0,
                       discount_total: 0,
+                      price_after_discount: 0,
                     },
                   });
                 }}
