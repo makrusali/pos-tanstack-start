@@ -29,13 +29,13 @@ export type AggregateProductSku = {
 export type ProductSkuAvgAggregateOutputType = {
   price: number | null
   buy_price: number | null
-  stock_quantity: number | null
+  stock_quantity: runtime.Decimal | null
 }
 
 export type ProductSkuSumAggregateOutputType = {
   price: number | null
   buy_price: number | null
-  stock_quantity: number | null
+  stock_quantity: runtime.Decimal | null
 }
 
 export type ProductSkuMinAggregateOutputType = {
@@ -45,7 +45,7 @@ export type ProductSkuMinAggregateOutputType = {
   name: string | null
   price: number | null
   buy_price: number | null
-  stock_quantity: number | null
+  stock_quantity: runtime.Decimal | null
   status: $Enums.Status | null
   unit_id: string | null
   created_at: Date | null
@@ -59,7 +59,7 @@ export type ProductSkuMaxAggregateOutputType = {
   name: string | null
   price: number | null
   buy_price: number | null
-  stock_quantity: number | null
+  stock_quantity: runtime.Decimal | null
   status: $Enums.Status | null
   unit_id: string | null
   created_at: Date | null
@@ -230,7 +230,7 @@ export type ProductSkuGroupByOutputType = {
   name: string | null
   price: number
   buy_price: number
-  stock_quantity: number
+  stock_quantity: runtime.Decimal
   status: $Enums.Status
   unit_id: string
   created_at: Date
@@ -267,19 +267,19 @@ export type ProductSkuWhereInput = {
   name?: Prisma.StringNullableFilter<"ProductSku"> | string | null
   price?: Prisma.IntFilter<"ProductSku"> | number
   buy_price?: Prisma.IntFilter<"ProductSku"> | number
-  stock_quantity?: Prisma.FloatFilter<"ProductSku"> | number
+  stock_quantity?: Prisma.DecimalFilter<"ProductSku"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusFilter<"ProductSku"> | $Enums.Status
   unit_id?: Prisma.StringFilter<"ProductSku"> | string
   created_at?: Prisma.DateTimeFilter<"ProductSku"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"ProductSku"> | Date | string
+  images?: Prisma.ProductSkuImageListRelationFilter
   product?: Prisma.XOR<Prisma.ProductScalarRelationFilter, Prisma.ProductWhereInput>
   unit?: Prisma.XOR<Prisma.UnitScalarRelationFilter, Prisma.UnitWhereInput>
-  images?: Prisma.ProductSkuImageListRelationFilter
-  stockProductSkus?: Prisma.StockProductSkuListRelationFilter
   promotionItems?: Prisma.PromotionItemListRelationFilter
-  transactionItems?: Prisma.TransactionItemListRelationFilter
   purchaseItems?: Prisma.PurchaseStockItemListRelationFilter
   adjustmentItems?: Prisma.StockAdjustmentItemListRelationFilter
+  stockProductSkus?: Prisma.StockProductSkuListRelationFilter
+  transactionItems?: Prisma.TransactionItemListRelationFilter
 }
 
 export type ProductSkuOrderByWithRelationInput = {
@@ -294,14 +294,14 @@ export type ProductSkuOrderByWithRelationInput = {
   unit_id?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
+  images?: Prisma.ProductSkuImageOrderByRelationAggregateInput
   product?: Prisma.ProductOrderByWithRelationInput
   unit?: Prisma.UnitOrderByWithRelationInput
-  images?: Prisma.ProductSkuImageOrderByRelationAggregateInput
-  stockProductSkus?: Prisma.StockProductSkuOrderByRelationAggregateInput
   promotionItems?: Prisma.PromotionItemOrderByRelationAggregateInput
-  transactionItems?: Prisma.TransactionItemOrderByRelationAggregateInput
   purchaseItems?: Prisma.PurchaseStockItemOrderByRelationAggregateInput
   adjustmentItems?: Prisma.StockAdjustmentItemOrderByRelationAggregateInput
+  stockProductSkus?: Prisma.StockProductSkuOrderByRelationAggregateInput
+  transactionItems?: Prisma.TransactionItemOrderByRelationAggregateInput
   _relevance?: Prisma.ProductSkuOrderByRelevanceInput
 }
 
@@ -315,19 +315,19 @@ export type ProductSkuWhereUniqueInput = Prisma.AtLeast<{
   name?: Prisma.StringNullableFilter<"ProductSku"> | string | null
   price?: Prisma.IntFilter<"ProductSku"> | number
   buy_price?: Prisma.IntFilter<"ProductSku"> | number
-  stock_quantity?: Prisma.FloatFilter<"ProductSku"> | number
+  stock_quantity?: Prisma.DecimalFilter<"ProductSku"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusFilter<"ProductSku"> | $Enums.Status
   unit_id?: Prisma.StringFilter<"ProductSku"> | string
   created_at?: Prisma.DateTimeFilter<"ProductSku"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"ProductSku"> | Date | string
+  images?: Prisma.ProductSkuImageListRelationFilter
   product?: Prisma.XOR<Prisma.ProductScalarRelationFilter, Prisma.ProductWhereInput>
   unit?: Prisma.XOR<Prisma.UnitScalarRelationFilter, Prisma.UnitWhereInput>
-  images?: Prisma.ProductSkuImageListRelationFilter
-  stockProductSkus?: Prisma.StockProductSkuListRelationFilter
   promotionItems?: Prisma.PromotionItemListRelationFilter
-  transactionItems?: Prisma.TransactionItemListRelationFilter
   purchaseItems?: Prisma.PurchaseStockItemListRelationFilter
   adjustmentItems?: Prisma.StockAdjustmentItemListRelationFilter
+  stockProductSkus?: Prisma.StockProductSkuListRelationFilter
+  transactionItems?: Prisma.TransactionItemListRelationFilter
 }, "id" | "code">
 
 export type ProductSkuOrderByWithAggregationInput = {
@@ -359,7 +359,7 @@ export type ProductSkuScalarWhereWithAggregatesInput = {
   name?: Prisma.StringNullableWithAggregatesFilter<"ProductSku"> | string | null
   price?: Prisma.IntWithAggregatesFilter<"ProductSku"> | number
   buy_price?: Prisma.IntWithAggregatesFilter<"ProductSku"> | number
-  stock_quantity?: Prisma.FloatWithAggregatesFilter<"ProductSku"> | number
+  stock_quantity?: Prisma.DecimalWithAggregatesFilter<"ProductSku"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusWithAggregatesFilter<"ProductSku"> | $Enums.Status
   unit_id?: Prisma.StringWithAggregatesFilter<"ProductSku"> | string
   created_at?: Prisma.DateTimeWithAggregatesFilter<"ProductSku"> | Date | string
@@ -372,18 +372,18 @@ export type ProductSkuCreateInput = {
   name?: string | null
   price: number
   buy_price: number
-  stock_quantity: number
+  stock_quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   status: $Enums.Status
   created_at?: Date | string
   updated_at?: Date | string
+  images?: Prisma.ProductSkuImageCreateNestedManyWithoutProductSkuInput
   product: Prisma.ProductCreateNestedOneWithoutProductSkusInput
   unit: Prisma.UnitCreateNestedOneWithoutProductSkusInput
-  images?: Prisma.ProductSkuImageCreateNestedManyWithoutProductSkuInput
-  stockProductSkus?: Prisma.StockProductSkuCreateNestedManyWithoutProductSkuInput
   promotionItems?: Prisma.PromotionItemCreateNestedManyWithoutProductSkuInput
-  transactionItems?: Prisma.TransactionItemCreateNestedManyWithoutProductSkuInput
   purchaseItems?: Prisma.PurchaseStockItemCreateNestedManyWithoutProductSkuInput
   adjustmentItems?: Prisma.StockAdjustmentItemCreateNestedManyWithoutProductSkuInput
+  stockProductSkus?: Prisma.StockProductSkuCreateNestedManyWithoutProductSkuInput
+  transactionItems?: Prisma.TransactionItemCreateNestedManyWithoutProductSkuInput
 }
 
 export type ProductSkuUncheckedCreateInput = {
@@ -393,17 +393,17 @@ export type ProductSkuUncheckedCreateInput = {
   name?: string | null
   price: number
   buy_price: number
-  stock_quantity: number
+  stock_quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   status: $Enums.Status
   unit_id: string
   created_at?: Date | string
   updated_at?: Date | string
   images?: Prisma.ProductSkuImageUncheckedCreateNestedManyWithoutProductSkuInput
-  stockProductSkus?: Prisma.StockProductSkuUncheckedCreateNestedManyWithoutProductSkuInput
   promotionItems?: Prisma.PromotionItemUncheckedCreateNestedManyWithoutProductSkuInput
-  transactionItems?: Prisma.TransactionItemUncheckedCreateNestedManyWithoutProductSkuInput
   purchaseItems?: Prisma.PurchaseStockItemUncheckedCreateNestedManyWithoutProductSkuInput
   adjustmentItems?: Prisma.StockAdjustmentItemUncheckedCreateNestedManyWithoutProductSkuInput
+  stockProductSkus?: Prisma.StockProductSkuUncheckedCreateNestedManyWithoutProductSkuInput
+  transactionItems?: Prisma.TransactionItemUncheckedCreateNestedManyWithoutProductSkuInput
 }
 
 export type ProductSkuUpdateInput = {
@@ -412,18 +412,18 @@ export type ProductSkuUpdateInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.IntFieldUpdateOperationsInput | number
   buy_price?: Prisma.IntFieldUpdateOperationsInput | number
-  stock_quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  stock_quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  images?: Prisma.ProductSkuImageUpdateManyWithoutProductSkuNestedInput
   product?: Prisma.ProductUpdateOneRequiredWithoutProductSkusNestedInput
   unit?: Prisma.UnitUpdateOneRequiredWithoutProductSkusNestedInput
-  images?: Prisma.ProductSkuImageUpdateManyWithoutProductSkuNestedInput
-  stockProductSkus?: Prisma.StockProductSkuUpdateManyWithoutProductSkuNestedInput
   promotionItems?: Prisma.PromotionItemUpdateManyWithoutProductSkuNestedInput
-  transactionItems?: Prisma.TransactionItemUpdateManyWithoutProductSkuNestedInput
   purchaseItems?: Prisma.PurchaseStockItemUpdateManyWithoutProductSkuNestedInput
   adjustmentItems?: Prisma.StockAdjustmentItemUpdateManyWithoutProductSkuNestedInput
+  stockProductSkus?: Prisma.StockProductSkuUpdateManyWithoutProductSkuNestedInput
+  transactionItems?: Prisma.TransactionItemUpdateManyWithoutProductSkuNestedInput
 }
 
 export type ProductSkuUncheckedUpdateInput = {
@@ -433,17 +433,17 @@ export type ProductSkuUncheckedUpdateInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.IntFieldUpdateOperationsInput | number
   buy_price?: Prisma.IntFieldUpdateOperationsInput | number
-  stock_quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  stock_quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
   unit_id?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   images?: Prisma.ProductSkuImageUncheckedUpdateManyWithoutProductSkuNestedInput
-  stockProductSkus?: Prisma.StockProductSkuUncheckedUpdateManyWithoutProductSkuNestedInput
   promotionItems?: Prisma.PromotionItemUncheckedUpdateManyWithoutProductSkuNestedInput
-  transactionItems?: Prisma.TransactionItemUncheckedUpdateManyWithoutProductSkuNestedInput
   purchaseItems?: Prisma.PurchaseStockItemUncheckedUpdateManyWithoutProductSkuNestedInput
   adjustmentItems?: Prisma.StockAdjustmentItemUncheckedUpdateManyWithoutProductSkuNestedInput
+  stockProductSkus?: Prisma.StockProductSkuUncheckedUpdateManyWithoutProductSkuNestedInput
+  transactionItems?: Prisma.TransactionItemUncheckedUpdateManyWithoutProductSkuNestedInput
 }
 
 export type ProductSkuCreateManyInput = {
@@ -453,7 +453,7 @@ export type ProductSkuCreateManyInput = {
   name?: string | null
   price: number
   buy_price: number
-  stock_quantity: number
+  stock_quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   status: $Enums.Status
   unit_id: string
   created_at?: Date | string
@@ -466,7 +466,7 @@ export type ProductSkuUpdateManyMutationInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.IntFieldUpdateOperationsInput | number
   buy_price?: Prisma.IntFieldUpdateOperationsInput | number
-  stock_quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  stock_quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -479,7 +479,7 @@ export type ProductSkuUncheckedUpdateManyInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.IntFieldUpdateOperationsInput | number
   buy_price?: Prisma.IntFieldUpdateOperationsInput | number
-  stock_quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  stock_quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
   unit_id?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -653,12 +653,12 @@ export type IntFieldUpdateOperationsInput = {
   divide?: number
 }
 
-export type FloatFieldUpdateOperationsInput = {
-  set?: number
-  increment?: number
-  decrement?: number
-  multiply?: number
-  divide?: number
+export type DecimalFieldUpdateOperationsInput = {
+  set?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type ProductSkuCreateNestedOneWithoutImagesInput = {
@@ -751,17 +751,17 @@ export type ProductSkuCreateWithoutUnitInput = {
   name?: string | null
   price: number
   buy_price: number
-  stock_quantity: number
+  stock_quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   status: $Enums.Status
   created_at?: Date | string
   updated_at?: Date | string
-  product: Prisma.ProductCreateNestedOneWithoutProductSkusInput
   images?: Prisma.ProductSkuImageCreateNestedManyWithoutProductSkuInput
-  stockProductSkus?: Prisma.StockProductSkuCreateNestedManyWithoutProductSkuInput
+  product: Prisma.ProductCreateNestedOneWithoutProductSkusInput
   promotionItems?: Prisma.PromotionItemCreateNestedManyWithoutProductSkuInput
-  transactionItems?: Prisma.TransactionItemCreateNestedManyWithoutProductSkuInput
   purchaseItems?: Prisma.PurchaseStockItemCreateNestedManyWithoutProductSkuInput
   adjustmentItems?: Prisma.StockAdjustmentItemCreateNestedManyWithoutProductSkuInput
+  stockProductSkus?: Prisma.StockProductSkuCreateNestedManyWithoutProductSkuInput
+  transactionItems?: Prisma.TransactionItemCreateNestedManyWithoutProductSkuInput
 }
 
 export type ProductSkuUncheckedCreateWithoutUnitInput = {
@@ -771,16 +771,16 @@ export type ProductSkuUncheckedCreateWithoutUnitInput = {
   name?: string | null
   price: number
   buy_price: number
-  stock_quantity: number
+  stock_quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   status: $Enums.Status
   created_at?: Date | string
   updated_at?: Date | string
   images?: Prisma.ProductSkuImageUncheckedCreateNestedManyWithoutProductSkuInput
-  stockProductSkus?: Prisma.StockProductSkuUncheckedCreateNestedManyWithoutProductSkuInput
   promotionItems?: Prisma.PromotionItemUncheckedCreateNestedManyWithoutProductSkuInput
-  transactionItems?: Prisma.TransactionItemUncheckedCreateNestedManyWithoutProductSkuInput
   purchaseItems?: Prisma.PurchaseStockItemUncheckedCreateNestedManyWithoutProductSkuInput
   adjustmentItems?: Prisma.StockAdjustmentItemUncheckedCreateNestedManyWithoutProductSkuInput
+  stockProductSkus?: Prisma.StockProductSkuUncheckedCreateNestedManyWithoutProductSkuInput
+  transactionItems?: Prisma.TransactionItemUncheckedCreateNestedManyWithoutProductSkuInput
 }
 
 export type ProductSkuCreateOrConnectWithoutUnitInput = {
@@ -819,7 +819,7 @@ export type ProductSkuScalarWhereInput = {
   name?: Prisma.StringNullableFilter<"ProductSku"> | string | null
   price?: Prisma.IntFilter<"ProductSku"> | number
   buy_price?: Prisma.IntFilter<"ProductSku"> | number
-  stock_quantity?: Prisma.FloatFilter<"ProductSku"> | number
+  stock_quantity?: Prisma.DecimalFilter<"ProductSku"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusFilter<"ProductSku"> | $Enums.Status
   unit_id?: Prisma.StringFilter<"ProductSku"> | string
   created_at?: Prisma.DateTimeFilter<"ProductSku"> | Date | string
@@ -832,17 +832,17 @@ export type ProductSkuCreateWithoutProductInput = {
   name?: string | null
   price: number
   buy_price: number
-  stock_quantity: number
+  stock_quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   status: $Enums.Status
   created_at?: Date | string
   updated_at?: Date | string
-  unit: Prisma.UnitCreateNestedOneWithoutProductSkusInput
   images?: Prisma.ProductSkuImageCreateNestedManyWithoutProductSkuInput
-  stockProductSkus?: Prisma.StockProductSkuCreateNestedManyWithoutProductSkuInput
+  unit: Prisma.UnitCreateNestedOneWithoutProductSkusInput
   promotionItems?: Prisma.PromotionItemCreateNestedManyWithoutProductSkuInput
-  transactionItems?: Prisma.TransactionItemCreateNestedManyWithoutProductSkuInput
   purchaseItems?: Prisma.PurchaseStockItemCreateNestedManyWithoutProductSkuInput
   adjustmentItems?: Prisma.StockAdjustmentItemCreateNestedManyWithoutProductSkuInput
+  stockProductSkus?: Prisma.StockProductSkuCreateNestedManyWithoutProductSkuInput
+  transactionItems?: Prisma.TransactionItemCreateNestedManyWithoutProductSkuInput
 }
 
 export type ProductSkuUncheckedCreateWithoutProductInput = {
@@ -851,17 +851,17 @@ export type ProductSkuUncheckedCreateWithoutProductInput = {
   name?: string | null
   price: number
   buy_price: number
-  stock_quantity: number
+  stock_quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   status: $Enums.Status
   unit_id: string
   created_at?: Date | string
   updated_at?: Date | string
   images?: Prisma.ProductSkuImageUncheckedCreateNestedManyWithoutProductSkuInput
-  stockProductSkus?: Prisma.StockProductSkuUncheckedCreateNestedManyWithoutProductSkuInput
   promotionItems?: Prisma.PromotionItemUncheckedCreateNestedManyWithoutProductSkuInput
-  transactionItems?: Prisma.TransactionItemUncheckedCreateNestedManyWithoutProductSkuInput
   purchaseItems?: Prisma.PurchaseStockItemUncheckedCreateNestedManyWithoutProductSkuInput
   adjustmentItems?: Prisma.StockAdjustmentItemUncheckedCreateNestedManyWithoutProductSkuInput
+  stockProductSkus?: Prisma.StockProductSkuUncheckedCreateNestedManyWithoutProductSkuInput
+  transactionItems?: Prisma.TransactionItemUncheckedCreateNestedManyWithoutProductSkuInput
 }
 
 export type ProductSkuCreateOrConnectWithoutProductInput = {
@@ -896,17 +896,17 @@ export type ProductSkuCreateWithoutImagesInput = {
   name?: string | null
   price: number
   buy_price: number
-  stock_quantity: number
+  stock_quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   status: $Enums.Status
   created_at?: Date | string
   updated_at?: Date | string
   product: Prisma.ProductCreateNestedOneWithoutProductSkusInput
   unit: Prisma.UnitCreateNestedOneWithoutProductSkusInput
-  stockProductSkus?: Prisma.StockProductSkuCreateNestedManyWithoutProductSkuInput
   promotionItems?: Prisma.PromotionItemCreateNestedManyWithoutProductSkuInput
-  transactionItems?: Prisma.TransactionItemCreateNestedManyWithoutProductSkuInput
   purchaseItems?: Prisma.PurchaseStockItemCreateNestedManyWithoutProductSkuInput
   adjustmentItems?: Prisma.StockAdjustmentItemCreateNestedManyWithoutProductSkuInput
+  stockProductSkus?: Prisma.StockProductSkuCreateNestedManyWithoutProductSkuInput
+  transactionItems?: Prisma.TransactionItemCreateNestedManyWithoutProductSkuInput
 }
 
 export type ProductSkuUncheckedCreateWithoutImagesInput = {
@@ -916,16 +916,16 @@ export type ProductSkuUncheckedCreateWithoutImagesInput = {
   name?: string | null
   price: number
   buy_price: number
-  stock_quantity: number
+  stock_quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   status: $Enums.Status
   unit_id: string
   created_at?: Date | string
   updated_at?: Date | string
-  stockProductSkus?: Prisma.StockProductSkuUncheckedCreateNestedManyWithoutProductSkuInput
   promotionItems?: Prisma.PromotionItemUncheckedCreateNestedManyWithoutProductSkuInput
-  transactionItems?: Prisma.TransactionItemUncheckedCreateNestedManyWithoutProductSkuInput
   purchaseItems?: Prisma.PurchaseStockItemUncheckedCreateNestedManyWithoutProductSkuInput
   adjustmentItems?: Prisma.StockAdjustmentItemUncheckedCreateNestedManyWithoutProductSkuInput
+  stockProductSkus?: Prisma.StockProductSkuUncheckedCreateNestedManyWithoutProductSkuInput
+  transactionItems?: Prisma.TransactionItemUncheckedCreateNestedManyWithoutProductSkuInput
 }
 
 export type ProductSkuCreateOrConnectWithoutImagesInput = {
@@ -950,17 +950,17 @@ export type ProductSkuUpdateWithoutImagesInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.IntFieldUpdateOperationsInput | number
   buy_price?: Prisma.IntFieldUpdateOperationsInput | number
-  stock_quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  stock_quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   product?: Prisma.ProductUpdateOneRequiredWithoutProductSkusNestedInput
   unit?: Prisma.UnitUpdateOneRequiredWithoutProductSkusNestedInput
-  stockProductSkus?: Prisma.StockProductSkuUpdateManyWithoutProductSkuNestedInput
   promotionItems?: Prisma.PromotionItemUpdateManyWithoutProductSkuNestedInput
-  transactionItems?: Prisma.TransactionItemUpdateManyWithoutProductSkuNestedInput
   purchaseItems?: Prisma.PurchaseStockItemUpdateManyWithoutProductSkuNestedInput
   adjustmentItems?: Prisma.StockAdjustmentItemUpdateManyWithoutProductSkuNestedInput
+  stockProductSkus?: Prisma.StockProductSkuUpdateManyWithoutProductSkuNestedInput
+  transactionItems?: Prisma.TransactionItemUpdateManyWithoutProductSkuNestedInput
 }
 
 export type ProductSkuUncheckedUpdateWithoutImagesInput = {
@@ -970,16 +970,16 @@ export type ProductSkuUncheckedUpdateWithoutImagesInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.IntFieldUpdateOperationsInput | number
   buy_price?: Prisma.IntFieldUpdateOperationsInput | number
-  stock_quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  stock_quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
   unit_id?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  stockProductSkus?: Prisma.StockProductSkuUncheckedUpdateManyWithoutProductSkuNestedInput
   promotionItems?: Prisma.PromotionItemUncheckedUpdateManyWithoutProductSkuNestedInput
-  transactionItems?: Prisma.TransactionItemUncheckedUpdateManyWithoutProductSkuNestedInput
   purchaseItems?: Prisma.PurchaseStockItemUncheckedUpdateManyWithoutProductSkuNestedInput
   adjustmentItems?: Prisma.StockAdjustmentItemUncheckedUpdateManyWithoutProductSkuNestedInput
+  stockProductSkus?: Prisma.StockProductSkuUncheckedUpdateManyWithoutProductSkuNestedInput
+  transactionItems?: Prisma.TransactionItemUncheckedUpdateManyWithoutProductSkuNestedInput
 }
 
 export type ProductSkuCreateWithoutStockProductSkusInput = {
@@ -988,17 +988,17 @@ export type ProductSkuCreateWithoutStockProductSkusInput = {
   name?: string | null
   price: number
   buy_price: number
-  stock_quantity: number
+  stock_quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   status: $Enums.Status
   created_at?: Date | string
   updated_at?: Date | string
+  images?: Prisma.ProductSkuImageCreateNestedManyWithoutProductSkuInput
   product: Prisma.ProductCreateNestedOneWithoutProductSkusInput
   unit: Prisma.UnitCreateNestedOneWithoutProductSkusInput
-  images?: Prisma.ProductSkuImageCreateNestedManyWithoutProductSkuInput
   promotionItems?: Prisma.PromotionItemCreateNestedManyWithoutProductSkuInput
-  transactionItems?: Prisma.TransactionItemCreateNestedManyWithoutProductSkuInput
   purchaseItems?: Prisma.PurchaseStockItemCreateNestedManyWithoutProductSkuInput
   adjustmentItems?: Prisma.StockAdjustmentItemCreateNestedManyWithoutProductSkuInput
+  transactionItems?: Prisma.TransactionItemCreateNestedManyWithoutProductSkuInput
 }
 
 export type ProductSkuUncheckedCreateWithoutStockProductSkusInput = {
@@ -1008,16 +1008,16 @@ export type ProductSkuUncheckedCreateWithoutStockProductSkusInput = {
   name?: string | null
   price: number
   buy_price: number
-  stock_quantity: number
+  stock_quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   status: $Enums.Status
   unit_id: string
   created_at?: Date | string
   updated_at?: Date | string
   images?: Prisma.ProductSkuImageUncheckedCreateNestedManyWithoutProductSkuInput
   promotionItems?: Prisma.PromotionItemUncheckedCreateNestedManyWithoutProductSkuInput
-  transactionItems?: Prisma.TransactionItemUncheckedCreateNestedManyWithoutProductSkuInput
   purchaseItems?: Prisma.PurchaseStockItemUncheckedCreateNestedManyWithoutProductSkuInput
   adjustmentItems?: Prisma.StockAdjustmentItemUncheckedCreateNestedManyWithoutProductSkuInput
+  transactionItems?: Prisma.TransactionItemUncheckedCreateNestedManyWithoutProductSkuInput
 }
 
 export type ProductSkuCreateOrConnectWithoutStockProductSkusInput = {
@@ -1042,17 +1042,17 @@ export type ProductSkuUpdateWithoutStockProductSkusInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.IntFieldUpdateOperationsInput | number
   buy_price?: Prisma.IntFieldUpdateOperationsInput | number
-  stock_quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  stock_quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  images?: Prisma.ProductSkuImageUpdateManyWithoutProductSkuNestedInput
   product?: Prisma.ProductUpdateOneRequiredWithoutProductSkusNestedInput
   unit?: Prisma.UnitUpdateOneRequiredWithoutProductSkusNestedInput
-  images?: Prisma.ProductSkuImageUpdateManyWithoutProductSkuNestedInput
   promotionItems?: Prisma.PromotionItemUpdateManyWithoutProductSkuNestedInput
-  transactionItems?: Prisma.TransactionItemUpdateManyWithoutProductSkuNestedInput
   purchaseItems?: Prisma.PurchaseStockItemUpdateManyWithoutProductSkuNestedInput
   adjustmentItems?: Prisma.StockAdjustmentItemUpdateManyWithoutProductSkuNestedInput
+  transactionItems?: Prisma.TransactionItemUpdateManyWithoutProductSkuNestedInput
 }
 
 export type ProductSkuUncheckedUpdateWithoutStockProductSkusInput = {
@@ -1062,16 +1062,16 @@ export type ProductSkuUncheckedUpdateWithoutStockProductSkusInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.IntFieldUpdateOperationsInput | number
   buy_price?: Prisma.IntFieldUpdateOperationsInput | number
-  stock_quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  stock_quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
   unit_id?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   images?: Prisma.ProductSkuImageUncheckedUpdateManyWithoutProductSkuNestedInput
   promotionItems?: Prisma.PromotionItemUncheckedUpdateManyWithoutProductSkuNestedInput
-  transactionItems?: Prisma.TransactionItemUncheckedUpdateManyWithoutProductSkuNestedInput
   purchaseItems?: Prisma.PurchaseStockItemUncheckedUpdateManyWithoutProductSkuNestedInput
   adjustmentItems?: Prisma.StockAdjustmentItemUncheckedUpdateManyWithoutProductSkuNestedInput
+  transactionItems?: Prisma.TransactionItemUncheckedUpdateManyWithoutProductSkuNestedInput
 }
 
 export type ProductSkuCreateWithoutPromotionItemsInput = {
@@ -1080,17 +1080,17 @@ export type ProductSkuCreateWithoutPromotionItemsInput = {
   name?: string | null
   price: number
   buy_price: number
-  stock_quantity: number
+  stock_quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   status: $Enums.Status
   created_at?: Date | string
   updated_at?: Date | string
+  images?: Prisma.ProductSkuImageCreateNestedManyWithoutProductSkuInput
   product: Prisma.ProductCreateNestedOneWithoutProductSkusInput
   unit: Prisma.UnitCreateNestedOneWithoutProductSkusInput
-  images?: Prisma.ProductSkuImageCreateNestedManyWithoutProductSkuInput
-  stockProductSkus?: Prisma.StockProductSkuCreateNestedManyWithoutProductSkuInput
-  transactionItems?: Prisma.TransactionItemCreateNestedManyWithoutProductSkuInput
   purchaseItems?: Prisma.PurchaseStockItemCreateNestedManyWithoutProductSkuInput
   adjustmentItems?: Prisma.StockAdjustmentItemCreateNestedManyWithoutProductSkuInput
+  stockProductSkus?: Prisma.StockProductSkuCreateNestedManyWithoutProductSkuInput
+  transactionItems?: Prisma.TransactionItemCreateNestedManyWithoutProductSkuInput
 }
 
 export type ProductSkuUncheckedCreateWithoutPromotionItemsInput = {
@@ -1100,16 +1100,16 @@ export type ProductSkuUncheckedCreateWithoutPromotionItemsInput = {
   name?: string | null
   price: number
   buy_price: number
-  stock_quantity: number
+  stock_quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   status: $Enums.Status
   unit_id: string
   created_at?: Date | string
   updated_at?: Date | string
   images?: Prisma.ProductSkuImageUncheckedCreateNestedManyWithoutProductSkuInput
-  stockProductSkus?: Prisma.StockProductSkuUncheckedCreateNestedManyWithoutProductSkuInput
-  transactionItems?: Prisma.TransactionItemUncheckedCreateNestedManyWithoutProductSkuInput
   purchaseItems?: Prisma.PurchaseStockItemUncheckedCreateNestedManyWithoutProductSkuInput
   adjustmentItems?: Prisma.StockAdjustmentItemUncheckedCreateNestedManyWithoutProductSkuInput
+  stockProductSkus?: Prisma.StockProductSkuUncheckedCreateNestedManyWithoutProductSkuInput
+  transactionItems?: Prisma.TransactionItemUncheckedCreateNestedManyWithoutProductSkuInput
 }
 
 export type ProductSkuCreateOrConnectWithoutPromotionItemsInput = {
@@ -1134,17 +1134,17 @@ export type ProductSkuUpdateWithoutPromotionItemsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.IntFieldUpdateOperationsInput | number
   buy_price?: Prisma.IntFieldUpdateOperationsInput | number
-  stock_quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  stock_quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  images?: Prisma.ProductSkuImageUpdateManyWithoutProductSkuNestedInput
   product?: Prisma.ProductUpdateOneRequiredWithoutProductSkusNestedInput
   unit?: Prisma.UnitUpdateOneRequiredWithoutProductSkusNestedInput
-  images?: Prisma.ProductSkuImageUpdateManyWithoutProductSkuNestedInput
-  stockProductSkus?: Prisma.StockProductSkuUpdateManyWithoutProductSkuNestedInput
-  transactionItems?: Prisma.TransactionItemUpdateManyWithoutProductSkuNestedInput
   purchaseItems?: Prisma.PurchaseStockItemUpdateManyWithoutProductSkuNestedInput
   adjustmentItems?: Prisma.StockAdjustmentItemUpdateManyWithoutProductSkuNestedInput
+  stockProductSkus?: Prisma.StockProductSkuUpdateManyWithoutProductSkuNestedInput
+  transactionItems?: Prisma.TransactionItemUpdateManyWithoutProductSkuNestedInput
 }
 
 export type ProductSkuUncheckedUpdateWithoutPromotionItemsInput = {
@@ -1154,16 +1154,16 @@ export type ProductSkuUncheckedUpdateWithoutPromotionItemsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.IntFieldUpdateOperationsInput | number
   buy_price?: Prisma.IntFieldUpdateOperationsInput | number
-  stock_quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  stock_quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
   unit_id?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   images?: Prisma.ProductSkuImageUncheckedUpdateManyWithoutProductSkuNestedInput
-  stockProductSkus?: Prisma.StockProductSkuUncheckedUpdateManyWithoutProductSkuNestedInput
-  transactionItems?: Prisma.TransactionItemUncheckedUpdateManyWithoutProductSkuNestedInput
   purchaseItems?: Prisma.PurchaseStockItemUncheckedUpdateManyWithoutProductSkuNestedInput
   adjustmentItems?: Prisma.StockAdjustmentItemUncheckedUpdateManyWithoutProductSkuNestedInput
+  stockProductSkus?: Prisma.StockProductSkuUncheckedUpdateManyWithoutProductSkuNestedInput
+  transactionItems?: Prisma.TransactionItemUncheckedUpdateManyWithoutProductSkuNestedInput
 }
 
 export type ProductSkuCreateWithoutTransactionItemsInput = {
@@ -1172,17 +1172,17 @@ export type ProductSkuCreateWithoutTransactionItemsInput = {
   name?: string | null
   price: number
   buy_price: number
-  stock_quantity: number
+  stock_quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   status: $Enums.Status
   created_at?: Date | string
   updated_at?: Date | string
+  images?: Prisma.ProductSkuImageCreateNestedManyWithoutProductSkuInput
   product: Prisma.ProductCreateNestedOneWithoutProductSkusInput
   unit: Prisma.UnitCreateNestedOneWithoutProductSkusInput
-  images?: Prisma.ProductSkuImageCreateNestedManyWithoutProductSkuInput
-  stockProductSkus?: Prisma.StockProductSkuCreateNestedManyWithoutProductSkuInput
   promotionItems?: Prisma.PromotionItemCreateNestedManyWithoutProductSkuInput
   purchaseItems?: Prisma.PurchaseStockItemCreateNestedManyWithoutProductSkuInput
   adjustmentItems?: Prisma.StockAdjustmentItemCreateNestedManyWithoutProductSkuInput
+  stockProductSkus?: Prisma.StockProductSkuCreateNestedManyWithoutProductSkuInput
 }
 
 export type ProductSkuUncheckedCreateWithoutTransactionItemsInput = {
@@ -1192,16 +1192,16 @@ export type ProductSkuUncheckedCreateWithoutTransactionItemsInput = {
   name?: string | null
   price: number
   buy_price: number
-  stock_quantity: number
+  stock_quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   status: $Enums.Status
   unit_id: string
   created_at?: Date | string
   updated_at?: Date | string
   images?: Prisma.ProductSkuImageUncheckedCreateNestedManyWithoutProductSkuInput
-  stockProductSkus?: Prisma.StockProductSkuUncheckedCreateNestedManyWithoutProductSkuInput
   promotionItems?: Prisma.PromotionItemUncheckedCreateNestedManyWithoutProductSkuInput
   purchaseItems?: Prisma.PurchaseStockItemUncheckedCreateNestedManyWithoutProductSkuInput
   adjustmentItems?: Prisma.StockAdjustmentItemUncheckedCreateNestedManyWithoutProductSkuInput
+  stockProductSkus?: Prisma.StockProductSkuUncheckedCreateNestedManyWithoutProductSkuInput
 }
 
 export type ProductSkuCreateOrConnectWithoutTransactionItemsInput = {
@@ -1226,17 +1226,17 @@ export type ProductSkuUpdateWithoutTransactionItemsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.IntFieldUpdateOperationsInput | number
   buy_price?: Prisma.IntFieldUpdateOperationsInput | number
-  stock_quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  stock_quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  images?: Prisma.ProductSkuImageUpdateManyWithoutProductSkuNestedInput
   product?: Prisma.ProductUpdateOneRequiredWithoutProductSkusNestedInput
   unit?: Prisma.UnitUpdateOneRequiredWithoutProductSkusNestedInput
-  images?: Prisma.ProductSkuImageUpdateManyWithoutProductSkuNestedInput
-  stockProductSkus?: Prisma.StockProductSkuUpdateManyWithoutProductSkuNestedInput
   promotionItems?: Prisma.PromotionItemUpdateManyWithoutProductSkuNestedInput
   purchaseItems?: Prisma.PurchaseStockItemUpdateManyWithoutProductSkuNestedInput
   adjustmentItems?: Prisma.StockAdjustmentItemUpdateManyWithoutProductSkuNestedInput
+  stockProductSkus?: Prisma.StockProductSkuUpdateManyWithoutProductSkuNestedInput
 }
 
 export type ProductSkuUncheckedUpdateWithoutTransactionItemsInput = {
@@ -1246,16 +1246,16 @@ export type ProductSkuUncheckedUpdateWithoutTransactionItemsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.IntFieldUpdateOperationsInput | number
   buy_price?: Prisma.IntFieldUpdateOperationsInput | number
-  stock_quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  stock_quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
   unit_id?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   images?: Prisma.ProductSkuImageUncheckedUpdateManyWithoutProductSkuNestedInput
-  stockProductSkus?: Prisma.StockProductSkuUncheckedUpdateManyWithoutProductSkuNestedInput
   promotionItems?: Prisma.PromotionItemUncheckedUpdateManyWithoutProductSkuNestedInput
   purchaseItems?: Prisma.PurchaseStockItemUncheckedUpdateManyWithoutProductSkuNestedInput
   adjustmentItems?: Prisma.StockAdjustmentItemUncheckedUpdateManyWithoutProductSkuNestedInput
+  stockProductSkus?: Prisma.StockProductSkuUncheckedUpdateManyWithoutProductSkuNestedInput
 }
 
 export type ProductSkuCreateWithoutPurchaseItemsInput = {
@@ -1264,17 +1264,17 @@ export type ProductSkuCreateWithoutPurchaseItemsInput = {
   name?: string | null
   price: number
   buy_price: number
-  stock_quantity: number
+  stock_quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   status: $Enums.Status
   created_at?: Date | string
   updated_at?: Date | string
+  images?: Prisma.ProductSkuImageCreateNestedManyWithoutProductSkuInput
   product: Prisma.ProductCreateNestedOneWithoutProductSkusInput
   unit: Prisma.UnitCreateNestedOneWithoutProductSkusInput
-  images?: Prisma.ProductSkuImageCreateNestedManyWithoutProductSkuInput
-  stockProductSkus?: Prisma.StockProductSkuCreateNestedManyWithoutProductSkuInput
   promotionItems?: Prisma.PromotionItemCreateNestedManyWithoutProductSkuInput
-  transactionItems?: Prisma.TransactionItemCreateNestedManyWithoutProductSkuInput
   adjustmentItems?: Prisma.StockAdjustmentItemCreateNestedManyWithoutProductSkuInput
+  stockProductSkus?: Prisma.StockProductSkuCreateNestedManyWithoutProductSkuInput
+  transactionItems?: Prisma.TransactionItemCreateNestedManyWithoutProductSkuInput
 }
 
 export type ProductSkuUncheckedCreateWithoutPurchaseItemsInput = {
@@ -1284,16 +1284,16 @@ export type ProductSkuUncheckedCreateWithoutPurchaseItemsInput = {
   name?: string | null
   price: number
   buy_price: number
-  stock_quantity: number
+  stock_quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   status: $Enums.Status
   unit_id: string
   created_at?: Date | string
   updated_at?: Date | string
   images?: Prisma.ProductSkuImageUncheckedCreateNestedManyWithoutProductSkuInput
-  stockProductSkus?: Prisma.StockProductSkuUncheckedCreateNestedManyWithoutProductSkuInput
   promotionItems?: Prisma.PromotionItemUncheckedCreateNestedManyWithoutProductSkuInput
-  transactionItems?: Prisma.TransactionItemUncheckedCreateNestedManyWithoutProductSkuInput
   adjustmentItems?: Prisma.StockAdjustmentItemUncheckedCreateNestedManyWithoutProductSkuInput
+  stockProductSkus?: Prisma.StockProductSkuUncheckedCreateNestedManyWithoutProductSkuInput
+  transactionItems?: Prisma.TransactionItemUncheckedCreateNestedManyWithoutProductSkuInput
 }
 
 export type ProductSkuCreateOrConnectWithoutPurchaseItemsInput = {
@@ -1318,17 +1318,17 @@ export type ProductSkuUpdateWithoutPurchaseItemsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.IntFieldUpdateOperationsInput | number
   buy_price?: Prisma.IntFieldUpdateOperationsInput | number
-  stock_quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  stock_quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  images?: Prisma.ProductSkuImageUpdateManyWithoutProductSkuNestedInput
   product?: Prisma.ProductUpdateOneRequiredWithoutProductSkusNestedInput
   unit?: Prisma.UnitUpdateOneRequiredWithoutProductSkusNestedInput
-  images?: Prisma.ProductSkuImageUpdateManyWithoutProductSkuNestedInput
-  stockProductSkus?: Prisma.StockProductSkuUpdateManyWithoutProductSkuNestedInput
   promotionItems?: Prisma.PromotionItemUpdateManyWithoutProductSkuNestedInput
-  transactionItems?: Prisma.TransactionItemUpdateManyWithoutProductSkuNestedInput
   adjustmentItems?: Prisma.StockAdjustmentItemUpdateManyWithoutProductSkuNestedInput
+  stockProductSkus?: Prisma.StockProductSkuUpdateManyWithoutProductSkuNestedInput
+  transactionItems?: Prisma.TransactionItemUpdateManyWithoutProductSkuNestedInput
 }
 
 export type ProductSkuUncheckedUpdateWithoutPurchaseItemsInput = {
@@ -1338,16 +1338,16 @@ export type ProductSkuUncheckedUpdateWithoutPurchaseItemsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.IntFieldUpdateOperationsInput | number
   buy_price?: Prisma.IntFieldUpdateOperationsInput | number
-  stock_quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  stock_quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
   unit_id?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   images?: Prisma.ProductSkuImageUncheckedUpdateManyWithoutProductSkuNestedInput
-  stockProductSkus?: Prisma.StockProductSkuUncheckedUpdateManyWithoutProductSkuNestedInput
   promotionItems?: Prisma.PromotionItemUncheckedUpdateManyWithoutProductSkuNestedInput
-  transactionItems?: Prisma.TransactionItemUncheckedUpdateManyWithoutProductSkuNestedInput
   adjustmentItems?: Prisma.StockAdjustmentItemUncheckedUpdateManyWithoutProductSkuNestedInput
+  stockProductSkus?: Prisma.StockProductSkuUncheckedUpdateManyWithoutProductSkuNestedInput
+  transactionItems?: Prisma.TransactionItemUncheckedUpdateManyWithoutProductSkuNestedInput
 }
 
 export type ProductSkuCreateWithoutAdjustmentItemsInput = {
@@ -1356,17 +1356,17 @@ export type ProductSkuCreateWithoutAdjustmentItemsInput = {
   name?: string | null
   price: number
   buy_price: number
-  stock_quantity: number
+  stock_quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   status: $Enums.Status
   created_at?: Date | string
   updated_at?: Date | string
+  images?: Prisma.ProductSkuImageCreateNestedManyWithoutProductSkuInput
   product: Prisma.ProductCreateNestedOneWithoutProductSkusInput
   unit: Prisma.UnitCreateNestedOneWithoutProductSkusInput
-  images?: Prisma.ProductSkuImageCreateNestedManyWithoutProductSkuInput
-  stockProductSkus?: Prisma.StockProductSkuCreateNestedManyWithoutProductSkuInput
   promotionItems?: Prisma.PromotionItemCreateNestedManyWithoutProductSkuInput
-  transactionItems?: Prisma.TransactionItemCreateNestedManyWithoutProductSkuInput
   purchaseItems?: Prisma.PurchaseStockItemCreateNestedManyWithoutProductSkuInput
+  stockProductSkus?: Prisma.StockProductSkuCreateNestedManyWithoutProductSkuInput
+  transactionItems?: Prisma.TransactionItemCreateNestedManyWithoutProductSkuInput
 }
 
 export type ProductSkuUncheckedCreateWithoutAdjustmentItemsInput = {
@@ -1376,16 +1376,16 @@ export type ProductSkuUncheckedCreateWithoutAdjustmentItemsInput = {
   name?: string | null
   price: number
   buy_price: number
-  stock_quantity: number
+  stock_quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   status: $Enums.Status
   unit_id: string
   created_at?: Date | string
   updated_at?: Date | string
   images?: Prisma.ProductSkuImageUncheckedCreateNestedManyWithoutProductSkuInput
-  stockProductSkus?: Prisma.StockProductSkuUncheckedCreateNestedManyWithoutProductSkuInput
   promotionItems?: Prisma.PromotionItemUncheckedCreateNestedManyWithoutProductSkuInput
-  transactionItems?: Prisma.TransactionItemUncheckedCreateNestedManyWithoutProductSkuInput
   purchaseItems?: Prisma.PurchaseStockItemUncheckedCreateNestedManyWithoutProductSkuInput
+  stockProductSkus?: Prisma.StockProductSkuUncheckedCreateNestedManyWithoutProductSkuInput
+  transactionItems?: Prisma.TransactionItemUncheckedCreateNestedManyWithoutProductSkuInput
 }
 
 export type ProductSkuCreateOrConnectWithoutAdjustmentItemsInput = {
@@ -1410,17 +1410,17 @@ export type ProductSkuUpdateWithoutAdjustmentItemsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.IntFieldUpdateOperationsInput | number
   buy_price?: Prisma.IntFieldUpdateOperationsInput | number
-  stock_quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  stock_quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  images?: Prisma.ProductSkuImageUpdateManyWithoutProductSkuNestedInput
   product?: Prisma.ProductUpdateOneRequiredWithoutProductSkusNestedInput
   unit?: Prisma.UnitUpdateOneRequiredWithoutProductSkusNestedInput
-  images?: Prisma.ProductSkuImageUpdateManyWithoutProductSkuNestedInput
-  stockProductSkus?: Prisma.StockProductSkuUpdateManyWithoutProductSkuNestedInput
   promotionItems?: Prisma.PromotionItemUpdateManyWithoutProductSkuNestedInput
-  transactionItems?: Prisma.TransactionItemUpdateManyWithoutProductSkuNestedInput
   purchaseItems?: Prisma.PurchaseStockItemUpdateManyWithoutProductSkuNestedInput
+  stockProductSkus?: Prisma.StockProductSkuUpdateManyWithoutProductSkuNestedInput
+  transactionItems?: Prisma.TransactionItemUpdateManyWithoutProductSkuNestedInput
 }
 
 export type ProductSkuUncheckedUpdateWithoutAdjustmentItemsInput = {
@@ -1430,16 +1430,16 @@ export type ProductSkuUncheckedUpdateWithoutAdjustmentItemsInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.IntFieldUpdateOperationsInput | number
   buy_price?: Prisma.IntFieldUpdateOperationsInput | number
-  stock_quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  stock_quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
   unit_id?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   images?: Prisma.ProductSkuImageUncheckedUpdateManyWithoutProductSkuNestedInput
-  stockProductSkus?: Prisma.StockProductSkuUncheckedUpdateManyWithoutProductSkuNestedInput
   promotionItems?: Prisma.PromotionItemUncheckedUpdateManyWithoutProductSkuNestedInput
-  transactionItems?: Prisma.TransactionItemUncheckedUpdateManyWithoutProductSkuNestedInput
   purchaseItems?: Prisma.PurchaseStockItemUncheckedUpdateManyWithoutProductSkuNestedInput
+  stockProductSkus?: Prisma.StockProductSkuUncheckedUpdateManyWithoutProductSkuNestedInput
+  transactionItems?: Prisma.TransactionItemUncheckedUpdateManyWithoutProductSkuNestedInput
 }
 
 export type ProductSkuCreateManyUnitInput = {
@@ -1449,7 +1449,7 @@ export type ProductSkuCreateManyUnitInput = {
   name?: string | null
   price: number
   buy_price: number
-  stock_quantity: number
+  stock_quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   status: $Enums.Status
   created_at?: Date | string
   updated_at?: Date | string
@@ -1461,17 +1461,17 @@ export type ProductSkuUpdateWithoutUnitInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.IntFieldUpdateOperationsInput | number
   buy_price?: Prisma.IntFieldUpdateOperationsInput | number
-  stock_quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  stock_quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  product?: Prisma.ProductUpdateOneRequiredWithoutProductSkusNestedInput
   images?: Prisma.ProductSkuImageUpdateManyWithoutProductSkuNestedInput
-  stockProductSkus?: Prisma.StockProductSkuUpdateManyWithoutProductSkuNestedInput
+  product?: Prisma.ProductUpdateOneRequiredWithoutProductSkusNestedInput
   promotionItems?: Prisma.PromotionItemUpdateManyWithoutProductSkuNestedInput
-  transactionItems?: Prisma.TransactionItemUpdateManyWithoutProductSkuNestedInput
   purchaseItems?: Prisma.PurchaseStockItemUpdateManyWithoutProductSkuNestedInput
   adjustmentItems?: Prisma.StockAdjustmentItemUpdateManyWithoutProductSkuNestedInput
+  stockProductSkus?: Prisma.StockProductSkuUpdateManyWithoutProductSkuNestedInput
+  transactionItems?: Prisma.TransactionItemUpdateManyWithoutProductSkuNestedInput
 }
 
 export type ProductSkuUncheckedUpdateWithoutUnitInput = {
@@ -1481,16 +1481,16 @@ export type ProductSkuUncheckedUpdateWithoutUnitInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.IntFieldUpdateOperationsInput | number
   buy_price?: Prisma.IntFieldUpdateOperationsInput | number
-  stock_quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  stock_quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   images?: Prisma.ProductSkuImageUncheckedUpdateManyWithoutProductSkuNestedInput
-  stockProductSkus?: Prisma.StockProductSkuUncheckedUpdateManyWithoutProductSkuNestedInput
   promotionItems?: Prisma.PromotionItemUncheckedUpdateManyWithoutProductSkuNestedInput
-  transactionItems?: Prisma.TransactionItemUncheckedUpdateManyWithoutProductSkuNestedInput
   purchaseItems?: Prisma.PurchaseStockItemUncheckedUpdateManyWithoutProductSkuNestedInput
   adjustmentItems?: Prisma.StockAdjustmentItemUncheckedUpdateManyWithoutProductSkuNestedInput
+  stockProductSkus?: Prisma.StockProductSkuUncheckedUpdateManyWithoutProductSkuNestedInput
+  transactionItems?: Prisma.TransactionItemUncheckedUpdateManyWithoutProductSkuNestedInput
 }
 
 export type ProductSkuUncheckedUpdateManyWithoutUnitInput = {
@@ -1500,7 +1500,7 @@ export type ProductSkuUncheckedUpdateManyWithoutUnitInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.IntFieldUpdateOperationsInput | number
   buy_price?: Prisma.IntFieldUpdateOperationsInput | number
-  stock_quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  stock_quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1512,7 +1512,7 @@ export type ProductSkuCreateManyProductInput = {
   name?: string | null
   price: number
   buy_price: number
-  stock_quantity: number
+  stock_quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   status: $Enums.Status
   unit_id: string
   created_at?: Date | string
@@ -1525,17 +1525,17 @@ export type ProductSkuUpdateWithoutProductInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.IntFieldUpdateOperationsInput | number
   buy_price?: Prisma.IntFieldUpdateOperationsInput | number
-  stock_quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  stock_quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  unit?: Prisma.UnitUpdateOneRequiredWithoutProductSkusNestedInput
   images?: Prisma.ProductSkuImageUpdateManyWithoutProductSkuNestedInput
-  stockProductSkus?: Prisma.StockProductSkuUpdateManyWithoutProductSkuNestedInput
+  unit?: Prisma.UnitUpdateOneRequiredWithoutProductSkusNestedInput
   promotionItems?: Prisma.PromotionItemUpdateManyWithoutProductSkuNestedInput
-  transactionItems?: Prisma.TransactionItemUpdateManyWithoutProductSkuNestedInput
   purchaseItems?: Prisma.PurchaseStockItemUpdateManyWithoutProductSkuNestedInput
   adjustmentItems?: Prisma.StockAdjustmentItemUpdateManyWithoutProductSkuNestedInput
+  stockProductSkus?: Prisma.StockProductSkuUpdateManyWithoutProductSkuNestedInput
+  transactionItems?: Prisma.TransactionItemUpdateManyWithoutProductSkuNestedInput
 }
 
 export type ProductSkuUncheckedUpdateWithoutProductInput = {
@@ -1544,17 +1544,17 @@ export type ProductSkuUncheckedUpdateWithoutProductInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.IntFieldUpdateOperationsInput | number
   buy_price?: Prisma.IntFieldUpdateOperationsInput | number
-  stock_quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  stock_quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
   unit_id?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   images?: Prisma.ProductSkuImageUncheckedUpdateManyWithoutProductSkuNestedInput
-  stockProductSkus?: Prisma.StockProductSkuUncheckedUpdateManyWithoutProductSkuNestedInput
   promotionItems?: Prisma.PromotionItemUncheckedUpdateManyWithoutProductSkuNestedInput
-  transactionItems?: Prisma.TransactionItemUncheckedUpdateManyWithoutProductSkuNestedInput
   purchaseItems?: Prisma.PurchaseStockItemUncheckedUpdateManyWithoutProductSkuNestedInput
   adjustmentItems?: Prisma.StockAdjustmentItemUncheckedUpdateManyWithoutProductSkuNestedInput
+  stockProductSkus?: Prisma.StockProductSkuUncheckedUpdateManyWithoutProductSkuNestedInput
+  transactionItems?: Prisma.TransactionItemUncheckedUpdateManyWithoutProductSkuNestedInput
 }
 
 export type ProductSkuUncheckedUpdateManyWithoutProductInput = {
@@ -1563,7 +1563,7 @@ export type ProductSkuUncheckedUpdateManyWithoutProductInput = {
   name?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   price?: Prisma.IntFieldUpdateOperationsInput | number
   buy_price?: Prisma.IntFieldUpdateOperationsInput | number
-  stock_quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  stock_quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   status?: Prisma.EnumStatusFieldUpdateOperationsInput | $Enums.Status
   unit_id?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1577,20 +1577,20 @@ export type ProductSkuUncheckedUpdateManyWithoutProductInput = {
 
 export type ProductSkuCountOutputType = {
   images: number
-  stockProductSkus: number
   promotionItems: number
-  transactionItems: number
   purchaseItems: number
   adjustmentItems: number
+  stockProductSkus: number
+  transactionItems: number
 }
 
 export type ProductSkuCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   images?: boolean | ProductSkuCountOutputTypeCountImagesArgs
-  stockProductSkus?: boolean | ProductSkuCountOutputTypeCountStockProductSkusArgs
   promotionItems?: boolean | ProductSkuCountOutputTypeCountPromotionItemsArgs
-  transactionItems?: boolean | ProductSkuCountOutputTypeCountTransactionItemsArgs
   purchaseItems?: boolean | ProductSkuCountOutputTypeCountPurchaseItemsArgs
   adjustmentItems?: boolean | ProductSkuCountOutputTypeCountAdjustmentItemsArgs
+  stockProductSkus?: boolean | ProductSkuCountOutputTypeCountStockProductSkusArgs
+  transactionItems?: boolean | ProductSkuCountOutputTypeCountTransactionItemsArgs
 }
 
 /**
@@ -1613,22 +1613,8 @@ export type ProductSkuCountOutputTypeCountImagesArgs<ExtArgs extends runtime.Typ
 /**
  * ProductSkuCountOutputType without action
  */
-export type ProductSkuCountOutputTypeCountStockProductSkusArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.StockProductSkuWhereInput
-}
-
-/**
- * ProductSkuCountOutputType without action
- */
 export type ProductSkuCountOutputTypeCountPromotionItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.PromotionItemWhereInput
-}
-
-/**
- * ProductSkuCountOutputType without action
- */
-export type ProductSkuCountOutputTypeCountTransactionItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.TransactionItemWhereInput
 }
 
 /**
@@ -1645,6 +1631,20 @@ export type ProductSkuCountOutputTypeCountAdjustmentItemsArgs<ExtArgs extends ru
   where?: Prisma.StockAdjustmentItemWhereInput
 }
 
+/**
+ * ProductSkuCountOutputType without action
+ */
+export type ProductSkuCountOutputTypeCountStockProductSkusArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.StockProductSkuWhereInput
+}
+
+/**
+ * ProductSkuCountOutputType without action
+ */
+export type ProductSkuCountOutputTypeCountTransactionItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.TransactionItemWhereInput
+}
+
 
 export type ProductSkuSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1658,14 +1658,14 @@ export type ProductSkuSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   unit_id?: boolean
   created_at?: boolean
   updated_at?: boolean
+  images?: boolean | Prisma.ProductSku$imagesArgs<ExtArgs>
   product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
   unit?: boolean | Prisma.UnitDefaultArgs<ExtArgs>
-  images?: boolean | Prisma.ProductSku$imagesArgs<ExtArgs>
-  stockProductSkus?: boolean | Prisma.ProductSku$stockProductSkusArgs<ExtArgs>
   promotionItems?: boolean | Prisma.ProductSku$promotionItemsArgs<ExtArgs>
-  transactionItems?: boolean | Prisma.ProductSku$transactionItemsArgs<ExtArgs>
   purchaseItems?: boolean | Prisma.ProductSku$purchaseItemsArgs<ExtArgs>
   adjustmentItems?: boolean | Prisma.ProductSku$adjustmentItemsArgs<ExtArgs>
+  stockProductSkus?: boolean | Prisma.ProductSku$stockProductSkusArgs<ExtArgs>
+  transactionItems?: boolean | Prisma.ProductSku$transactionItemsArgs<ExtArgs>
   _count?: boolean | Prisma.ProductSkuCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["productSku"]>
 
@@ -1687,28 +1687,28 @@ export type ProductSkuSelectScalar = {
 
 export type ProductSkuOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "code" | "product_id" | "name" | "price" | "buy_price" | "stock_quantity" | "status" | "unit_id" | "created_at" | "updated_at", ExtArgs["result"]["productSku"]>
 export type ProductSkuInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  images?: boolean | Prisma.ProductSku$imagesArgs<ExtArgs>
   product?: boolean | Prisma.ProductDefaultArgs<ExtArgs>
   unit?: boolean | Prisma.UnitDefaultArgs<ExtArgs>
-  images?: boolean | Prisma.ProductSku$imagesArgs<ExtArgs>
-  stockProductSkus?: boolean | Prisma.ProductSku$stockProductSkusArgs<ExtArgs>
   promotionItems?: boolean | Prisma.ProductSku$promotionItemsArgs<ExtArgs>
-  transactionItems?: boolean | Prisma.ProductSku$transactionItemsArgs<ExtArgs>
   purchaseItems?: boolean | Prisma.ProductSku$purchaseItemsArgs<ExtArgs>
   adjustmentItems?: boolean | Prisma.ProductSku$adjustmentItemsArgs<ExtArgs>
+  stockProductSkus?: boolean | Prisma.ProductSku$stockProductSkusArgs<ExtArgs>
+  transactionItems?: boolean | Prisma.ProductSku$transactionItemsArgs<ExtArgs>
   _count?: boolean | Prisma.ProductSkuCountOutputTypeDefaultArgs<ExtArgs>
 }
 
 export type $ProductSkuPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "ProductSku"
   objects: {
+    images: Prisma.$ProductSkuImagePayload<ExtArgs>[]
     product: Prisma.$ProductPayload<ExtArgs>
     unit: Prisma.$UnitPayload<ExtArgs>
-    images: Prisma.$ProductSkuImagePayload<ExtArgs>[]
-    stockProductSkus: Prisma.$StockProductSkuPayload<ExtArgs>[]
     promotionItems: Prisma.$PromotionItemPayload<ExtArgs>[]
-    transactionItems: Prisma.$TransactionItemPayload<ExtArgs>[]
     purchaseItems: Prisma.$PurchaseStockItemPayload<ExtArgs>[]
     adjustmentItems: Prisma.$StockAdjustmentItemPayload<ExtArgs>[]
+    stockProductSkus: Prisma.$StockProductSkuPayload<ExtArgs>[]
+    transactionItems: Prisma.$TransactionItemPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1717,7 +1717,7 @@ export type $ProductSkuPayload<ExtArgs extends runtime.Types.Extensions.Internal
     name: string | null
     price: number
     buy_price: number
-    stock_quantity: number
+    stock_quantity: runtime.Decimal
     status: $Enums.Status
     unit_id: string
     created_at: Date
@@ -2062,14 +2062,14 @@ readonly fields: ProductSkuFieldRefs;
  */
 export interface Prisma__ProductSkuClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  images<T extends Prisma.ProductSku$imagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProductSku$imagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProductSkuImagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   product<T extends Prisma.ProductDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProductDefaultArgs<ExtArgs>>): Prisma.Prisma__ProductClient<runtime.Types.Result.GetResult<Prisma.$ProductPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   unit<T extends Prisma.UnitDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UnitDefaultArgs<ExtArgs>>): Prisma.Prisma__UnitClient<runtime.Types.Result.GetResult<Prisma.$UnitPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  images<T extends Prisma.ProductSku$imagesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProductSku$imagesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProductSkuImagePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  stockProductSkus<T extends Prisma.ProductSku$stockProductSkusArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProductSku$stockProductSkusArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StockProductSkuPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   promotionItems<T extends Prisma.ProductSku$promotionItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProductSku$promotionItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PromotionItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
-  transactionItems<T extends Prisma.ProductSku$transactionItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProductSku$transactionItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransactionItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   purchaseItems<T extends Prisma.ProductSku$purchaseItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProductSku$purchaseItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PurchaseStockItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   adjustmentItems<T extends Prisma.ProductSku$adjustmentItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProductSku$adjustmentItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StockAdjustmentItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  stockProductSkus<T extends Prisma.ProductSku$stockProductSkusArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProductSku$stockProductSkusArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StockProductSkuPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  transactionItems<T extends Prisma.ProductSku$transactionItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProductSku$transactionItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransactionItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2105,7 +2105,7 @@ export interface ProductSkuFieldRefs {
   readonly name: Prisma.FieldRef<"ProductSku", 'String'>
   readonly price: Prisma.FieldRef<"ProductSku", 'Int'>
   readonly buy_price: Prisma.FieldRef<"ProductSku", 'Int'>
-  readonly stock_quantity: Prisma.FieldRef<"ProductSku", 'Float'>
+  readonly stock_quantity: Prisma.FieldRef<"ProductSku", 'Decimal'>
   readonly status: Prisma.FieldRef<"ProductSku", 'Status'>
   readonly unit_id: Prisma.FieldRef<"ProductSku", 'String'>
   readonly created_at: Prisma.FieldRef<"ProductSku", 'DateTime'>
@@ -2482,30 +2482,6 @@ export type ProductSku$imagesArgs<ExtArgs extends runtime.Types.Extensions.Inter
 }
 
 /**
- * ProductSku.stockProductSkus
- */
-export type ProductSku$stockProductSkusArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the StockProductSku
-   */
-  select?: Prisma.StockProductSkuSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the StockProductSku
-   */
-  omit?: Prisma.StockProductSkuOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.StockProductSkuInclude<ExtArgs> | null
-  where?: Prisma.StockProductSkuWhereInput
-  orderBy?: Prisma.StockProductSkuOrderByWithRelationInput | Prisma.StockProductSkuOrderByWithRelationInput[]
-  cursor?: Prisma.StockProductSkuWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.StockProductSkuScalarFieldEnum | Prisma.StockProductSkuScalarFieldEnum[]
-}
-
-/**
  * ProductSku.promotionItems
  */
 export type ProductSku$promotionItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2527,30 +2503,6 @@ export type ProductSku$promotionItemsArgs<ExtArgs extends runtime.Types.Extensio
   take?: number
   skip?: number
   distinct?: Prisma.PromotionItemScalarFieldEnum | Prisma.PromotionItemScalarFieldEnum[]
-}
-
-/**
- * ProductSku.transactionItems
- */
-export type ProductSku$transactionItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the TransactionItem
-   */
-  select?: Prisma.TransactionItemSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the TransactionItem
-   */
-  omit?: Prisma.TransactionItemOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.TransactionItemInclude<ExtArgs> | null
-  where?: Prisma.TransactionItemWhereInput
-  orderBy?: Prisma.TransactionItemOrderByWithRelationInput | Prisma.TransactionItemOrderByWithRelationInput[]
-  cursor?: Prisma.TransactionItemWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.TransactionItemScalarFieldEnum | Prisma.TransactionItemScalarFieldEnum[]
 }
 
 /**
@@ -2599,6 +2551,54 @@ export type ProductSku$adjustmentItemsArgs<ExtArgs extends runtime.Types.Extensi
   take?: number
   skip?: number
   distinct?: Prisma.StockAdjustmentItemScalarFieldEnum | Prisma.StockAdjustmentItemScalarFieldEnum[]
+}
+
+/**
+ * ProductSku.stockProductSkus
+ */
+export type ProductSku$stockProductSkusArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the StockProductSku
+   */
+  select?: Prisma.StockProductSkuSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the StockProductSku
+   */
+  omit?: Prisma.StockProductSkuOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StockProductSkuInclude<ExtArgs> | null
+  where?: Prisma.StockProductSkuWhereInput
+  orderBy?: Prisma.StockProductSkuOrderByWithRelationInput | Prisma.StockProductSkuOrderByWithRelationInput[]
+  cursor?: Prisma.StockProductSkuWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.StockProductSkuScalarFieldEnum | Prisma.StockProductSkuScalarFieldEnum[]
+}
+
+/**
+ * ProductSku.transactionItems
+ */
+export type ProductSku$transactionItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the TransactionItem
+   */
+  select?: Prisma.TransactionItemSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the TransactionItem
+   */
+  omit?: Prisma.TransactionItemOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.TransactionItemInclude<ExtArgs> | null
+  where?: Prisma.TransactionItemWhereInput
+  orderBy?: Prisma.TransactionItemOrderByWithRelationInput | Prisma.TransactionItemOrderByWithRelationInput[]
+  cursor?: Prisma.TransactionItemWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.TransactionItemScalarFieldEnum | Prisma.TransactionItemScalarFieldEnum[]
 }
 
 /**

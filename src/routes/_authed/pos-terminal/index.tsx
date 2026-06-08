@@ -24,8 +24,6 @@ export const Route = createFileRoute("/_authed/pos-terminal/")({
 });
 
 function RouteComponent() {
-  // ── Barcode Scanner ───────────────────────────────────────────────
-
   return (
     <PosProvider>
       <PosPage />

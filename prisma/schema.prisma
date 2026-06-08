@@ -14,20 +14,21 @@ model User {
   password   String   @db.VarChar(255)
   avatar_url String?  @db.VarChar(255)
   role_id    String
-  role       Role     @relation(fields: [role_id], references: [id])
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+  role       Role     @relation(fields: [role_id], references: [id])
 
+  @@index([role_id], map: "users_role_id_fkey")
   @@map("users")
 }
 
 model Role {
   id               String              @id @default(uuid())
   name             String              @db.VarChar(255)
-  users            User[]
-  role_permissions RoleHasPermission[]
   created_at       DateTime            @default(now())
   updated_at       DateTime            @updatedAt
+  role_permissions RoleHasPermission[]
+  users            User[]
 
   @@map("roles")
 }
@@ -36,9 +37,9 @@ model Permission {
   id               String              @id @default(uuid())
   module           String              @db.VarChar(255)
   action           String              @db.VarChar(255)
-  role_permissions RoleHasPermission[]
   created_at       DateTime            @default(now())
   updated_at       DateTime            @updatedAt
+  role_permissions RoleHasPermission[]
 
   @@map("permissions")
 }
@@ -46,12 +47,13 @@ model Permission {
 model RoleHasPermission {
   role_id       String
   permission_id String
-  role          Role       @relation(fields: [role_id], references: [id])
-  permission    Permission @relation(fields: [permission_id], references: [id])
   created_at    DateTime   @default(now())
   updated_at    DateTime   @updatedAt
+  permission    Permission @relation(fields: [permission_id], references: [id])
+  role          Role       @relation(fields: [role_id], references: [id])
 
   @@id([role_id, permission_id])
+  @@index([permission_id], map: "role_has_permissions_permission_id_fkey")
   @@map("role_has_permissions")
 }
 
@@ -60,21 +62,11 @@ model Unit {
   name        String       @db.VarChar(255)
   type        UnitType
   status      Status
-  productSkus ProductSku[]
   created_at  DateTime     @default(now())
   updated_at  DateTime     @updatedAt
+  productSkus ProductSku[]
 
   @@map("units")
-}
-
-enum UnitType {
-  integer
-  decimal
-}
-
-enum Status {
-  active
-  inactive
 }
 
 model Category {
@@ -82,9 +74,9 @@ model Category {
   name              String            @db.VarChar(255)
   description       String?
   status            Status
-  productCategories ProductCategory[]
   created_at        DateTime          @default(now())
   updated_at        DateTime          @updatedAt
+  productCategories ProductCategory[]
 
   @@map("categories")
 }
@@ -95,28 +87,24 @@ model Product {
   description       String?
   type              ProductType
   is_variant        Boolean           @default(false)
-  productCategories ProductCategory[]
-  productSkus       ProductSku[]
   created_at        DateTime          @default(now())
   updated_at        DateTime          @updatedAt
+  productCategories ProductCategory[]
+  productSkus       ProductSku[]
 
   @@map("products")
-}
-
-enum ProductType {
-  item
-  service
 }
 
 model ProductCategory {
   category_id String
   product_id  String
-  category    Category @relation(fields: [category_id], references: [id])
-  product     Product  @relation(fields: [product_id], references: [id])
   created_at  DateTime @default(now())
   updated_at  DateTime @updatedAt
+  category    Category @relation(fields: [category_id], references: [id])
+  product     Product  @relation(fields: [product_id], references: [id])
 
   @@id([category_id, product_id])
+  @@index([product_id], map: "product_categories_product_id_fkey")
   @@map("product_categories")
 }
 
@@ -125,22 +113,24 @@ model ProductSku {
   code             String                @unique @db.VarChar(12)
   product_id       String
   name             String?               @db.VarChar(255)
-  price            Int                   @db.Int
+  price            Int
   buy_price        Int
-  stock_quantity   Float
+  stock_quantity   Decimal               @db.Decimal(10, 4)
   status           Status
   unit_id          String
-  product          Product               @relation(fields: [product_id], references: [id])
-  unit             Unit                  @relation(fields: [unit_id], references: [id])
-  images           ProductSkuImage[]
-  stockProductSkus StockProductSku[]
-  promotionItems   PromotionItem[]
-  transactionItems TransactionItem[]
-  purchaseItems    PurchaseStockItem[]
-  adjustmentItems  StockAdjustmentItem[]
   created_at       DateTime              @default(now())
   updated_at       DateTime              @updatedAt
+  images           ProductSkuImage[]
+  product          Product               @relation(fields: [product_id], references: [id])
+  unit             Unit                  @relation(fields: [unit_id], references: [id])
+  promotionItems   PromotionItem[]
+  purchaseItems    PurchaseStockItem[]
+  adjustmentItems  StockAdjustmentItem[]
+  stockProductSkus StockProductSku[]
+  transactionItems TransactionItem[]
 
+  @@index([product_id], map: "product_skus_product_id_fkey")
+  @@index([unit_id], map: "product_skus_unit_id_fkey")
   @@map("product_skus")
 }
 
@@ -148,10 +138,11 @@ model ProductSkuImage {
   id             String     @id @default(uuid())
   product_sku_id String
   path           String     @db.VarChar(255)
-  productSku     ProductSku @relation(fields: [product_sku_id], references: [id])
   created_at     DateTime   @default(now())
   updated_at     DateTime   @updatedAt
+  productSku     ProductSku @relation(fields: [product_sku_id], references: [id])
 
+  @@index([product_sku_id], map: "product_sku_images_product_sku_id_fkey")
   @@map("product_sku_images")
 }
 
@@ -160,9 +151,9 @@ model StockLocation {
   name             String            @unique @db.VarChar(255)
   note             String?
   status           Status
-  stockProductSkus StockProductSku[]
   created_at       DateTime          @default(now())
   updated_at       DateTime          @updatedAt
+  stockProductSkus StockProductSku[]
 
   @@map("stock_locations")
 }
@@ -172,13 +163,15 @@ model StockProductSku {
   product_sku_id    String
   stock_location_id String
   is_primary        Boolean
-  quantity          Float
-  productSku        ProductSku      @relation(fields: [product_sku_id], references: [id])
-  stockLocation     StockLocation   @relation(fields: [stock_location_id], references: [id])
-  stockMovements    StockMovement[]
+  quantity          Decimal         @db.Decimal(10, 4)
   created_at        DateTime        @default(now())
   updated_at        DateTime        @updatedAt
+  stockMovements    StockMovement[]
+  productSku        ProductSku      @relation(fields: [product_sku_id], references: [id])
+  stockLocation     StockLocation   @relation(fields: [stock_location_id], references: [id])
 
+  @@index([product_sku_id], map: "stock_product_skus_product_sku_id_fkey")
+  @@index([stock_location_id], map: "stock_product_skus_stock_location_id_fkey")
   @@map("stock_product_skus")
 }
 
@@ -190,11 +183,11 @@ model Promotion {
   end_date              DateTime
   start_time            DateTime
   end_time              DateTime
-  promotionTransactions PromotionTransaction[]
-  promotionItems        PromotionItem[]
-  transactions          Transaction[]
   created_at            DateTime               @default(now())
   updated_at            DateTime               @updatedAt
+  promotionItems        PromotionItem[]
+  promotionTransactions PromotionTransaction[]
+  transactions          Transaction[]
 
   @@map("promotions")
 }
@@ -205,11 +198,12 @@ model PromotionTransaction {
   name           String        @db.VarChar(255)
   discount_value Float
   discount_type  DiscountType
-  promotion      Promotion     @relation(fields: [promotion_id], references: [id])
-  transactions   Transaction[]
   created_at     DateTime      @default(now())
   updated_at     DateTime      @updatedAt
+  promotion      Promotion     @relation(fields: [promotion_id], references: [id])
+  transactions   Transaction[]
 
+  @@index([promotion_id], map: "promotion_transactions_promotion_id_fkey")
   @@map("promotion_transactions")
 }
 
@@ -221,62 +215,75 @@ model PromotionItem {
   discount_type       DiscountType
   min_qty             Float?
   is_multiple_allowed Boolean?
-  promotion           Promotion         @relation(fields: [promotion_id], references: [id])
-  productSku          ProductSku        @relation(fields: [product_sku_id], references: [id])
-  transactionItems    TransactionItem[]
   created_at          DateTime          @default(now())
   updated_at          DateTime          @updatedAt
+  productSku          ProductSku        @relation(fields: [product_sku_id], references: [id])
+  promotion           Promotion         @relation(fields: [promotion_id], references: [id])
+  transactionItems    TransactionItem[]
 
+  @@index([product_sku_id], map: "promotion_items_product_sku_id_fkey")
+  @@index([promotion_id], map: "promotion_items_promotion_id_fkey")
   @@map("promotion_items")
-}
-
-enum DiscountType {
-  percent
-  fixed
 }
 
 model Customer {
   id           String        @id @default(uuid())
   name         String        @db.VarChar(255)
   address      String?
-  contact      String?
-  transactions Transaction[]
+  email        String?
+  phone        String?
   created_at   DateTime      @default(now())
   updated_at   DateTime      @updatedAt
+  transactions Transaction[]
 
   @@map("customers")
 }
 
-model Transaction {
-  id               String                @id @default(uuid())
-  status           TransactionStatus
-  customer_id      String?
-  promotion_id     String?
-  note             String?
-  discount_value   Float?
-  discount_type    DiscountType?
-  discount_id      String?
-  discount_total   Int
-  price_total      Int                   @db.Int
-  another_total    Int                   @db.Int
-  grand_total      Int                   @db.Int
-  transaction_date DateTime              @default(now())
-  customer         Customer?             @relation(fields: [customer_id], references: [id])
-  promotion        Promotion?            @relation(fields: [promotion_id], references: [id])
-  discount         PromotionTransaction? @relation(fields: [discount_id], references: [id])
-  payments         Payment[]
-  transactionItems TransactionItem[]
-  anotherFees      AnotherFee[]
-  created_at       DateTime              @default(now())
-  updated_at       DateTime              @updatedAt
+model Supplier {
+  id           String        @id @default(uuid())
+  name         String        @db.VarChar(255)
+  address      String?
+  email        String?
+  phone        String?
+  created_at   DateTime      @default(now())
+  updated_at   DateTime      @updatedAt
+  transactions Transaction[]
 
-  @@map("transactions")
+  @@map("suppliers")
 }
 
-enum TransactionStatus {
-  draft
-  done
-  cancelled
+model Transaction {
+  id                          String                @id @default(uuid())
+  status                      TransactionStatus
+  customer_id                 String?
+  note                        String?
+  promotion_id                String?
+  transaction_discount_id     String?
+  transaction_discount_type   DiscountType?
+  transaction_discount_value  Float?
+  transaction_discount_amount Int
+  items_discount_amount       Int
+  discount_total              Int
+  price_total                 Int
+  other_cost_total            Int                   @map("other_cost_total")
+  grand_total                 Int
+  transaction_date            DateTime              @default(now())
+  created_at                  DateTime              @default(now())
+  updated_at                  DateTime              @updatedAt
+  supplierId                  String?
+  anotherFees                 AnotherFee[]
+  payments                    Payment[]
+  transactionItems            TransactionItem[]
+  customer                    Customer?             @relation(fields: [customer_id], references: [id])
+  promotion                   Promotion?            @relation(fields: [promotion_id], references: [id])
+  supplier                    Supplier?             @relation(fields: [supplierId], references: [id])
+  discount                    PromotionTransaction? @relation(fields: [transaction_discount_id], references: [id])
+
+  @@index([customer_id], map: "transactions_customer_id_fkey")
+  @@index([promotion_id], map: "transactions_promotion_id_fkey")
+  @@index([supplierId], map: "transactions_supplierId_fkey")
+  @@index([transaction_discount_id], map: "transactions_transaction_discount_id_fkey")
+  @@map("transactions")
 }
 
 model PaymentMethod {
@@ -296,42 +303,44 @@ model Payment {
   id                String        @id @default(uuid())
   transaction_id    String
   payment_method_id String
-  paymentMethod     PaymentMethod @relation(fields: [payment_method_id], references: [id])
   status            PaymentStatus
-  total             Int           @db.Int
-  change            Int           @db.Int
-  balance           Int           @db.Int
-  transaction       Transaction   @relation(fields: [transaction_id], references: [id])
+  total             Int
+  change            Int
+  balance           Int
   created_at        DateTime      @default(now())
   updated_at        DateTime      @updatedAt
+  paymentMethod     PaymentMethod @relation(fields: [payment_method_id], references: [id])
+  transaction       Transaction   @relation(fields: [transaction_id], references: [id])
 
+  @@index([payment_method_id], map: "payments_payment_method_id_fkey")
+  @@index([transaction_id], map: "payments_transaction_id_fkey")
   @@map("payments")
 }
 
-enum PaymentStatus {
-  paid
-  unpaid
-}
-
 model TransactionItem {
-  id             String         @id @default(uuid())
-  note           String?
-  transaction_id String
-  product_sku_id String
-  quantity       Float
-  price          Int
-  subtotal       Int
-  discount_value Float?
-  discount_type  DiscountType?
-  discount_id    String?
-  discount_total Int
-  total          Int
-  transaction    Transaction    @relation(fields: [transaction_id], references: [id])
-  productSku     ProductSku     @relation(fields: [product_sku_id], references: [id])
-  discount       PromotionItem? @relation(fields: [discount_id], references: [id])
-  created_at     DateTime       @default(now())
-  updated_at     DateTime       @updatedAt
+  id               String         @id @default(uuid())
+  note             String?
+  transaction_id   String
+  product_sku_id   String
+  quantity         Decimal        @db.Decimal(10, 4)
+  buy_price        Int
+  price            Int
+  discounted_price Int
+  subtotal         Int
+  discount_id      String?
+  discount_value   Float?
+  discount_type    DiscountType?
+  discount_amount  Int
+  discount_total   Int
+  created_at       DateTime       @default(now())
+  updated_at       DateTime       @updatedAt
+  discount         PromotionItem? @relation(fields: [discount_id], references: [id])
+  productSku       ProductSku     @relation(fields: [product_sku_id], references: [id])
+  transaction      Transaction    @relation(fields: [transaction_id], references: [id])
 
+  @@index([discount_id], map: "transaction_items_discount_id_fkey")
+  @@index([product_sku_id], map: "transaction_items_product_sku_id_fkey")
+  @@index([transaction_id], map: "transaction_items_transaction_id_fkey")
   @@map("transaction_items")
 }
 
@@ -340,10 +349,11 @@ model AnotherFee {
   transaction_id String
   note           String?
   price          Int
-  transaction    Transaction @relation(fields: [transaction_id], references: [id])
   created_at     DateTime    @default(now())
   updated_at     DateTime    @updatedAt
+  transaction    Transaction @relation(fields: [transaction_id], references: [id])
 
+  @@index([transaction_id], map: "another_fees_transaction_id_fkey")
   @@map("another_fees")
 }
 
@@ -352,22 +362,19 @@ model StockMovement {
   reference_type       String          @db.VarChar(255)
   reference_id         String          @db.VarChar(255)
   stock_product_sku_id String
-  prev_quantity        Float
-  quantity             Float
-  current_quantity     Float
+  buy_price            Int
+  prev_quantity        Decimal         @db.Decimal(10, 4)
+  quantity             Decimal         @db.Decimal(10, 4)
+  current_quantity     Decimal         @db.Decimal(10, 4)
   type                 MovementType
   transaction_date     DateTime        @default(now())
   note                 String?
-  stockProductSku      StockProductSku @relation(fields: [stock_product_sku_id], references: [id])
   created_at           DateTime        @default(now())
   updated_at           DateTime        @updatedAt
+  stockProductSku      StockProductSku @relation(fields: [stock_product_sku_id], references: [id])
 
+  @@index([stock_product_sku_id], map: "stock_movements_stock_product_sku_id_fkey")
   @@map("stock_movements")
-}
-
-enum MovementType {
-  in
-  out
 }
 
 model PurchaseStock {
@@ -377,18 +384,11 @@ model PurchaseStock {
   note             String?
   transaction_date DateTime            @default(now())
   total            Int
-  items            PurchaseStockItem[]
   created_at       DateTime            @default(now())
   updated_at       DateTime            @updatedAt
+  items            PurchaseStockItem[]
 
   @@map("purchase_stocks")
-}
-
-enum PurchaseStatus {
-  draft
-  pending
-  done
-  cancelled
 }
 
 model PurchaseStockItem {
@@ -396,20 +396,17 @@ model PurchaseStockItem {
   status            PurchaseItemStatus
   purchase_stock_id String
   product_sku_id    String
-  quantity          Float
+  buy_price         Int
+  quantity          Decimal            @db.Decimal(10, 4)
   total             Int
-  purchaseStock     PurchaseStock      @relation(fields: [purchase_stock_id], references: [id])
-  productSku        ProductSku         @relation(fields: [product_sku_id], references: [id])
   created_at        DateTime           @default(now())
   updated_at        DateTime           @updatedAt
+  productSku        ProductSku         @relation(fields: [product_sku_id], references: [id])
+  purchaseStock     PurchaseStock      @relation(fields: [purchase_stock_id], references: [id])
 
+  @@index([product_sku_id], map: "purchase_stock_items_product_sku_id_fkey")
+  @@index([purchase_stock_id], map: "purchase_stock_items_purchase_stock_id_fkey")
   @@map("purchase_stock_items")
-}
-
-enum PurchaseItemStatus {
-  pending
-  received
-  refunded
 }
 
 model StockAdjustment {
@@ -417,17 +414,11 @@ model StockAdjustment {
   status           AdjustmentStatus
   note             String?
   transaction_date DateTime              @default(now())
-  items            StockAdjustmentItem[]
   created_at       DateTime              @default(now())
   updated_at       DateTime              @updatedAt
+  items            StockAdjustmentItem[]
 
   @@map("stock_adjustments")
-}
-
-enum AdjustmentStatus {
-  draft
-  done
-  cancelled
 }
 
 model StockAdjustmentItem {
@@ -435,11 +426,13 @@ model StockAdjustmentItem {
   stock_adjusment_id String
   product_sku_id     String
   quantity           Float
-  stockAdjustment    StockAdjustment @relation(fields: [stock_adjusment_id], references: [id])
-  productSku         ProductSku      @relation(fields: [product_sku_id], references: [id])
   created_at         DateTime        @default(now())
   updated_at         DateTime        @updatedAt
+  productSku         ProductSku      @relation(fields: [product_sku_id], references: [id])
+  stockAdjustment    StockAdjustment @relation(fields: [stock_adjusment_id], references: [id])
 
+  @@index([product_sku_id], map: "stock_adjustment_items_product_sku_id_fkey")
+  @@index([stock_adjusment_id], map: "stock_adjustment_items_stock_adjusment_id_fkey")
   @@map("stock_adjustment_items")
 }
 
@@ -449,17 +442,11 @@ model Expense {
   note             String?
   transaction_date DateTime      @default(now())
   total            Int
-  items            ExpenseItem[]
   created_at       DateTime      @default(now())
   updated_at       DateTime      @updatedAt
+  items            ExpenseItem[]
 
   @@map("expenses")
-}
-
-enum ExpenseStatus {
-  draft
-  done
-  cancelled
 }
 
 model ExpenseItem {
@@ -467,10 +454,11 @@ model ExpenseItem {
   expense_id String
   name       String   @db.VarChar(255)
   total      Int
-  expense    Expense  @relation(fields: [expense_id], references: [id])
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
+  expense    Expense  @relation(fields: [expense_id], references: [id])
 
+  @@index([expense_id], map: "expense_items_expense_id_fkey")
   @@map("expense_items")
 }
 
@@ -491,11 +479,6 @@ model Report {
   @@map("reports")
 }
 
-enum TaxType {
-  fixed
-  percent
-}
-
 model Setting {
   id                    String      @id @default(uuid())
   store_name            String      @db.VarChar(255)
@@ -509,6 +492,72 @@ model Setting {
   updated_at            DateTime    @updatedAt
 
   @@map("settings")
+}
+
+enum UnitType {
+  integer
+  decimal
+}
+
+enum Status {
+  active
+  inactive
+}
+
+enum ProductType {
+  item
+  service
+}
+
+enum DiscountType {
+  percent
+  fixed
+}
+
+enum TransactionStatus {
+  draft
+  done
+  cancelled
+}
+
+enum PaymentStatus {
+  paid
+  unpaid
+}
+
+enum MovementType {
+  in
+  out
+}
+
+enum PurchaseStatus {
+  draft
+  pending
+  done
+  cancelled
+}
+
+enum PurchaseItemStatus {
+  pending
+  received
+  refunded
+}
+
+enum AdjustmentStatus {
+  draft
+  done
+  cancelled
+}
+
+enum ExpenseStatus {
+  draft
+  done
+  cancelled
+}
+
+enum TaxType {
+  fixed
+  percent
 }
 
 enum GuardStatus {

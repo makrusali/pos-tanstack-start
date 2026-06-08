@@ -1,18 +1,9 @@
-import { randomUUID } from 'crypto'
-import { PrismaClient } from '../src/generated/prisma/client.js'
-import bcrypt from 'bcrypt'
-
-import { PrismaMariaDb } from '@prisma/adapter-mariadb'
-const adapter = new PrismaMariaDb({
-  host: 'localhost',
-  port: 3306,
-  connectionLimit: 5,
-})
-
-const prisma = new PrismaClient({ adapter })
+import { randomUUID } from "crypto";
+import bcrypt from "bcrypt";
+import { prisma } from "#/db";
 
 async function main() {
-  console.log('🌱 Seeding database...')
+  console.log("🌱 Seeding database...");
 
   const initRole = {
     id: randomUUID(),
@@ -315,7 +306,7 @@ async function main() {
     },
   ];
 
-  const initRoleHasPermissions = initPermissions.map(p => ({
+  const initRoleHasPermissions = initPermissions.map((p) => ({
     role_id: initRole.id,
     permission_id: p.id,
   }));
@@ -329,16 +320,16 @@ async function main() {
   };
 
   await prisma.role.create({ data: initRole });
-  await prisma.permission.createMany({ data: initPermissions })
+  await prisma.permission.createMany({ data: initPermissions });
   await prisma.roleHasPermission.createMany({ data: initRoleHasPermissions });
   await prisma.user.create({ data: initUser });
 }
 
 main()
   .catch((e) => {
-    console.error('❌ Error seeding database:', e)
-    process.exit(1)
+    console.error("❌ Error seeding database:", e);
+    process.exit(1);
   })
   .finally(async () => {
-    await prisma.$disconnect()
-  })
+    await prisma.$disconnect();
+  });

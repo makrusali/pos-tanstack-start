@@ -252,8 +252,8 @@ export type PromotionItemWhereInput = {
   is_multiple_allowed?: Prisma.BoolNullableFilter<"PromotionItem"> | boolean | null
   created_at?: Prisma.DateTimeFilter<"PromotionItem"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"PromotionItem"> | Date | string
-  promotion?: Prisma.XOR<Prisma.PromotionScalarRelationFilter, Prisma.PromotionWhereInput>
   productSku?: Prisma.XOR<Prisma.ProductSkuScalarRelationFilter, Prisma.ProductSkuWhereInput>
+  promotion?: Prisma.XOR<Prisma.PromotionScalarRelationFilter, Prisma.PromotionWhereInput>
   transactionItems?: Prisma.TransactionItemListRelationFilter
 }
 
@@ -267,8 +267,8 @@ export type PromotionItemOrderByWithRelationInput = {
   is_multiple_allowed?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
-  promotion?: Prisma.PromotionOrderByWithRelationInput
   productSku?: Prisma.ProductSkuOrderByWithRelationInput
+  promotion?: Prisma.PromotionOrderByWithRelationInput
   transactionItems?: Prisma.TransactionItemOrderByRelationAggregateInput
   _relevance?: Prisma.PromotionItemOrderByRelevanceInput
 }
@@ -286,8 +286,8 @@ export type PromotionItemWhereUniqueInput = Prisma.AtLeast<{
   is_multiple_allowed?: Prisma.BoolNullableFilter<"PromotionItem"> | boolean | null
   created_at?: Prisma.DateTimeFilter<"PromotionItem"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"PromotionItem"> | Date | string
-  promotion?: Prisma.XOR<Prisma.PromotionScalarRelationFilter, Prisma.PromotionWhereInput>
   productSku?: Prisma.XOR<Prisma.ProductSkuScalarRelationFilter, Prisma.ProductSkuWhereInput>
+  promotion?: Prisma.XOR<Prisma.PromotionScalarRelationFilter, Prisma.PromotionWhereInput>
   transactionItems?: Prisma.TransactionItemListRelationFilter
 }, "id">
 
@@ -331,8 +331,8 @@ export type PromotionItemCreateInput = {
   is_multiple_allowed?: boolean | null
   created_at?: Date | string
   updated_at?: Date | string
-  promotion: Prisma.PromotionCreateNestedOneWithoutPromotionItemsInput
   productSku: Prisma.ProductSkuCreateNestedOneWithoutPromotionItemsInput
+  promotion: Prisma.PromotionCreateNestedOneWithoutPromotionItemsInput
   transactionItems?: Prisma.TransactionItemCreateNestedManyWithoutDiscountInput
 }
 
@@ -357,8 +357,8 @@ export type PromotionItemUpdateInput = {
   is_multiple_allowed?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  promotion?: Prisma.PromotionUpdateOneRequiredWithoutPromotionItemsNestedInput
   productSku?: Prisma.ProductSkuUpdateOneRequiredWithoutPromotionItemsNestedInput
+  promotion?: Prisma.PromotionUpdateOneRequiredWithoutPromotionItemsNestedInput
   transactionItems?: Prisma.TransactionItemUpdateManyWithoutDiscountNestedInput
 }
 
@@ -711,8 +711,8 @@ export type PromotionItemCreateWithoutTransactionItemsInput = {
   is_multiple_allowed?: boolean | null
   created_at?: Date | string
   updated_at?: Date | string
-  promotion: Prisma.PromotionCreateNestedOneWithoutPromotionItemsInput
   productSku: Prisma.ProductSkuCreateNestedOneWithoutPromotionItemsInput
+  promotion: Prisma.PromotionCreateNestedOneWithoutPromotionItemsInput
 }
 
 export type PromotionItemUncheckedCreateWithoutTransactionItemsInput = {
@@ -751,8 +751,8 @@ export type PromotionItemUpdateWithoutTransactionItemsInput = {
   is_multiple_allowed?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  promotion?: Prisma.PromotionUpdateOneRequiredWithoutPromotionItemsNestedInput
   productSku?: Prisma.ProductSkuUpdateOneRequiredWithoutPromotionItemsNestedInput
+  promotion?: Prisma.PromotionUpdateOneRequiredWithoutPromotionItemsNestedInput
 }
 
 export type PromotionItemUncheckedUpdateWithoutTransactionItemsInput = {
@@ -900,8 +900,8 @@ export type PromotionItemSelect<ExtArgs extends runtime.Types.Extensions.Interna
   is_multiple_allowed?: boolean
   created_at?: boolean
   updated_at?: boolean
-  promotion?: boolean | Prisma.PromotionDefaultArgs<ExtArgs>
   productSku?: boolean | Prisma.ProductSkuDefaultArgs<ExtArgs>
+  promotion?: boolean | Prisma.PromotionDefaultArgs<ExtArgs>
   transactionItems?: boolean | Prisma.PromotionItem$transactionItemsArgs<ExtArgs>
   _count?: boolean | Prisma.PromotionItemCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["promotionItem"]>
@@ -922,8 +922,8 @@ export type PromotionItemSelectScalar = {
 
 export type PromotionItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "promotion_id" | "product_sku_id" | "discount_value" | "discount_type" | "min_qty" | "is_multiple_allowed" | "created_at" | "updated_at", ExtArgs["result"]["promotionItem"]>
 export type PromotionItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  promotion?: boolean | Prisma.PromotionDefaultArgs<ExtArgs>
   productSku?: boolean | Prisma.ProductSkuDefaultArgs<ExtArgs>
+  promotion?: boolean | Prisma.PromotionDefaultArgs<ExtArgs>
   transactionItems?: boolean | Prisma.PromotionItem$transactionItemsArgs<ExtArgs>
   _count?: boolean | Prisma.PromotionItemCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -931,8 +931,8 @@ export type PromotionItemInclude<ExtArgs extends runtime.Types.Extensions.Intern
 export type $PromotionItemPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "PromotionItem"
   objects: {
-    promotion: Prisma.$PromotionPayload<ExtArgs>
     productSku: Prisma.$ProductSkuPayload<ExtArgs>
+    promotion: Prisma.$PromotionPayload<ExtArgs>
     transactionItems: Prisma.$TransactionItemPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1285,8 +1285,8 @@ readonly fields: PromotionItemFieldRefs;
  */
 export interface Prisma__PromotionItemClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  promotion<T extends Prisma.PromotionDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PromotionDefaultArgs<ExtArgs>>): Prisma.Prisma__PromotionClient<runtime.Types.Result.GetResult<Prisma.$PromotionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   productSku<T extends Prisma.ProductSkuDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProductSkuDefaultArgs<ExtArgs>>): Prisma.Prisma__ProductSkuClient<runtime.Types.Result.GetResult<Prisma.$ProductSkuPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  promotion<T extends Prisma.PromotionDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PromotionDefaultArgs<ExtArgs>>): Prisma.Prisma__PromotionClient<runtime.Types.Result.GetResult<Prisma.$PromotionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   transactionItems<T extends Prisma.PromotionItem$transactionItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PromotionItem$transactionItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransactionItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.

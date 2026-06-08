@@ -24,6 +24,7 @@ import {
 } from "#/components/ui/table";
 import { DataTablePagination, DataTableToolbar } from "#/components/data-table";
 import { productColumns } from "./product-columns";
+import type Decimal from "decimal.js";
 
 export type Product = {
   id: string;
@@ -32,12 +33,12 @@ export type Product = {
   sku_name: string | null;
   product_name: string;
   sku_image_path: string;
-  stock_quantity: number;
+  stock_quantity: Decimal;
   price: number;
   type: "item" | "service";
   stock_locations: {
     id: string;
-    quantity: number;
+    quantity: Decimal;
     name: string;
     is_primary: boolean;
   }[];

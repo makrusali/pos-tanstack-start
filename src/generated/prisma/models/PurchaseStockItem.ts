@@ -27,12 +27,14 @@ export type AggregatePurchaseStockItem = {
 }
 
 export type PurchaseStockItemAvgAggregateOutputType = {
-  quantity: number | null
+  buy_price: number | null
+  quantity: runtime.Decimal | null
   total: number | null
 }
 
 export type PurchaseStockItemSumAggregateOutputType = {
-  quantity: number | null
+  buy_price: number | null
+  quantity: runtime.Decimal | null
   total: number | null
 }
 
@@ -41,7 +43,8 @@ export type PurchaseStockItemMinAggregateOutputType = {
   status: $Enums.PurchaseItemStatus | null
   purchase_stock_id: string | null
   product_sku_id: string | null
-  quantity: number | null
+  buy_price: number | null
+  quantity: runtime.Decimal | null
   total: number | null
   created_at: Date | null
   updated_at: Date | null
@@ -52,7 +55,8 @@ export type PurchaseStockItemMaxAggregateOutputType = {
   status: $Enums.PurchaseItemStatus | null
   purchase_stock_id: string | null
   product_sku_id: string | null
-  quantity: number | null
+  buy_price: number | null
+  quantity: runtime.Decimal | null
   total: number | null
   created_at: Date | null
   updated_at: Date | null
@@ -63,6 +67,7 @@ export type PurchaseStockItemCountAggregateOutputType = {
   status: number
   purchase_stock_id: number
   product_sku_id: number
+  buy_price: number
   quantity: number
   total: number
   created_at: number
@@ -72,11 +77,13 @@ export type PurchaseStockItemCountAggregateOutputType = {
 
 
 export type PurchaseStockItemAvgAggregateInputType = {
+  buy_price?: true
   quantity?: true
   total?: true
 }
 
 export type PurchaseStockItemSumAggregateInputType = {
+  buy_price?: true
   quantity?: true
   total?: true
 }
@@ -86,6 +93,7 @@ export type PurchaseStockItemMinAggregateInputType = {
   status?: true
   purchase_stock_id?: true
   product_sku_id?: true
+  buy_price?: true
   quantity?: true
   total?: true
   created_at?: true
@@ -97,6 +105,7 @@ export type PurchaseStockItemMaxAggregateInputType = {
   status?: true
   purchase_stock_id?: true
   product_sku_id?: true
+  buy_price?: true
   quantity?: true
   total?: true
   created_at?: true
@@ -108,6 +117,7 @@ export type PurchaseStockItemCountAggregateInputType = {
   status?: true
   purchase_stock_id?: true
   product_sku_id?: true
+  buy_price?: true
   quantity?: true
   total?: true
   created_at?: true
@@ -206,7 +216,8 @@ export type PurchaseStockItemGroupByOutputType = {
   status: $Enums.PurchaseItemStatus
   purchase_stock_id: string
   product_sku_id: string
-  quantity: number
+  buy_price: number
+  quantity: runtime.Decimal
   total: number
   created_at: Date
   updated_at: Date
@@ -240,12 +251,13 @@ export type PurchaseStockItemWhereInput = {
   status?: Prisma.EnumPurchaseItemStatusFilter<"PurchaseStockItem"> | $Enums.PurchaseItemStatus
   purchase_stock_id?: Prisma.StringFilter<"PurchaseStockItem"> | string
   product_sku_id?: Prisma.StringFilter<"PurchaseStockItem"> | string
-  quantity?: Prisma.FloatFilter<"PurchaseStockItem"> | number
+  buy_price?: Prisma.IntFilter<"PurchaseStockItem"> | number
+  quantity?: Prisma.DecimalFilter<"PurchaseStockItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   total?: Prisma.IntFilter<"PurchaseStockItem"> | number
   created_at?: Prisma.DateTimeFilter<"PurchaseStockItem"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"PurchaseStockItem"> | Date | string
-  purchaseStock?: Prisma.XOR<Prisma.PurchaseStockScalarRelationFilter, Prisma.PurchaseStockWhereInput>
   productSku?: Prisma.XOR<Prisma.ProductSkuScalarRelationFilter, Prisma.ProductSkuWhereInput>
+  purchaseStock?: Prisma.XOR<Prisma.PurchaseStockScalarRelationFilter, Prisma.PurchaseStockWhereInput>
 }
 
 export type PurchaseStockItemOrderByWithRelationInput = {
@@ -253,12 +265,13 @@ export type PurchaseStockItemOrderByWithRelationInput = {
   status?: Prisma.SortOrder
   purchase_stock_id?: Prisma.SortOrder
   product_sku_id?: Prisma.SortOrder
+  buy_price?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
   total?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
-  purchaseStock?: Prisma.PurchaseStockOrderByWithRelationInput
   productSku?: Prisma.ProductSkuOrderByWithRelationInput
+  purchaseStock?: Prisma.PurchaseStockOrderByWithRelationInput
   _relevance?: Prisma.PurchaseStockItemOrderByRelevanceInput
 }
 
@@ -270,12 +283,13 @@ export type PurchaseStockItemWhereUniqueInput = Prisma.AtLeast<{
   status?: Prisma.EnumPurchaseItemStatusFilter<"PurchaseStockItem"> | $Enums.PurchaseItemStatus
   purchase_stock_id?: Prisma.StringFilter<"PurchaseStockItem"> | string
   product_sku_id?: Prisma.StringFilter<"PurchaseStockItem"> | string
-  quantity?: Prisma.FloatFilter<"PurchaseStockItem"> | number
+  buy_price?: Prisma.IntFilter<"PurchaseStockItem"> | number
+  quantity?: Prisma.DecimalFilter<"PurchaseStockItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   total?: Prisma.IntFilter<"PurchaseStockItem"> | number
   created_at?: Prisma.DateTimeFilter<"PurchaseStockItem"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"PurchaseStockItem"> | Date | string
-  purchaseStock?: Prisma.XOR<Prisma.PurchaseStockScalarRelationFilter, Prisma.PurchaseStockWhereInput>
   productSku?: Prisma.XOR<Prisma.ProductSkuScalarRelationFilter, Prisma.ProductSkuWhereInput>
+  purchaseStock?: Prisma.XOR<Prisma.PurchaseStockScalarRelationFilter, Prisma.PurchaseStockWhereInput>
 }, "id">
 
 export type PurchaseStockItemOrderByWithAggregationInput = {
@@ -283,6 +297,7 @@ export type PurchaseStockItemOrderByWithAggregationInput = {
   status?: Prisma.SortOrder
   purchase_stock_id?: Prisma.SortOrder
   product_sku_id?: Prisma.SortOrder
+  buy_price?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
   total?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
@@ -302,7 +317,8 @@ export type PurchaseStockItemScalarWhereWithAggregatesInput = {
   status?: Prisma.EnumPurchaseItemStatusWithAggregatesFilter<"PurchaseStockItem"> | $Enums.PurchaseItemStatus
   purchase_stock_id?: Prisma.StringWithAggregatesFilter<"PurchaseStockItem"> | string
   product_sku_id?: Prisma.StringWithAggregatesFilter<"PurchaseStockItem"> | string
-  quantity?: Prisma.FloatWithAggregatesFilter<"PurchaseStockItem"> | number
+  buy_price?: Prisma.IntWithAggregatesFilter<"PurchaseStockItem"> | number
+  quantity?: Prisma.DecimalWithAggregatesFilter<"PurchaseStockItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   total?: Prisma.IntWithAggregatesFilter<"PurchaseStockItem"> | number
   created_at?: Prisma.DateTimeWithAggregatesFilter<"PurchaseStockItem"> | Date | string
   updated_at?: Prisma.DateTimeWithAggregatesFilter<"PurchaseStockItem"> | Date | string
@@ -311,12 +327,13 @@ export type PurchaseStockItemScalarWhereWithAggregatesInput = {
 export type PurchaseStockItemCreateInput = {
   id?: string
   status: $Enums.PurchaseItemStatus
-  quantity: number
+  buy_price: number
+  quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   total: number
   created_at?: Date | string
   updated_at?: Date | string
-  purchaseStock: Prisma.PurchaseStockCreateNestedOneWithoutItemsInput
   productSku: Prisma.ProductSkuCreateNestedOneWithoutPurchaseItemsInput
+  purchaseStock: Prisma.PurchaseStockCreateNestedOneWithoutItemsInput
 }
 
 export type PurchaseStockItemUncheckedCreateInput = {
@@ -324,7 +341,8 @@ export type PurchaseStockItemUncheckedCreateInput = {
   status: $Enums.PurchaseItemStatus
   purchase_stock_id: string
   product_sku_id: string
-  quantity: number
+  buy_price: number
+  quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   total: number
   created_at?: Date | string
   updated_at?: Date | string
@@ -333,12 +351,13 @@ export type PurchaseStockItemUncheckedCreateInput = {
 export type PurchaseStockItemUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumPurchaseItemStatusFieldUpdateOperationsInput | $Enums.PurchaseItemStatus
-  quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  buy_price?: Prisma.IntFieldUpdateOperationsInput | number
+  quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   total?: Prisma.IntFieldUpdateOperationsInput | number
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  purchaseStock?: Prisma.PurchaseStockUpdateOneRequiredWithoutItemsNestedInput
   productSku?: Prisma.ProductSkuUpdateOneRequiredWithoutPurchaseItemsNestedInput
+  purchaseStock?: Prisma.PurchaseStockUpdateOneRequiredWithoutItemsNestedInput
 }
 
 export type PurchaseStockItemUncheckedUpdateInput = {
@@ -346,7 +365,8 @@ export type PurchaseStockItemUncheckedUpdateInput = {
   status?: Prisma.EnumPurchaseItemStatusFieldUpdateOperationsInput | $Enums.PurchaseItemStatus
   purchase_stock_id?: Prisma.StringFieldUpdateOperationsInput | string
   product_sku_id?: Prisma.StringFieldUpdateOperationsInput | string
-  quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  buy_price?: Prisma.IntFieldUpdateOperationsInput | number
+  quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   total?: Prisma.IntFieldUpdateOperationsInput | number
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -357,7 +377,8 @@ export type PurchaseStockItemCreateManyInput = {
   status: $Enums.PurchaseItemStatus
   purchase_stock_id: string
   product_sku_id: string
-  quantity: number
+  buy_price: number
+  quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   total: number
   created_at?: Date | string
   updated_at?: Date | string
@@ -366,7 +387,8 @@ export type PurchaseStockItemCreateManyInput = {
 export type PurchaseStockItemUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumPurchaseItemStatusFieldUpdateOperationsInput | $Enums.PurchaseItemStatus
-  quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  buy_price?: Prisma.IntFieldUpdateOperationsInput | number
+  quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   total?: Prisma.IntFieldUpdateOperationsInput | number
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -377,7 +399,8 @@ export type PurchaseStockItemUncheckedUpdateManyInput = {
   status?: Prisma.EnumPurchaseItemStatusFieldUpdateOperationsInput | $Enums.PurchaseItemStatus
   purchase_stock_id?: Prisma.StringFieldUpdateOperationsInput | string
   product_sku_id?: Prisma.StringFieldUpdateOperationsInput | string
-  quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  buy_price?: Prisma.IntFieldUpdateOperationsInput | number
+  quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   total?: Prisma.IntFieldUpdateOperationsInput | number
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -404,6 +427,7 @@ export type PurchaseStockItemCountOrderByAggregateInput = {
   status?: Prisma.SortOrder
   purchase_stock_id?: Prisma.SortOrder
   product_sku_id?: Prisma.SortOrder
+  buy_price?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
   total?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
@@ -411,6 +435,7 @@ export type PurchaseStockItemCountOrderByAggregateInput = {
 }
 
 export type PurchaseStockItemAvgOrderByAggregateInput = {
+  buy_price?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
   total?: Prisma.SortOrder
 }
@@ -420,6 +445,7 @@ export type PurchaseStockItemMaxOrderByAggregateInput = {
   status?: Prisma.SortOrder
   purchase_stock_id?: Prisma.SortOrder
   product_sku_id?: Prisma.SortOrder
+  buy_price?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
   total?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
@@ -431,6 +457,7 @@ export type PurchaseStockItemMinOrderByAggregateInput = {
   status?: Prisma.SortOrder
   purchase_stock_id?: Prisma.SortOrder
   product_sku_id?: Prisma.SortOrder
+  buy_price?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
   total?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
@@ -438,6 +465,7 @@ export type PurchaseStockItemMinOrderByAggregateInput = {
 }
 
 export type PurchaseStockItemSumOrderByAggregateInput = {
+  buy_price?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
   total?: Prisma.SortOrder
 }
@@ -533,7 +561,8 @@ export type EnumPurchaseItemStatusFieldUpdateOperationsInput = {
 export type PurchaseStockItemCreateWithoutProductSkuInput = {
   id?: string
   status: $Enums.PurchaseItemStatus
-  quantity: number
+  buy_price: number
+  quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   total: number
   created_at?: Date | string
   updated_at?: Date | string
@@ -544,7 +573,8 @@ export type PurchaseStockItemUncheckedCreateWithoutProductSkuInput = {
   id?: string
   status: $Enums.PurchaseItemStatus
   purchase_stock_id: string
-  quantity: number
+  buy_price: number
+  quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   total: number
   created_at?: Date | string
   updated_at?: Date | string
@@ -584,7 +614,8 @@ export type PurchaseStockItemScalarWhereInput = {
   status?: Prisma.EnumPurchaseItemStatusFilter<"PurchaseStockItem"> | $Enums.PurchaseItemStatus
   purchase_stock_id?: Prisma.StringFilter<"PurchaseStockItem"> | string
   product_sku_id?: Prisma.StringFilter<"PurchaseStockItem"> | string
-  quantity?: Prisma.FloatFilter<"PurchaseStockItem"> | number
+  buy_price?: Prisma.IntFilter<"PurchaseStockItem"> | number
+  quantity?: Prisma.DecimalFilter<"PurchaseStockItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   total?: Prisma.IntFilter<"PurchaseStockItem"> | number
   created_at?: Prisma.DateTimeFilter<"PurchaseStockItem"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"PurchaseStockItem"> | Date | string
@@ -593,7 +624,8 @@ export type PurchaseStockItemScalarWhereInput = {
 export type PurchaseStockItemCreateWithoutPurchaseStockInput = {
   id?: string
   status: $Enums.PurchaseItemStatus
-  quantity: number
+  buy_price: number
+  quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   total: number
   created_at?: Date | string
   updated_at?: Date | string
@@ -604,7 +636,8 @@ export type PurchaseStockItemUncheckedCreateWithoutPurchaseStockInput = {
   id?: string
   status: $Enums.PurchaseItemStatus
   product_sku_id: string
-  quantity: number
+  buy_price: number
+  quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   total: number
   created_at?: Date | string
   updated_at?: Date | string
@@ -640,7 +673,8 @@ export type PurchaseStockItemCreateManyProductSkuInput = {
   id?: string
   status: $Enums.PurchaseItemStatus
   purchase_stock_id: string
-  quantity: number
+  buy_price: number
+  quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   total: number
   created_at?: Date | string
   updated_at?: Date | string
@@ -649,7 +683,8 @@ export type PurchaseStockItemCreateManyProductSkuInput = {
 export type PurchaseStockItemUpdateWithoutProductSkuInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumPurchaseItemStatusFieldUpdateOperationsInput | $Enums.PurchaseItemStatus
-  quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  buy_price?: Prisma.IntFieldUpdateOperationsInput | number
+  quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   total?: Prisma.IntFieldUpdateOperationsInput | number
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -660,7 +695,8 @@ export type PurchaseStockItemUncheckedUpdateWithoutProductSkuInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumPurchaseItemStatusFieldUpdateOperationsInput | $Enums.PurchaseItemStatus
   purchase_stock_id?: Prisma.StringFieldUpdateOperationsInput | string
-  quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  buy_price?: Prisma.IntFieldUpdateOperationsInput | number
+  quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   total?: Prisma.IntFieldUpdateOperationsInput | number
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -670,7 +706,8 @@ export type PurchaseStockItemUncheckedUpdateManyWithoutProductSkuInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumPurchaseItemStatusFieldUpdateOperationsInput | $Enums.PurchaseItemStatus
   purchase_stock_id?: Prisma.StringFieldUpdateOperationsInput | string
-  quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  buy_price?: Prisma.IntFieldUpdateOperationsInput | number
+  quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   total?: Prisma.IntFieldUpdateOperationsInput | number
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -680,7 +717,8 @@ export type PurchaseStockItemCreateManyPurchaseStockInput = {
   id?: string
   status: $Enums.PurchaseItemStatus
   product_sku_id: string
-  quantity: number
+  buy_price: number
+  quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   total: number
   created_at?: Date | string
   updated_at?: Date | string
@@ -689,7 +727,8 @@ export type PurchaseStockItemCreateManyPurchaseStockInput = {
 export type PurchaseStockItemUpdateWithoutPurchaseStockInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumPurchaseItemStatusFieldUpdateOperationsInput | $Enums.PurchaseItemStatus
-  quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  buy_price?: Prisma.IntFieldUpdateOperationsInput | number
+  quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   total?: Prisma.IntFieldUpdateOperationsInput | number
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -700,7 +739,8 @@ export type PurchaseStockItemUncheckedUpdateWithoutPurchaseStockInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumPurchaseItemStatusFieldUpdateOperationsInput | $Enums.PurchaseItemStatus
   product_sku_id?: Prisma.StringFieldUpdateOperationsInput | string
-  quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  buy_price?: Prisma.IntFieldUpdateOperationsInput | number
+  quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   total?: Prisma.IntFieldUpdateOperationsInput | number
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -710,7 +750,8 @@ export type PurchaseStockItemUncheckedUpdateManyWithoutPurchaseStockInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumPurchaseItemStatusFieldUpdateOperationsInput | $Enums.PurchaseItemStatus
   product_sku_id?: Prisma.StringFieldUpdateOperationsInput | string
-  quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  buy_price?: Prisma.IntFieldUpdateOperationsInput | number
+  quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   total?: Prisma.IntFieldUpdateOperationsInput | number
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -723,12 +764,13 @@ export type PurchaseStockItemSelect<ExtArgs extends runtime.Types.Extensions.Int
   status?: boolean
   purchase_stock_id?: boolean
   product_sku_id?: boolean
+  buy_price?: boolean
   quantity?: boolean
   total?: boolean
   created_at?: boolean
   updated_at?: boolean
-  purchaseStock?: boolean | Prisma.PurchaseStockDefaultArgs<ExtArgs>
   productSku?: boolean | Prisma.ProductSkuDefaultArgs<ExtArgs>
+  purchaseStock?: boolean | Prisma.PurchaseStockDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["purchaseStockItem"]>
 
 
@@ -738,30 +780,32 @@ export type PurchaseStockItemSelectScalar = {
   status?: boolean
   purchase_stock_id?: boolean
   product_sku_id?: boolean
+  buy_price?: boolean
   quantity?: boolean
   total?: boolean
   created_at?: boolean
   updated_at?: boolean
 }
 
-export type PurchaseStockItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "status" | "purchase_stock_id" | "product_sku_id" | "quantity" | "total" | "created_at" | "updated_at", ExtArgs["result"]["purchaseStockItem"]>
+export type PurchaseStockItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "status" | "purchase_stock_id" | "product_sku_id" | "buy_price" | "quantity" | "total" | "created_at" | "updated_at", ExtArgs["result"]["purchaseStockItem"]>
 export type PurchaseStockItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  purchaseStock?: boolean | Prisma.PurchaseStockDefaultArgs<ExtArgs>
   productSku?: boolean | Prisma.ProductSkuDefaultArgs<ExtArgs>
+  purchaseStock?: boolean | Prisma.PurchaseStockDefaultArgs<ExtArgs>
 }
 
 export type $PurchaseStockItemPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "PurchaseStockItem"
   objects: {
-    purchaseStock: Prisma.$PurchaseStockPayload<ExtArgs>
     productSku: Prisma.$ProductSkuPayload<ExtArgs>
+    purchaseStock: Prisma.$PurchaseStockPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     status: $Enums.PurchaseItemStatus
     purchase_stock_id: string
     product_sku_id: string
-    quantity: number
+    buy_price: number
+    quantity: runtime.Decimal
     total: number
     created_at: Date
     updated_at: Date
@@ -1105,8 +1149,8 @@ readonly fields: PurchaseStockItemFieldRefs;
  */
 export interface Prisma__PurchaseStockItemClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  purchaseStock<T extends Prisma.PurchaseStockDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PurchaseStockDefaultArgs<ExtArgs>>): Prisma.Prisma__PurchaseStockClient<runtime.Types.Result.GetResult<Prisma.$PurchaseStockPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   productSku<T extends Prisma.ProductSkuDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProductSkuDefaultArgs<ExtArgs>>): Prisma.Prisma__ProductSkuClient<runtime.Types.Result.GetResult<Prisma.$ProductSkuPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  purchaseStock<T extends Prisma.PurchaseStockDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.PurchaseStockDefaultArgs<ExtArgs>>): Prisma.Prisma__PurchaseStockClient<runtime.Types.Result.GetResult<Prisma.$PurchaseStockPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1140,7 +1184,8 @@ export interface PurchaseStockItemFieldRefs {
   readonly status: Prisma.FieldRef<"PurchaseStockItem", 'PurchaseItemStatus'>
   readonly purchase_stock_id: Prisma.FieldRef<"PurchaseStockItem", 'String'>
   readonly product_sku_id: Prisma.FieldRef<"PurchaseStockItem", 'String'>
-  readonly quantity: Prisma.FieldRef<"PurchaseStockItem", 'Float'>
+  readonly buy_price: Prisma.FieldRef<"PurchaseStockItem", 'Int'>
+  readonly quantity: Prisma.FieldRef<"PurchaseStockItem", 'Decimal'>
   readonly total: Prisma.FieldRef<"PurchaseStockItem", 'Int'>
   readonly created_at: Prisma.FieldRef<"PurchaseStockItem", 'DateTime'>
   readonly updated_at: Prisma.FieldRef<"PurchaseStockItem", 'DateTime'>

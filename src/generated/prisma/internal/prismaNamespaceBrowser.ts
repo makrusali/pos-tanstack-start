@@ -67,6 +67,7 @@ export const ModelName = {
   PromotionTransaction: 'PromotionTransaction',
   PromotionItem: 'PromotionItem',
   Customer: 'Customer',
+  Supplier: 'Supplier',
   Transaction: 'Transaction',
   PaymentMethod: 'PaymentMethod',
   Payment: 'Payment',
@@ -291,7 +292,8 @@ export const CustomerScalarFieldEnum = {
   id: 'id',
   name: 'name',
   address: 'address',
-  contact: 'contact',
+  email: 'email',
+  phone: 'phone',
   created_at: 'created_at',
   updated_at: 'updated_at'
 } as const
@@ -299,22 +301,38 @@ export const CustomerScalarFieldEnum = {
 export type CustomerScalarFieldEnum = (typeof CustomerScalarFieldEnum)[keyof typeof CustomerScalarFieldEnum]
 
 
+export const SupplierScalarFieldEnum = {
+  id: 'id',
+  name: 'name',
+  address: 'address',
+  email: 'email',
+  phone: 'phone',
+  created_at: 'created_at',
+  updated_at: 'updated_at'
+} as const
+
+export type SupplierScalarFieldEnum = (typeof SupplierScalarFieldEnum)[keyof typeof SupplierScalarFieldEnum]
+
+
 export const TransactionScalarFieldEnum = {
   id: 'id',
   status: 'status',
   customer_id: 'customer_id',
-  promotion_id: 'promotion_id',
   note: 'note',
-  discount_value: 'discount_value',
-  discount_type: 'discount_type',
-  discount_id: 'discount_id',
+  promotion_id: 'promotion_id',
+  transaction_discount_id: 'transaction_discount_id',
+  transaction_discount_type: 'transaction_discount_type',
+  transaction_discount_value: 'transaction_discount_value',
+  transaction_discount_amount: 'transaction_discount_amount',
+  items_discount_amount: 'items_discount_amount',
   discount_total: 'discount_total',
   price_total: 'price_total',
-  another_total: 'another_total',
+  other_cost_total: 'other_cost_total',
   grand_total: 'grand_total',
   transaction_date: 'transaction_date',
   created_at: 'created_at',
-  updated_at: 'updated_at'
+  updated_at: 'updated_at',
+  supplierId: 'supplierId'
 } as const
 
 export type TransactionScalarFieldEnum = (typeof TransactionScalarFieldEnum)[keyof typeof TransactionScalarFieldEnum]
@@ -354,13 +372,15 @@ export const TransactionItemScalarFieldEnum = {
   transaction_id: 'transaction_id',
   product_sku_id: 'product_sku_id',
   quantity: 'quantity',
+  buy_price: 'buy_price',
   price: 'price',
+  discounted_price: 'discounted_price',
   subtotal: 'subtotal',
+  discount_id: 'discount_id',
   discount_value: 'discount_value',
   discount_type: 'discount_type',
-  discount_id: 'discount_id',
+  discount_amount: 'discount_amount',
   discount_total: 'discount_total',
-  total: 'total',
   created_at: 'created_at',
   updated_at: 'updated_at'
 } as const
@@ -385,6 +405,7 @@ export const StockMovementScalarFieldEnum = {
   reference_type: 'reference_type',
   reference_id: 'reference_id',
   stock_product_sku_id: 'stock_product_sku_id',
+  buy_price: 'buy_price',
   prev_quantity: 'prev_quantity',
   quantity: 'quantity',
   current_quantity: 'current_quantity',
@@ -417,6 +438,7 @@ export const PurchaseStockItemScalarFieldEnum = {
   status: 'status',
   purchase_stock_id: 'purchase_stock_id',
   product_sku_id: 'product_sku_id',
+  buy_price: 'buy_price',
   quantity: 'quantity',
   total: 'total',
   created_at: 'created_at',
@@ -665,18 +687,31 @@ export const CustomerOrderByRelevanceFieldEnum = {
   id: 'id',
   name: 'name',
   address: 'address',
-  contact: 'contact'
+  email: 'email',
+  phone: 'phone'
 } as const
 
 export type CustomerOrderByRelevanceFieldEnum = (typeof CustomerOrderByRelevanceFieldEnum)[keyof typeof CustomerOrderByRelevanceFieldEnum]
 
 
+export const SupplierOrderByRelevanceFieldEnum = {
+  id: 'id',
+  name: 'name',
+  address: 'address',
+  email: 'email',
+  phone: 'phone'
+} as const
+
+export type SupplierOrderByRelevanceFieldEnum = (typeof SupplierOrderByRelevanceFieldEnum)[keyof typeof SupplierOrderByRelevanceFieldEnum]
+
+
 export const TransactionOrderByRelevanceFieldEnum = {
   id: 'id',
   customer_id: 'customer_id',
-  promotion_id: 'promotion_id',
   note: 'note',
-  discount_id: 'discount_id'
+  promotion_id: 'promotion_id',
+  transaction_discount_id: 'transaction_discount_id',
+  supplierId: 'supplierId'
 } as const
 
 export type TransactionOrderByRelevanceFieldEnum = (typeof TransactionOrderByRelevanceFieldEnum)[keyof typeof TransactionOrderByRelevanceFieldEnum]

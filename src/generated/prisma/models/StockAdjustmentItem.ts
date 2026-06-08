@@ -224,8 +224,8 @@ export type StockAdjustmentItemWhereInput = {
   quantity?: Prisma.FloatFilter<"StockAdjustmentItem"> | number
   created_at?: Prisma.DateTimeFilter<"StockAdjustmentItem"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"StockAdjustmentItem"> | Date | string
-  stockAdjustment?: Prisma.XOR<Prisma.StockAdjustmentScalarRelationFilter, Prisma.StockAdjustmentWhereInput>
   productSku?: Prisma.XOR<Prisma.ProductSkuScalarRelationFilter, Prisma.ProductSkuWhereInput>
+  stockAdjustment?: Prisma.XOR<Prisma.StockAdjustmentScalarRelationFilter, Prisma.StockAdjustmentWhereInput>
 }
 
 export type StockAdjustmentItemOrderByWithRelationInput = {
@@ -235,8 +235,8 @@ export type StockAdjustmentItemOrderByWithRelationInput = {
   quantity?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
-  stockAdjustment?: Prisma.StockAdjustmentOrderByWithRelationInput
   productSku?: Prisma.ProductSkuOrderByWithRelationInput
+  stockAdjustment?: Prisma.StockAdjustmentOrderByWithRelationInput
   _relevance?: Prisma.StockAdjustmentItemOrderByRelevanceInput
 }
 
@@ -250,8 +250,8 @@ export type StockAdjustmentItemWhereUniqueInput = Prisma.AtLeast<{
   quantity?: Prisma.FloatFilter<"StockAdjustmentItem"> | number
   created_at?: Prisma.DateTimeFilter<"StockAdjustmentItem"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"StockAdjustmentItem"> | Date | string
-  stockAdjustment?: Prisma.XOR<Prisma.StockAdjustmentScalarRelationFilter, Prisma.StockAdjustmentWhereInput>
   productSku?: Prisma.XOR<Prisma.ProductSkuScalarRelationFilter, Prisma.ProductSkuWhereInput>
+  stockAdjustment?: Prisma.XOR<Prisma.StockAdjustmentScalarRelationFilter, Prisma.StockAdjustmentWhereInput>
 }, "id">
 
 export type StockAdjustmentItemOrderByWithAggregationInput = {
@@ -285,8 +285,8 @@ export type StockAdjustmentItemCreateInput = {
   quantity: number
   created_at?: Date | string
   updated_at?: Date | string
-  stockAdjustment: Prisma.StockAdjustmentCreateNestedOneWithoutItemsInput
   productSku: Prisma.ProductSkuCreateNestedOneWithoutAdjustmentItemsInput
+  stockAdjustment: Prisma.StockAdjustmentCreateNestedOneWithoutItemsInput
 }
 
 export type StockAdjustmentItemUncheckedCreateInput = {
@@ -303,8 +303,8 @@ export type StockAdjustmentItemUpdateInput = {
   quantity?: Prisma.FloatFieldUpdateOperationsInput | number
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  stockAdjustment?: Prisma.StockAdjustmentUpdateOneRequiredWithoutItemsNestedInput
   productSku?: Prisma.ProductSkuUpdateOneRequiredWithoutAdjustmentItemsNestedInput
+  stockAdjustment?: Prisma.StockAdjustmentUpdateOneRequiredWithoutItemsNestedInput
 }
 
 export type StockAdjustmentItemUncheckedUpdateInput = {
@@ -645,8 +645,8 @@ export type StockAdjustmentItemSelect<ExtArgs extends runtime.Types.Extensions.I
   quantity?: boolean
   created_at?: boolean
   updated_at?: boolean
-  stockAdjustment?: boolean | Prisma.StockAdjustmentDefaultArgs<ExtArgs>
   productSku?: boolean | Prisma.ProductSkuDefaultArgs<ExtArgs>
+  stockAdjustment?: boolean | Prisma.StockAdjustmentDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["stockAdjustmentItem"]>
 
 
@@ -662,15 +662,15 @@ export type StockAdjustmentItemSelectScalar = {
 
 export type StockAdjustmentItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "stock_adjusment_id" | "product_sku_id" | "quantity" | "created_at" | "updated_at", ExtArgs["result"]["stockAdjustmentItem"]>
 export type StockAdjustmentItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  stockAdjustment?: boolean | Prisma.StockAdjustmentDefaultArgs<ExtArgs>
   productSku?: boolean | Prisma.ProductSkuDefaultArgs<ExtArgs>
+  stockAdjustment?: boolean | Prisma.StockAdjustmentDefaultArgs<ExtArgs>
 }
 
 export type $StockAdjustmentItemPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "StockAdjustmentItem"
   objects: {
-    stockAdjustment: Prisma.$StockAdjustmentPayload<ExtArgs>
     productSku: Prisma.$ProductSkuPayload<ExtArgs>
+    stockAdjustment: Prisma.$StockAdjustmentPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1019,8 +1019,8 @@ readonly fields: StockAdjustmentItemFieldRefs;
  */
 export interface Prisma__StockAdjustmentItemClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  stockAdjustment<T extends Prisma.StockAdjustmentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StockAdjustmentDefaultArgs<ExtArgs>>): Prisma.Prisma__StockAdjustmentClient<runtime.Types.Result.GetResult<Prisma.$StockAdjustmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   productSku<T extends Prisma.ProductSkuDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProductSkuDefaultArgs<ExtArgs>>): Prisma.Prisma__ProductSkuClient<runtime.Types.Result.GetResult<Prisma.$ProductSkuPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  stockAdjustment<T extends Prisma.StockAdjustmentDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StockAdjustmentDefaultArgs<ExtArgs>>): Prisma.Prisma__StockAdjustmentClient<runtime.Types.Result.GetResult<Prisma.$StockAdjustmentPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.

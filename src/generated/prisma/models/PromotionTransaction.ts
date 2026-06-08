@@ -466,6 +466,14 @@ export type PromotionTransactionUncheckedUpdateManyWithoutPromotionNestedInput =
   deleteMany?: Prisma.PromotionTransactionScalarWhereInput | Prisma.PromotionTransactionScalarWhereInput[]
 }
 
+export type FloatFieldUpdateOperationsInput = {
+  set?: number
+  increment?: number
+  decrement?: number
+  multiply?: number
+  divide?: number
+}
+
 export type EnumDiscountTypeFieldUpdateOperationsInput = {
   set?: $Enums.DiscountType
 }

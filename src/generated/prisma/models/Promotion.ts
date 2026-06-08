@@ -214,8 +214,8 @@ export type PromotionWhereInput = {
   end_time?: Prisma.DateTimeFilter<"Promotion"> | Date | string
   created_at?: Prisma.DateTimeFilter<"Promotion"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Promotion"> | Date | string
-  promotionTransactions?: Prisma.PromotionTransactionListRelationFilter
   promotionItems?: Prisma.PromotionItemListRelationFilter
+  promotionTransactions?: Prisma.PromotionTransactionListRelationFilter
   transactions?: Prisma.TransactionListRelationFilter
 }
 
@@ -229,8 +229,8 @@ export type PromotionOrderByWithRelationInput = {
   end_time?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
-  promotionTransactions?: Prisma.PromotionTransactionOrderByRelationAggregateInput
   promotionItems?: Prisma.PromotionItemOrderByRelationAggregateInput
+  promotionTransactions?: Prisma.PromotionTransactionOrderByRelationAggregateInput
   transactions?: Prisma.TransactionOrderByRelationAggregateInput
   _relevance?: Prisma.PromotionOrderByRelevanceInput
 }
@@ -248,8 +248,8 @@ export type PromotionWhereUniqueInput = Prisma.AtLeast<{
   end_time?: Prisma.DateTimeFilter<"Promotion"> | Date | string
   created_at?: Prisma.DateTimeFilter<"Promotion"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Promotion"> | Date | string
-  promotionTransactions?: Prisma.PromotionTransactionListRelationFilter
   promotionItems?: Prisma.PromotionItemListRelationFilter
+  promotionTransactions?: Prisma.PromotionTransactionListRelationFilter
   transactions?: Prisma.TransactionListRelationFilter
 }, "id">
 
@@ -293,8 +293,8 @@ export type PromotionCreateInput = {
   end_time: Date | string
   created_at?: Date | string
   updated_at?: Date | string
-  promotionTransactions?: Prisma.PromotionTransactionCreateNestedManyWithoutPromotionInput
   promotionItems?: Prisma.PromotionItemCreateNestedManyWithoutPromotionInput
+  promotionTransactions?: Prisma.PromotionTransactionCreateNestedManyWithoutPromotionInput
   transactions?: Prisma.TransactionCreateNestedManyWithoutPromotionInput
 }
 
@@ -308,8 +308,8 @@ export type PromotionUncheckedCreateInput = {
   end_time: Date | string
   created_at?: Date | string
   updated_at?: Date | string
-  promotionTransactions?: Prisma.PromotionTransactionUncheckedCreateNestedManyWithoutPromotionInput
   promotionItems?: Prisma.PromotionItemUncheckedCreateNestedManyWithoutPromotionInput
+  promotionTransactions?: Prisma.PromotionTransactionUncheckedCreateNestedManyWithoutPromotionInput
   transactions?: Prisma.TransactionUncheckedCreateNestedManyWithoutPromotionInput
 }
 
@@ -323,8 +323,8 @@ export type PromotionUpdateInput = {
   end_time?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  promotionTransactions?: Prisma.PromotionTransactionUpdateManyWithoutPromotionNestedInput
   promotionItems?: Prisma.PromotionItemUpdateManyWithoutPromotionNestedInput
+  promotionTransactions?: Prisma.PromotionTransactionUpdateManyWithoutPromotionNestedInput
   transactions?: Prisma.TransactionUpdateManyWithoutPromotionNestedInput
 }
 
@@ -338,8 +338,8 @@ export type PromotionUncheckedUpdateInput = {
   end_time?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  promotionTransactions?: Prisma.PromotionTransactionUncheckedUpdateManyWithoutPromotionNestedInput
   promotionItems?: Prisma.PromotionItemUncheckedUpdateManyWithoutPromotionNestedInput
+  promotionTransactions?: Prisma.PromotionTransactionUncheckedUpdateManyWithoutPromotionNestedInput
   transactions?: Prisma.TransactionUncheckedUpdateManyWithoutPromotionNestedInput
 }
 
@@ -629,8 +629,8 @@ export type PromotionCreateWithoutTransactionsInput = {
   end_time: Date | string
   created_at?: Date | string
   updated_at?: Date | string
-  promotionTransactions?: Prisma.PromotionTransactionCreateNestedManyWithoutPromotionInput
   promotionItems?: Prisma.PromotionItemCreateNestedManyWithoutPromotionInput
+  promotionTransactions?: Prisma.PromotionTransactionCreateNestedManyWithoutPromotionInput
 }
 
 export type PromotionUncheckedCreateWithoutTransactionsInput = {
@@ -643,8 +643,8 @@ export type PromotionUncheckedCreateWithoutTransactionsInput = {
   end_time: Date | string
   created_at?: Date | string
   updated_at?: Date | string
-  promotionTransactions?: Prisma.PromotionTransactionUncheckedCreateNestedManyWithoutPromotionInput
   promotionItems?: Prisma.PromotionItemUncheckedCreateNestedManyWithoutPromotionInput
+  promotionTransactions?: Prisma.PromotionTransactionUncheckedCreateNestedManyWithoutPromotionInput
 }
 
 export type PromotionCreateOrConnectWithoutTransactionsInput = {
@@ -673,8 +673,8 @@ export type PromotionUpdateWithoutTransactionsInput = {
   end_time?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  promotionTransactions?: Prisma.PromotionTransactionUpdateManyWithoutPromotionNestedInput
   promotionItems?: Prisma.PromotionItemUpdateManyWithoutPromotionNestedInput
+  promotionTransactions?: Prisma.PromotionTransactionUpdateManyWithoutPromotionNestedInput
 }
 
 export type PromotionUncheckedUpdateWithoutTransactionsInput = {
@@ -687,8 +687,8 @@ export type PromotionUncheckedUpdateWithoutTransactionsInput = {
   end_time?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  promotionTransactions?: Prisma.PromotionTransactionUncheckedUpdateManyWithoutPromotionNestedInput
   promotionItems?: Prisma.PromotionItemUncheckedUpdateManyWithoutPromotionNestedInput
+  promotionTransactions?: Prisma.PromotionTransactionUncheckedUpdateManyWithoutPromotionNestedInput
 }
 
 
@@ -697,14 +697,14 @@ export type PromotionUncheckedUpdateWithoutTransactionsInput = {
  */
 
 export type PromotionCountOutputType = {
-  promotionTransactions: number
   promotionItems: number
+  promotionTransactions: number
   transactions: number
 }
 
 export type PromotionCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  promotionTransactions?: boolean | PromotionCountOutputTypeCountPromotionTransactionsArgs
   promotionItems?: boolean | PromotionCountOutputTypeCountPromotionItemsArgs
+  promotionTransactions?: boolean | PromotionCountOutputTypeCountPromotionTransactionsArgs
   transactions?: boolean | PromotionCountOutputTypeCountTransactionsArgs
 }
 
@@ -721,15 +721,15 @@ export type PromotionCountOutputTypeDefaultArgs<ExtArgs extends runtime.Types.Ex
 /**
  * PromotionCountOutputType without action
  */
-export type PromotionCountOutputTypeCountPromotionTransactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.PromotionTransactionWhereInput
+export type PromotionCountOutputTypeCountPromotionItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PromotionItemWhereInput
 }
 
 /**
  * PromotionCountOutputType without action
  */
-export type PromotionCountOutputTypeCountPromotionItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  where?: Prisma.PromotionItemWhereInput
+export type PromotionCountOutputTypeCountPromotionTransactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PromotionTransactionWhereInput
 }
 
 /**
@@ -750,8 +750,8 @@ export type PromotionSelect<ExtArgs extends runtime.Types.Extensions.InternalArg
   end_time?: boolean
   created_at?: boolean
   updated_at?: boolean
-  promotionTransactions?: boolean | Prisma.Promotion$promotionTransactionsArgs<ExtArgs>
   promotionItems?: boolean | Prisma.Promotion$promotionItemsArgs<ExtArgs>
+  promotionTransactions?: boolean | Prisma.Promotion$promotionTransactionsArgs<ExtArgs>
   transactions?: boolean | Prisma.Promotion$transactionsArgs<ExtArgs>
   _count?: boolean | Prisma.PromotionCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["promotion"]>
@@ -772,8 +772,8 @@ export type PromotionSelectScalar = {
 
 export type PromotionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "name" | "description" | "start_date" | "end_date" | "start_time" | "end_time" | "created_at" | "updated_at", ExtArgs["result"]["promotion"]>
 export type PromotionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  promotionTransactions?: boolean | Prisma.Promotion$promotionTransactionsArgs<ExtArgs>
   promotionItems?: boolean | Prisma.Promotion$promotionItemsArgs<ExtArgs>
+  promotionTransactions?: boolean | Prisma.Promotion$promotionTransactionsArgs<ExtArgs>
   transactions?: boolean | Prisma.Promotion$transactionsArgs<ExtArgs>
   _count?: boolean | Prisma.PromotionCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -781,8 +781,8 @@ export type PromotionInclude<ExtArgs extends runtime.Types.Extensions.InternalAr
 export type $PromotionPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "Promotion"
   objects: {
-    promotionTransactions: Prisma.$PromotionTransactionPayload<ExtArgs>[]
     promotionItems: Prisma.$PromotionItemPayload<ExtArgs>[]
+    promotionTransactions: Prisma.$PromotionTransactionPayload<ExtArgs>[]
     transactions: Prisma.$TransactionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -1135,8 +1135,8 @@ readonly fields: PromotionFieldRefs;
  */
 export interface Prisma__PromotionClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
-  promotionTransactions<T extends Prisma.Promotion$promotionTransactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Promotion$promotionTransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PromotionTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   promotionItems<T extends Prisma.Promotion$promotionItemsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Promotion$promotionItemsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PromotionItemPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  promotionTransactions<T extends Prisma.Promotion$promotionTransactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Promotion$promotionTransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PromotionTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   transactions<T extends Prisma.Promotion$transactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Promotion$transactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -1524,30 +1524,6 @@ export type PromotionDeleteManyArgs<ExtArgs extends runtime.Types.Extensions.Int
 }
 
 /**
- * Promotion.promotionTransactions
- */
-export type Promotion$promotionTransactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the PromotionTransaction
-   */
-  select?: Prisma.PromotionTransactionSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the PromotionTransaction
-   */
-  omit?: Prisma.PromotionTransactionOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.PromotionTransactionInclude<ExtArgs> | null
-  where?: Prisma.PromotionTransactionWhereInput
-  orderBy?: Prisma.PromotionTransactionOrderByWithRelationInput | Prisma.PromotionTransactionOrderByWithRelationInput[]
-  cursor?: Prisma.PromotionTransactionWhereUniqueInput
-  take?: number
-  skip?: number
-  distinct?: Prisma.PromotionTransactionScalarFieldEnum | Prisma.PromotionTransactionScalarFieldEnum[]
-}
-
-/**
  * Promotion.promotionItems
  */
 export type Promotion$promotionItemsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1569,6 +1545,30 @@ export type Promotion$promotionItemsArgs<ExtArgs extends runtime.Types.Extension
   take?: number
   skip?: number
   distinct?: Prisma.PromotionItemScalarFieldEnum | Prisma.PromotionItemScalarFieldEnum[]
+}
+
+/**
+ * Promotion.promotionTransactions
+ */
+export type Promotion$promotionTransactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PromotionTransaction
+   */
+  select?: Prisma.PromotionTransactionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PromotionTransaction
+   */
+  omit?: Prisma.PromotionTransactionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PromotionTransactionInclude<ExtArgs> | null
+  where?: Prisma.PromotionTransactionWhereInput
+  orderBy?: Prisma.PromotionTransactionOrderByWithRelationInput | Prisma.PromotionTransactionOrderByWithRelationInput[]
+  cursor?: Prisma.PromotionTransactionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PromotionTransactionScalarFieldEnum | Prisma.PromotionTransactionScalarFieldEnum[]
 }
 
 /**

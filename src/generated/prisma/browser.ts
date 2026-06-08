@@ -98,6 +98,11 @@ export type PromotionItem = Prisma.PromotionItemModel
  */
 export type Customer = Prisma.CustomerModel
 /**
+ * Model Supplier
+ * 
+ */
+export type Supplier = Prisma.SupplierModel
+/**
  * Model Transaction
  * 
  */

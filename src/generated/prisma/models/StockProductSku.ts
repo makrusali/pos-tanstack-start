@@ -27,11 +27,11 @@ export type AggregateStockProductSku = {
 }
 
 export type StockProductSkuAvgAggregateOutputType = {
-  quantity: number | null
+  quantity: runtime.Decimal | null
 }
 
 export type StockProductSkuSumAggregateOutputType = {
-  quantity: number | null
+  quantity: runtime.Decimal | null
 }
 
 export type StockProductSkuMinAggregateOutputType = {
@@ -39,7 +39,7 @@ export type StockProductSkuMinAggregateOutputType = {
   product_sku_id: string | null
   stock_location_id: string | null
   is_primary: boolean | null
-  quantity: number | null
+  quantity: runtime.Decimal | null
   created_at: Date | null
   updated_at: Date | null
 }
@@ -49,7 +49,7 @@ export type StockProductSkuMaxAggregateOutputType = {
   product_sku_id: string | null
   stock_location_id: string | null
   is_primary: boolean | null
-  quantity: number | null
+  quantity: runtime.Decimal | null
   created_at: Date | null
   updated_at: Date | null
 }
@@ -196,7 +196,7 @@ export type StockProductSkuGroupByOutputType = {
   product_sku_id: string
   stock_location_id: string
   is_primary: boolean
-  quantity: number
+  quantity: runtime.Decimal
   created_at: Date
   updated_at: Date
   _count: StockProductSkuCountAggregateOutputType | null
@@ -229,12 +229,12 @@ export type StockProductSkuWhereInput = {
   product_sku_id?: Prisma.StringFilter<"StockProductSku"> | string
   stock_location_id?: Prisma.StringFilter<"StockProductSku"> | string
   is_primary?: Prisma.BoolFilter<"StockProductSku"> | boolean
-  quantity?: Prisma.FloatFilter<"StockProductSku"> | number
+  quantity?: Prisma.DecimalFilter<"StockProductSku"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   created_at?: Prisma.DateTimeFilter<"StockProductSku"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"StockProductSku"> | Date | string
+  stockMovements?: Prisma.StockMovementListRelationFilter
   productSku?: Prisma.XOR<Prisma.ProductSkuScalarRelationFilter, Prisma.ProductSkuWhereInput>
   stockLocation?: Prisma.XOR<Prisma.StockLocationScalarRelationFilter, Prisma.StockLocationWhereInput>
-  stockMovements?: Prisma.StockMovementListRelationFilter
 }
 
 export type StockProductSkuOrderByWithRelationInput = {
@@ -245,9 +245,9 @@ export type StockProductSkuOrderByWithRelationInput = {
   quantity?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
+  stockMovements?: Prisma.StockMovementOrderByRelationAggregateInput
   productSku?: Prisma.ProductSkuOrderByWithRelationInput
   stockLocation?: Prisma.StockLocationOrderByWithRelationInput
-  stockMovements?: Prisma.StockMovementOrderByRelationAggregateInput
   _relevance?: Prisma.StockProductSkuOrderByRelevanceInput
 }
 
@@ -259,12 +259,12 @@ export type StockProductSkuWhereUniqueInput = Prisma.AtLeast<{
   product_sku_id?: Prisma.StringFilter<"StockProductSku"> | string
   stock_location_id?: Prisma.StringFilter<"StockProductSku"> | string
   is_primary?: Prisma.BoolFilter<"StockProductSku"> | boolean
-  quantity?: Prisma.FloatFilter<"StockProductSku"> | number
+  quantity?: Prisma.DecimalFilter<"StockProductSku"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   created_at?: Prisma.DateTimeFilter<"StockProductSku"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"StockProductSku"> | Date | string
+  stockMovements?: Prisma.StockMovementListRelationFilter
   productSku?: Prisma.XOR<Prisma.ProductSkuScalarRelationFilter, Prisma.ProductSkuWhereInput>
   stockLocation?: Prisma.XOR<Prisma.StockLocationScalarRelationFilter, Prisma.StockLocationWhereInput>
-  stockMovements?: Prisma.StockMovementListRelationFilter
 }, "id">
 
 export type StockProductSkuOrderByWithAggregationInput = {
@@ -290,7 +290,7 @@ export type StockProductSkuScalarWhereWithAggregatesInput = {
   product_sku_id?: Prisma.StringWithAggregatesFilter<"StockProductSku"> | string
   stock_location_id?: Prisma.StringWithAggregatesFilter<"StockProductSku"> | string
   is_primary?: Prisma.BoolWithAggregatesFilter<"StockProductSku"> | boolean
-  quantity?: Prisma.FloatWithAggregatesFilter<"StockProductSku"> | number
+  quantity?: Prisma.DecimalWithAggregatesFilter<"StockProductSku"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   created_at?: Prisma.DateTimeWithAggregatesFilter<"StockProductSku"> | Date | string
   updated_at?: Prisma.DateTimeWithAggregatesFilter<"StockProductSku"> | Date | string
 }
@@ -298,12 +298,12 @@ export type StockProductSkuScalarWhereWithAggregatesInput = {
 export type StockProductSkuCreateInput = {
   id?: string
   is_primary: boolean
-  quantity: number
+  quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   created_at?: Date | string
   updated_at?: Date | string
+  stockMovements?: Prisma.StockMovementCreateNestedManyWithoutStockProductSkuInput
   productSku: Prisma.ProductSkuCreateNestedOneWithoutStockProductSkusInput
   stockLocation: Prisma.StockLocationCreateNestedOneWithoutStockProductSkusInput
-  stockMovements?: Prisma.StockMovementCreateNestedManyWithoutStockProductSkuInput
 }
 
 export type StockProductSkuUncheckedCreateInput = {
@@ -311,7 +311,7 @@ export type StockProductSkuUncheckedCreateInput = {
   product_sku_id: string
   stock_location_id: string
   is_primary: boolean
-  quantity: number
+  quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   created_at?: Date | string
   updated_at?: Date | string
   stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutStockProductSkuInput
@@ -320,12 +320,12 @@ export type StockProductSkuUncheckedCreateInput = {
 export type StockProductSkuUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   is_primary?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  stockMovements?: Prisma.StockMovementUpdateManyWithoutStockProductSkuNestedInput
   productSku?: Prisma.ProductSkuUpdateOneRequiredWithoutStockProductSkusNestedInput
   stockLocation?: Prisma.StockLocationUpdateOneRequiredWithoutStockProductSkusNestedInput
-  stockMovements?: Prisma.StockMovementUpdateManyWithoutStockProductSkuNestedInput
 }
 
 export type StockProductSkuUncheckedUpdateInput = {
@@ -333,7 +333,7 @@ export type StockProductSkuUncheckedUpdateInput = {
   product_sku_id?: Prisma.StringFieldUpdateOperationsInput | string
   stock_location_id?: Prisma.StringFieldUpdateOperationsInput | string
   is_primary?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutStockProductSkuNestedInput
@@ -344,7 +344,7 @@ export type StockProductSkuCreateManyInput = {
   product_sku_id: string
   stock_location_id: string
   is_primary: boolean
-  quantity: number
+  quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   created_at?: Date | string
   updated_at?: Date | string
 }
@@ -352,7 +352,7 @@ export type StockProductSkuCreateManyInput = {
 export type StockProductSkuUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   is_primary?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -362,7 +362,7 @@ export type StockProductSkuUncheckedUpdateManyInput = {
   product_sku_id?: Prisma.StringFieldUpdateOperationsInput | string
   stock_location_id?: Prisma.StringFieldUpdateOperationsInput | string
   is_primary?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -527,18 +527,18 @@ export type StockProductSkuUpdateOneRequiredWithoutStockMovementsNestedInput = {
 export type StockProductSkuCreateWithoutProductSkuInput = {
   id?: string
   is_primary: boolean
-  quantity: number
+  quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   created_at?: Date | string
   updated_at?: Date | string
-  stockLocation: Prisma.StockLocationCreateNestedOneWithoutStockProductSkusInput
   stockMovements?: Prisma.StockMovementCreateNestedManyWithoutStockProductSkuInput
+  stockLocation: Prisma.StockLocationCreateNestedOneWithoutStockProductSkusInput
 }
 
 export type StockProductSkuUncheckedCreateWithoutProductSkuInput = {
   id?: string
   stock_location_id: string
   is_primary: boolean
-  quantity: number
+  quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   created_at?: Date | string
   updated_at?: Date | string
   stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutStockProductSkuInput
@@ -578,7 +578,7 @@ export type StockProductSkuScalarWhereInput = {
   product_sku_id?: Prisma.StringFilter<"StockProductSku"> | string
   stock_location_id?: Prisma.StringFilter<"StockProductSku"> | string
   is_primary?: Prisma.BoolFilter<"StockProductSku"> | boolean
-  quantity?: Prisma.FloatFilter<"StockProductSku"> | number
+  quantity?: Prisma.DecimalFilter<"StockProductSku"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   created_at?: Prisma.DateTimeFilter<"StockProductSku"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"StockProductSku"> | Date | string
 }
@@ -586,18 +586,18 @@ export type StockProductSkuScalarWhereInput = {
 export type StockProductSkuCreateWithoutStockLocationInput = {
   id?: string
   is_primary: boolean
-  quantity: number
+  quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   created_at?: Date | string
   updated_at?: Date | string
-  productSku: Prisma.ProductSkuCreateNestedOneWithoutStockProductSkusInput
   stockMovements?: Prisma.StockMovementCreateNestedManyWithoutStockProductSkuInput
+  productSku: Prisma.ProductSkuCreateNestedOneWithoutStockProductSkusInput
 }
 
 export type StockProductSkuUncheckedCreateWithoutStockLocationInput = {
   id?: string
   product_sku_id: string
   is_primary: boolean
-  quantity: number
+  quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   created_at?: Date | string
   updated_at?: Date | string
   stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutStockProductSkuInput
@@ -632,7 +632,7 @@ export type StockProductSkuUpdateManyWithWhereWithoutStockLocationInput = {
 export type StockProductSkuCreateWithoutStockMovementsInput = {
   id?: string
   is_primary: boolean
-  quantity: number
+  quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   created_at?: Date | string
   updated_at?: Date | string
   productSku: Prisma.ProductSkuCreateNestedOneWithoutStockProductSkusInput
@@ -644,7 +644,7 @@ export type StockProductSkuUncheckedCreateWithoutStockMovementsInput = {
   product_sku_id: string
   stock_location_id: string
   is_primary: boolean
-  quantity: number
+  quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   created_at?: Date | string
   updated_at?: Date | string
 }
@@ -668,7 +668,7 @@ export type StockProductSkuUpdateToOneWithWhereWithoutStockMovementsInput = {
 export type StockProductSkuUpdateWithoutStockMovementsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   is_primary?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   productSku?: Prisma.ProductSkuUpdateOneRequiredWithoutStockProductSkusNestedInput
@@ -680,7 +680,7 @@ export type StockProductSkuUncheckedUpdateWithoutStockMovementsInput = {
   product_sku_id?: Prisma.StringFieldUpdateOperationsInput | string
   stock_location_id?: Prisma.StringFieldUpdateOperationsInput | string
   is_primary?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -689,7 +689,7 @@ export type StockProductSkuCreateManyProductSkuInput = {
   id?: string
   stock_location_id: string
   is_primary: boolean
-  quantity: number
+  quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   created_at?: Date | string
   updated_at?: Date | string
 }
@@ -697,18 +697,18 @@ export type StockProductSkuCreateManyProductSkuInput = {
 export type StockProductSkuUpdateWithoutProductSkuInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   is_primary?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  stockLocation?: Prisma.StockLocationUpdateOneRequiredWithoutStockProductSkusNestedInput
   stockMovements?: Prisma.StockMovementUpdateManyWithoutStockProductSkuNestedInput
+  stockLocation?: Prisma.StockLocationUpdateOneRequiredWithoutStockProductSkusNestedInput
 }
 
 export type StockProductSkuUncheckedUpdateWithoutProductSkuInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   stock_location_id?: Prisma.StringFieldUpdateOperationsInput | string
   is_primary?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutStockProductSkuNestedInput
@@ -718,7 +718,7 @@ export type StockProductSkuUncheckedUpdateManyWithoutProductSkuInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   stock_location_id?: Prisma.StringFieldUpdateOperationsInput | string
   is_primary?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -727,7 +727,7 @@ export type StockProductSkuCreateManyStockLocationInput = {
   id?: string
   product_sku_id: string
   is_primary: boolean
-  quantity: number
+  quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   created_at?: Date | string
   updated_at?: Date | string
 }
@@ -735,18 +735,18 @@ export type StockProductSkuCreateManyStockLocationInput = {
 export type StockProductSkuUpdateWithoutStockLocationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   is_primary?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  productSku?: Prisma.ProductSkuUpdateOneRequiredWithoutStockProductSkusNestedInput
   stockMovements?: Prisma.StockMovementUpdateManyWithoutStockProductSkuNestedInput
+  productSku?: Prisma.ProductSkuUpdateOneRequiredWithoutStockProductSkusNestedInput
 }
 
 export type StockProductSkuUncheckedUpdateWithoutStockLocationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   product_sku_id?: Prisma.StringFieldUpdateOperationsInput | string
   is_primary?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutStockProductSkuNestedInput
@@ -756,7 +756,7 @@ export type StockProductSkuUncheckedUpdateManyWithoutStockLocationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   product_sku_id?: Prisma.StringFieldUpdateOperationsInput | string
   is_primary?: Prisma.BoolFieldUpdateOperationsInput | boolean
-  quantity?: Prisma.FloatFieldUpdateOperationsInput | number
+  quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -800,9 +800,9 @@ export type StockProductSkuSelect<ExtArgs extends runtime.Types.Extensions.Inter
   quantity?: boolean
   created_at?: boolean
   updated_at?: boolean
+  stockMovements?: boolean | Prisma.StockProductSku$stockMovementsArgs<ExtArgs>
   productSku?: boolean | Prisma.ProductSkuDefaultArgs<ExtArgs>
   stockLocation?: boolean | Prisma.StockLocationDefaultArgs<ExtArgs>
-  stockMovements?: boolean | Prisma.StockProductSku$stockMovementsArgs<ExtArgs>
   _count?: boolean | Prisma.StockProductSkuCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["stockProductSku"]>
 
@@ -820,25 +820,25 @@ export type StockProductSkuSelectScalar = {
 
 export type StockProductSkuOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "product_sku_id" | "stock_location_id" | "is_primary" | "quantity" | "created_at" | "updated_at", ExtArgs["result"]["stockProductSku"]>
 export type StockProductSkuInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  stockMovements?: boolean | Prisma.StockProductSku$stockMovementsArgs<ExtArgs>
   productSku?: boolean | Prisma.ProductSkuDefaultArgs<ExtArgs>
   stockLocation?: boolean | Prisma.StockLocationDefaultArgs<ExtArgs>
-  stockMovements?: boolean | Prisma.StockProductSku$stockMovementsArgs<ExtArgs>
   _count?: boolean | Prisma.StockProductSkuCountOutputTypeDefaultArgs<ExtArgs>
 }
 
 export type $StockProductSkuPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   name: "StockProductSku"
   objects: {
+    stockMovements: Prisma.$StockMovementPayload<ExtArgs>[]
     productSku: Prisma.$ProductSkuPayload<ExtArgs>
     stockLocation: Prisma.$StockLocationPayload<ExtArgs>
-    stockMovements: Prisma.$StockMovementPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     product_sku_id: string
     stock_location_id: string
     is_primary: boolean
-    quantity: number
+    quantity: runtime.Decimal
     created_at: Date
     updated_at: Date
   }, ExtArgs["result"]["stockProductSku"]>
@@ -1181,9 +1181,9 @@ readonly fields: StockProductSkuFieldRefs;
  */
 export interface Prisma__StockProductSkuClient<T, Null = never, ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs, GlobalOmitOptions = {}> extends Prisma.PrismaPromise<T> {
   readonly [Symbol.toStringTag]: "PrismaPromise"
+  stockMovements<T extends Prisma.StockProductSku$stockMovementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StockProductSku$stockMovementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StockMovementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   productSku<T extends Prisma.ProductSkuDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProductSkuDefaultArgs<ExtArgs>>): Prisma.Prisma__ProductSkuClient<runtime.Types.Result.GetResult<Prisma.$ProductSkuPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   stockLocation<T extends Prisma.StockLocationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StockLocationDefaultArgs<ExtArgs>>): Prisma.Prisma__StockLocationClient<runtime.Types.Result.GetResult<Prisma.$StockLocationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
-  stockMovements<T extends Prisma.StockProductSku$stockMovementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StockProductSku$stockMovementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StockMovementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1217,7 +1217,7 @@ export interface StockProductSkuFieldRefs {
   readonly product_sku_id: Prisma.FieldRef<"StockProductSku", 'String'>
   readonly stock_location_id: Prisma.FieldRef<"StockProductSku", 'String'>
   readonly is_primary: Prisma.FieldRef<"StockProductSku", 'Boolean'>
-  readonly quantity: Prisma.FieldRef<"StockProductSku", 'Float'>
+  readonly quantity: Prisma.FieldRef<"StockProductSku", 'Decimal'>
   readonly created_at: Prisma.FieldRef<"StockProductSku", 'DateTime'>
   readonly updated_at: Prisma.FieldRef<"StockProductSku", 'DateTime'>
 }

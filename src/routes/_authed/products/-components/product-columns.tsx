@@ -84,7 +84,8 @@ export const productColumns: ColumnDef<Product>[] = [
       return (
         <div>
           <div className="font-medium">
-            Total Stock: {product.stock_quantity.toLocaleString("id-ID")}
+            Total Stock:{" "}
+            {product.stock_quantity.toNumber().toLocaleString("id-ID")}
           </div>
 
           <ul className="mt-1 space-y-1">
@@ -100,7 +101,7 @@ export const productColumns: ColumnDef<Product>[] = [
                   },
                 )}
               >
-                {sl.name} ({sl.quantity})
+                {sl.name} ({sl.quantity.toNumber().toLocaleString("id-ID")})
               </li>
             ))}
           </ul>
