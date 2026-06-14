@@ -235,6 +235,7 @@ export type StockProductSkuWhereInput = {
   stockMovements?: Prisma.StockMovementListRelationFilter
   productSku?: Prisma.XOR<Prisma.ProductSkuScalarRelationFilter, Prisma.ProductSkuWhereInput>
   stockLocation?: Prisma.XOR<Prisma.StockLocationScalarRelationFilter, Prisma.StockLocationWhereInput>
+  stockBatches?: Prisma.StockBatchesListRelationFilter
 }
 
 export type StockProductSkuOrderByWithRelationInput = {
@@ -248,6 +249,7 @@ export type StockProductSkuOrderByWithRelationInput = {
   stockMovements?: Prisma.StockMovementOrderByRelationAggregateInput
   productSku?: Prisma.ProductSkuOrderByWithRelationInput
   stockLocation?: Prisma.StockLocationOrderByWithRelationInput
+  stockBatches?: Prisma.StockBatchesOrderByRelationAggregateInput
   _relevance?: Prisma.StockProductSkuOrderByRelevanceInput
 }
 
@@ -265,6 +267,7 @@ export type StockProductSkuWhereUniqueInput = Prisma.AtLeast<{
   stockMovements?: Prisma.StockMovementListRelationFilter
   productSku?: Prisma.XOR<Prisma.ProductSkuScalarRelationFilter, Prisma.ProductSkuWhereInput>
   stockLocation?: Prisma.XOR<Prisma.StockLocationScalarRelationFilter, Prisma.StockLocationWhereInput>
+  stockBatches?: Prisma.StockBatchesListRelationFilter
 }, "id">
 
 export type StockProductSkuOrderByWithAggregationInput = {
@@ -304,6 +307,7 @@ export type StockProductSkuCreateInput = {
   stockMovements?: Prisma.StockMovementCreateNestedManyWithoutStockProductSkuInput
   productSku: Prisma.ProductSkuCreateNestedOneWithoutStockProductSkusInput
   stockLocation: Prisma.StockLocationCreateNestedOneWithoutStockProductSkusInput
+  stockBatches?: Prisma.StockBatchesCreateNestedManyWithoutStockProductSkuInput
 }
 
 export type StockProductSkuUncheckedCreateInput = {
@@ -315,6 +319,7 @@ export type StockProductSkuUncheckedCreateInput = {
   created_at?: Date | string
   updated_at?: Date | string
   stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutStockProductSkuInput
+  stockBatches?: Prisma.StockBatchesUncheckedCreateNestedManyWithoutStockProductSkuInput
 }
 
 export type StockProductSkuUpdateInput = {
@@ -326,6 +331,7 @@ export type StockProductSkuUpdateInput = {
   stockMovements?: Prisma.StockMovementUpdateManyWithoutStockProductSkuNestedInput
   productSku?: Prisma.ProductSkuUpdateOneRequiredWithoutStockProductSkusNestedInput
   stockLocation?: Prisma.StockLocationUpdateOneRequiredWithoutStockProductSkusNestedInput
+  stockBatches?: Prisma.StockBatchesUpdateManyWithoutStockProductSkuNestedInput
 }
 
 export type StockProductSkuUncheckedUpdateInput = {
@@ -337,6 +343,7 @@ export type StockProductSkuUncheckedUpdateInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutStockProductSkuNestedInput
+  stockBatches?: Prisma.StockBatchesUncheckedUpdateManyWithoutStockProductSkuNestedInput
 }
 
 export type StockProductSkuCreateManyInput = {
@@ -510,6 +517,20 @@ export type StockProductSkuUncheckedUpdateManyWithoutStockLocationNestedInput = 
   deleteMany?: Prisma.StockProductSkuScalarWhereInput | Prisma.StockProductSkuScalarWhereInput[]
 }
 
+export type StockProductSkuCreateNestedOneWithoutStockBatchesInput = {
+  create?: Prisma.XOR<Prisma.StockProductSkuCreateWithoutStockBatchesInput, Prisma.StockProductSkuUncheckedCreateWithoutStockBatchesInput>
+  connectOrCreate?: Prisma.StockProductSkuCreateOrConnectWithoutStockBatchesInput
+  connect?: Prisma.StockProductSkuWhereUniqueInput
+}
+
+export type StockProductSkuUpdateOneRequiredWithoutStockBatchesNestedInput = {
+  create?: Prisma.XOR<Prisma.StockProductSkuCreateWithoutStockBatchesInput, Prisma.StockProductSkuUncheckedCreateWithoutStockBatchesInput>
+  connectOrCreate?: Prisma.StockProductSkuCreateOrConnectWithoutStockBatchesInput
+  upsert?: Prisma.StockProductSkuUpsertWithoutStockBatchesInput
+  connect?: Prisma.StockProductSkuWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.StockProductSkuUpdateToOneWithWhereWithoutStockBatchesInput, Prisma.StockProductSkuUpdateWithoutStockBatchesInput>, Prisma.StockProductSkuUncheckedUpdateWithoutStockBatchesInput>
+}
+
 export type StockProductSkuCreateNestedOneWithoutStockMovementsInput = {
   create?: Prisma.XOR<Prisma.StockProductSkuCreateWithoutStockMovementsInput, Prisma.StockProductSkuUncheckedCreateWithoutStockMovementsInput>
   connectOrCreate?: Prisma.StockProductSkuCreateOrConnectWithoutStockMovementsInput
@@ -532,6 +553,7 @@ export type StockProductSkuCreateWithoutProductSkuInput = {
   updated_at?: Date | string
   stockMovements?: Prisma.StockMovementCreateNestedManyWithoutStockProductSkuInput
   stockLocation: Prisma.StockLocationCreateNestedOneWithoutStockProductSkusInput
+  stockBatches?: Prisma.StockBatchesCreateNestedManyWithoutStockProductSkuInput
 }
 
 export type StockProductSkuUncheckedCreateWithoutProductSkuInput = {
@@ -542,6 +564,7 @@ export type StockProductSkuUncheckedCreateWithoutProductSkuInput = {
   created_at?: Date | string
   updated_at?: Date | string
   stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutStockProductSkuInput
+  stockBatches?: Prisma.StockBatchesUncheckedCreateNestedManyWithoutStockProductSkuInput
 }
 
 export type StockProductSkuCreateOrConnectWithoutProductSkuInput = {
@@ -591,6 +614,7 @@ export type StockProductSkuCreateWithoutStockLocationInput = {
   updated_at?: Date | string
   stockMovements?: Prisma.StockMovementCreateNestedManyWithoutStockProductSkuInput
   productSku: Prisma.ProductSkuCreateNestedOneWithoutStockProductSkusInput
+  stockBatches?: Prisma.StockBatchesCreateNestedManyWithoutStockProductSkuInput
 }
 
 export type StockProductSkuUncheckedCreateWithoutStockLocationInput = {
@@ -601,6 +625,7 @@ export type StockProductSkuUncheckedCreateWithoutStockLocationInput = {
   created_at?: Date | string
   updated_at?: Date | string
   stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutStockProductSkuInput
+  stockBatches?: Prisma.StockBatchesUncheckedCreateNestedManyWithoutStockProductSkuInput
 }
 
 export type StockProductSkuCreateOrConnectWithoutStockLocationInput = {
@@ -629,6 +654,66 @@ export type StockProductSkuUpdateManyWithWhereWithoutStockLocationInput = {
   data: Prisma.XOR<Prisma.StockProductSkuUpdateManyMutationInput, Prisma.StockProductSkuUncheckedUpdateManyWithoutStockLocationInput>
 }
 
+export type StockProductSkuCreateWithoutStockBatchesInput = {
+  id?: string
+  is_primary: boolean
+  quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
+  created_at?: Date | string
+  updated_at?: Date | string
+  stockMovements?: Prisma.StockMovementCreateNestedManyWithoutStockProductSkuInput
+  productSku: Prisma.ProductSkuCreateNestedOneWithoutStockProductSkusInput
+  stockLocation: Prisma.StockLocationCreateNestedOneWithoutStockProductSkusInput
+}
+
+export type StockProductSkuUncheckedCreateWithoutStockBatchesInput = {
+  id?: string
+  product_sku_id: string
+  stock_location_id: string
+  is_primary: boolean
+  quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
+  created_at?: Date | string
+  updated_at?: Date | string
+  stockMovements?: Prisma.StockMovementUncheckedCreateNestedManyWithoutStockProductSkuInput
+}
+
+export type StockProductSkuCreateOrConnectWithoutStockBatchesInput = {
+  where: Prisma.StockProductSkuWhereUniqueInput
+  create: Prisma.XOR<Prisma.StockProductSkuCreateWithoutStockBatchesInput, Prisma.StockProductSkuUncheckedCreateWithoutStockBatchesInput>
+}
+
+export type StockProductSkuUpsertWithoutStockBatchesInput = {
+  update: Prisma.XOR<Prisma.StockProductSkuUpdateWithoutStockBatchesInput, Prisma.StockProductSkuUncheckedUpdateWithoutStockBatchesInput>
+  create: Prisma.XOR<Prisma.StockProductSkuCreateWithoutStockBatchesInput, Prisma.StockProductSkuUncheckedCreateWithoutStockBatchesInput>
+  where?: Prisma.StockProductSkuWhereInput
+}
+
+export type StockProductSkuUpdateToOneWithWhereWithoutStockBatchesInput = {
+  where?: Prisma.StockProductSkuWhereInput
+  data: Prisma.XOR<Prisma.StockProductSkuUpdateWithoutStockBatchesInput, Prisma.StockProductSkuUncheckedUpdateWithoutStockBatchesInput>
+}
+
+export type StockProductSkuUpdateWithoutStockBatchesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  is_primary?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  stockMovements?: Prisma.StockMovementUpdateManyWithoutStockProductSkuNestedInput
+  productSku?: Prisma.ProductSkuUpdateOneRequiredWithoutStockProductSkusNestedInput
+  stockLocation?: Prisma.StockLocationUpdateOneRequiredWithoutStockProductSkusNestedInput
+}
+
+export type StockProductSkuUncheckedUpdateWithoutStockBatchesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  product_sku_id?: Prisma.StringFieldUpdateOperationsInput | string
+  stock_location_id?: Prisma.StringFieldUpdateOperationsInput | string
+  is_primary?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutStockProductSkuNestedInput
+}
+
 export type StockProductSkuCreateWithoutStockMovementsInput = {
   id?: string
   is_primary: boolean
@@ -637,6 +722,7 @@ export type StockProductSkuCreateWithoutStockMovementsInput = {
   updated_at?: Date | string
   productSku: Prisma.ProductSkuCreateNestedOneWithoutStockProductSkusInput
   stockLocation: Prisma.StockLocationCreateNestedOneWithoutStockProductSkusInput
+  stockBatches?: Prisma.StockBatchesCreateNestedManyWithoutStockProductSkuInput
 }
 
 export type StockProductSkuUncheckedCreateWithoutStockMovementsInput = {
@@ -647,6 +733,7 @@ export type StockProductSkuUncheckedCreateWithoutStockMovementsInput = {
   quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
   created_at?: Date | string
   updated_at?: Date | string
+  stockBatches?: Prisma.StockBatchesUncheckedCreateNestedManyWithoutStockProductSkuInput
 }
 
 export type StockProductSkuCreateOrConnectWithoutStockMovementsInput = {
@@ -673,6 +760,7 @@ export type StockProductSkuUpdateWithoutStockMovementsInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   productSku?: Prisma.ProductSkuUpdateOneRequiredWithoutStockProductSkusNestedInput
   stockLocation?: Prisma.StockLocationUpdateOneRequiredWithoutStockProductSkusNestedInput
+  stockBatches?: Prisma.StockBatchesUpdateManyWithoutStockProductSkuNestedInput
 }
 
 export type StockProductSkuUncheckedUpdateWithoutStockMovementsInput = {
@@ -683,6 +771,7 @@ export type StockProductSkuUncheckedUpdateWithoutStockMovementsInput = {
   quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  stockBatches?: Prisma.StockBatchesUncheckedUpdateManyWithoutStockProductSkuNestedInput
 }
 
 export type StockProductSkuCreateManyProductSkuInput = {
@@ -702,6 +791,7 @@ export type StockProductSkuUpdateWithoutProductSkuInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   stockMovements?: Prisma.StockMovementUpdateManyWithoutStockProductSkuNestedInput
   stockLocation?: Prisma.StockLocationUpdateOneRequiredWithoutStockProductSkusNestedInput
+  stockBatches?: Prisma.StockBatchesUpdateManyWithoutStockProductSkuNestedInput
 }
 
 export type StockProductSkuUncheckedUpdateWithoutProductSkuInput = {
@@ -712,6 +802,7 @@ export type StockProductSkuUncheckedUpdateWithoutProductSkuInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutStockProductSkuNestedInput
+  stockBatches?: Prisma.StockBatchesUncheckedUpdateManyWithoutStockProductSkuNestedInput
 }
 
 export type StockProductSkuUncheckedUpdateManyWithoutProductSkuInput = {
@@ -740,6 +831,7 @@ export type StockProductSkuUpdateWithoutStockLocationInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   stockMovements?: Prisma.StockMovementUpdateManyWithoutStockProductSkuNestedInput
   productSku?: Prisma.ProductSkuUpdateOneRequiredWithoutStockProductSkusNestedInput
+  stockBatches?: Prisma.StockBatchesUpdateManyWithoutStockProductSkuNestedInput
 }
 
 export type StockProductSkuUncheckedUpdateWithoutStockLocationInput = {
@@ -750,6 +842,7 @@ export type StockProductSkuUncheckedUpdateWithoutStockLocationInput = {
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   stockMovements?: Prisma.StockMovementUncheckedUpdateManyWithoutStockProductSkuNestedInput
+  stockBatches?: Prisma.StockBatchesUncheckedUpdateManyWithoutStockProductSkuNestedInput
 }
 
 export type StockProductSkuUncheckedUpdateManyWithoutStockLocationInput = {
@@ -768,10 +861,12 @@ export type StockProductSkuUncheckedUpdateManyWithoutStockLocationInput = {
 
 export type StockProductSkuCountOutputType = {
   stockMovements: number
+  stockBatches: number
 }
 
 export type StockProductSkuCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   stockMovements?: boolean | StockProductSkuCountOutputTypeCountStockMovementsArgs
+  stockBatches?: boolean | StockProductSkuCountOutputTypeCountStockBatchesArgs
 }
 
 /**
@@ -791,6 +886,13 @@ export type StockProductSkuCountOutputTypeCountStockMovementsArgs<ExtArgs extend
   where?: Prisma.StockMovementWhereInput
 }
 
+/**
+ * StockProductSkuCountOutputType without action
+ */
+export type StockProductSkuCountOutputTypeCountStockBatchesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.StockBatchesWhereInput
+}
+
 
 export type StockProductSkuSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -803,6 +905,7 @@ export type StockProductSkuSelect<ExtArgs extends runtime.Types.Extensions.Inter
   stockMovements?: boolean | Prisma.StockProductSku$stockMovementsArgs<ExtArgs>
   productSku?: boolean | Prisma.ProductSkuDefaultArgs<ExtArgs>
   stockLocation?: boolean | Prisma.StockLocationDefaultArgs<ExtArgs>
+  stockBatches?: boolean | Prisma.StockProductSku$stockBatchesArgs<ExtArgs>
   _count?: boolean | Prisma.StockProductSkuCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["stockProductSku"]>
 
@@ -823,6 +926,7 @@ export type StockProductSkuInclude<ExtArgs extends runtime.Types.Extensions.Inte
   stockMovements?: boolean | Prisma.StockProductSku$stockMovementsArgs<ExtArgs>
   productSku?: boolean | Prisma.ProductSkuDefaultArgs<ExtArgs>
   stockLocation?: boolean | Prisma.StockLocationDefaultArgs<ExtArgs>
+  stockBatches?: boolean | Prisma.StockProductSku$stockBatchesArgs<ExtArgs>
   _count?: boolean | Prisma.StockProductSkuCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -832,6 +936,7 @@ export type $StockProductSkuPayload<ExtArgs extends runtime.Types.Extensions.Int
     stockMovements: Prisma.$StockMovementPayload<ExtArgs>[]
     productSku: Prisma.$ProductSkuPayload<ExtArgs>
     stockLocation: Prisma.$StockLocationPayload<ExtArgs>
+    stockBatches: Prisma.$StockBatchesPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1184,6 +1289,7 @@ export interface Prisma__StockProductSkuClient<T, Null = never, ExtArgs extends 
   stockMovements<T extends Prisma.StockProductSku$stockMovementsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StockProductSku$stockMovementsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StockMovementPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   productSku<T extends Prisma.ProductSkuDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProductSkuDefaultArgs<ExtArgs>>): Prisma.Prisma__ProductSkuClient<runtime.Types.Result.GetResult<Prisma.$ProductSkuPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   stockLocation<T extends Prisma.StockLocationDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StockLocationDefaultArgs<ExtArgs>>): Prisma.Prisma__StockLocationClient<runtime.Types.Result.GetResult<Prisma.$StockLocationPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  stockBatches<T extends Prisma.StockProductSku$stockBatchesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.StockProductSku$stockBatchesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StockBatchesPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1589,6 +1695,30 @@ export type StockProductSku$stockMovementsArgs<ExtArgs extends runtime.Types.Ext
   take?: number
   skip?: number
   distinct?: Prisma.StockMovementScalarFieldEnum | Prisma.StockMovementScalarFieldEnum[]
+}
+
+/**
+ * StockProductSku.stockBatches
+ */
+export type StockProductSku$stockBatchesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the StockBatches
+   */
+  select?: Prisma.StockBatchesSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the StockBatches
+   */
+  omit?: Prisma.StockBatchesOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StockBatchesInclude<ExtArgs> | null
+  where?: Prisma.StockBatchesWhereInput
+  orderBy?: Prisma.StockBatchesOrderByWithRelationInput | Prisma.StockBatchesOrderByWithRelationInput[]
+  cursor?: Prisma.StockBatchesWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.StockBatchesScalarFieldEnum | Prisma.StockBatchesScalarFieldEnum[]
 }
 
 /**

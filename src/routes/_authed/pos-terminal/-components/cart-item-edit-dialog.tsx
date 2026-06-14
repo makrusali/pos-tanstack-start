@@ -119,7 +119,7 @@ const CartItemEditDialog = () => {
                       dispatch({
                         type: "updateCartItemQuantity",
                         payload: {
-                          newQty: cartItemBeingEdited!.quantity - 1,
+                          newQty: cartItemBeingEdited!.quantity.toNumber() - 1,
                           product_sku_id: cartItemBeingEdited!.product_sku_id,
                         },
                       });
@@ -129,7 +129,7 @@ const CartItemEditDialog = () => {
                   </CustomButton>
                   <Input
                     type="number"
-                    value={cartItemBeingEdited.quantity}
+                    value={cartItemBeingEdited.quantity.toNumber()}
                     onChange={(e) => {
                       dispatch({
                         type: "updateCartItemQuantity",
@@ -150,7 +150,7 @@ const CartItemEditDialog = () => {
                       dispatch({
                         type: "updateCartItemQuantity",
                         payload: {
-                          newQty: cartItemBeingEdited!.quantity + 1,
+                          newQty: cartItemBeingEdited!.quantity.toNumber() + 1,
                           product_sku_id: cartItemBeingEdited!.product_sku_id,
                         },
                       });
@@ -203,7 +203,8 @@ const CartItemEditDialog = () => {
                               </Badge>
                             )}
                             <span className="text-xs text-slate-500">
-                              {loc.quantity} unit
+                              {loc.quantity.toNumber().toLocaleString("id-ID")}{" "}
+                              unit
                             </span>
                           </div>
                         </div>

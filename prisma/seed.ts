@@ -304,6 +304,21 @@ async function main() {
       module: "promotions",
       action: "update",
     },
+    {
+      id: randomUUID(),
+      module: "pos",
+      action: "index",
+    },
+    {
+      id: randomUUID(),
+      module: "pos",
+      action: "show",
+    },
+    {
+      id: randomUUID(),
+      module: "pos",
+      action: "create",
+    },
   ];
 
   const initRoleHasPermissions = initPermissions.map((p) => ({
@@ -318,6 +333,11 @@ async function main() {
     password: await bcrypt.hash("12345678", 12),
     role_id: initRole.id,
   };
+
+  await prisma.user.deleteMany();
+  await prisma.roleHasPermission.deleteMany();
+  await prisma.role.deleteMany();
+  await prisma.permission.deleteMany();
 
   await prisma.role.create({ data: initRole });
   await prisma.permission.createMany({ data: initPermissions });

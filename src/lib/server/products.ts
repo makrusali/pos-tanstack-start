@@ -7,6 +7,7 @@ import { writeFile, mkdir, unlink } from "fs/promises";
 import { join } from "path";
 import { randomUUID } from "crypto";
 import Decimal from "decimal.js";
+import { saveMovementIn } from "./services";
 
 const UPLOAD_DIR = join(process.cwd(), "public", "uploads", "products");
 
@@ -267,49 +268,18 @@ export const createProductFn = createServerFn({ method: "POST" })
               );
             }
 
-            let totalQuantity = new Decimal(0);
-
             for (const stockLoc of sku.stock_locations) {
-              const createdStockLocationProdcutSku =
-                await tx.stockProductSku.create({
-                  data: {
-                    id: randomUUID(),
-                    product_sku_id: createdSku.id,
-                    stock_location_id: stockLoc.stock_location_id,
-                    quantity: stockLoc.quantity,
-                    is_primary: stockLoc.is_primary,
-                  },
-                });
-
-              await tx.stockMovement.create({
-                data: {
-                  id: randomUUID(),
-                  prev_quantity: 0,
-                  current_quantity: stockLoc.quantity,
-                  quantity: stockLoc.quantity,
-                  type: "in",
-                  buy_price: sku.buy_price,
-                  note: "Tambah Stock Awal Produk",
-                  stock_product_sku_id: createdStockLocationProdcutSku.id,
-                  transaction_date: new Date(),
-                  reference_id: createdSku.id,
-                  reference_type: "product_skus",
-                },
+              await saveMovementIn(tx, {
+                is_primary: stockLoc.is_primary,
+                location_id: stockLoc.stock_location_id,
+                product_sku_id: createdSku.id,
+                quantity: new Decimal(stockLoc.quantity),
+                buy_price: sku.buy_price,
+                note: "Tambah Stock Awal Produk",
+                reference_id: createdSku.id,
+                reference_type: "product_skus",
               });
-
-              totalQuantity = totalQuantity.add(
-                new Decimal(createdStockLocationProdcutSku.quantity),
-              );
             }
-
-            await tx.productSku.update({
-              data: {
-                stock_quantity: totalQuantity,
-              },
-              where: {
-                id: createdSku.id,
-              },
-            });
           }
 
           if (sku.images && sku.images.length > 0) {
@@ -544,47 +514,18 @@ export const updateProductFn = createServerFn({ method: "POST" })
               );
             }
 
-            let totalQuantity = new Decimal(0);
-
             for (const stockLoc of sku.stock_locations) {
-              const createdStockLocationProdcutSku =
-                await tx.stockProductSku.create({
-                  data: {
-                    id: randomUUID(),
-                    product_sku_id: createdSku.id,
-                    stock_location_id: stockLoc.stock_location_id,
-                    quantity: stockLoc.quantity,
-                    is_primary: stockLoc.is_primary,
-                  },
-                });
-
-              await tx.stockMovement.create({
-                data: {
-                  id: randomUUID(),
-                  prev_quantity: 0,
-                  current_quantity: stockLoc.quantity,
-                  quantity: stockLoc.quantity,
-                  type: "in",
-                  buy_price: createdSku.buy_price,
-                  note: "Tambah Stock Awal Produk",
-                  stock_product_sku_id: createdStockLocationProdcutSku.id,
-                  transaction_date: new Date(),
-                  reference_id: createdSku.id,
-                  reference_type: "product_skus",
-                },
+              await saveMovementIn(tx, {
+                is_primary: stockLoc.is_primary,
+                location_id: stockLoc.stock_location_id,
+                product_sku_id: createdSku.id,
+                quantity: new Decimal(stockLoc.quantity),
+                buy_price: sku.buy_price,
+                note: "Tambah Stock Awal Produk",
+                reference_id: createdSku.id,
+                reference_type: "product_skus",
               });
-
-              totalQuantity.add(createdStockLocationProdcutSku.quantity);
             }
-
-            await tx.productSku.update({
-              data: {
-                stock_quantity: totalQuantity,
-              },
-              where: {
-                id: createdSku.id,
-              },
-            });
           }
 
           if (sku.images && sku.images.length > 0) {

@@ -5,14 +5,19 @@ import { getCustomersFn } from "#/lib/server/customers";
 import { PosProvider } from "./-components/use-pos";
 import { getPaymentMethodsFn } from "#/lib/server/payment-methods";
 import { PosPage } from "./-components/pos-page";
+import { Suspense } from "react";
 
 export const Route = createFileRoute("/_authed/pos-terminal/")({
   component: RouteComponent,
   loader: async () => {
-    const categories = await getCategoriesFn();
-    const products = await getPosProductsFn();
-    const customers = await getCustomersFn();
-    const paymentMethods = await getPaymentMethodsFn();
+    const [categories, products, customers, paymentMethods] = await Promise.all(
+      [
+        getCategoriesFn(),
+        getPosProductsFn(),
+        getCustomersFn(),
+        getPaymentMethodsFn(),
+      ],
+    );
 
     return {
       categories: categories?.data || [],
@@ -25,8 +30,10 @@ export const Route = createFileRoute("/_authed/pos-terminal/")({
 
 function RouteComponent() {
   return (
-    <PosProvider>
-      <PosPage />
-    </PosProvider>
+    <Suspense fallback={<div>Loading ...</div>}>
+      <PosProvider>
+        <PosPage />
+      </PosProvider>
+    </Suspense>
   );
 }

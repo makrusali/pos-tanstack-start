@@ -1,7 +1,15 @@
 import { createServerFn } from "@tanstack/react-start";
-import { parseZod, ResponseError, wrap } from "./utils";
+import { parseZod, ResponseError, wrap, type ErrorItem } from "./utils";
 import { prisma } from "#/db";
 import z from "zod";
+import Decimal from "decimal.js";
+import { randomUUID } from "crypto";
+import {
+  generateReceipt,
+  generateTransactionCode,
+  saveMovementOut,
+} from "./services";
+import { authMiddleware } from "./middlewares";
 
 export const getPosProductsFn = createServerFn({ method: "GET" }).handler(
   async () =>
@@ -35,6 +43,7 @@ export const getPosProductsFn = createServerFn({ method: "GET" }).handler(
       return products.map((p) => ({
         id: p.product.id,
         sku_id: p.id,
+        code: p.code,
         display_name: p.product.name + (p.name ? ` - ${p.name}` : ""),
         sku_name: p.name,
         product_name: p.product.name,
@@ -104,20 +113,19 @@ export const getPaymentMethodsFn = createServerFn({ method: "GET" }).handler(
       return methods;
     }),
 );
-
 const SaveTransactionScheme = z.object({
   id: z.string().optional(),
   status: z.enum(["draft", "done"]),
-  customer_id: z.string().optional(),
+  customer_id: z.string().nullable().optional(),
   promotion_id: z.string().optional(),
   note: z.string().optional(),
   discount_value: z.number().optional(),
   discount_type: z.enum(["percent", "fixed"]).optional(),
-  another_fees: z
+  other_fees: z
     .array(
       z.object({
-        note: z.string().optional(),
-        price: z.number().min(0),
+        note: z.string(),
+        amount: z.number().min(0),
       }),
     )
     .optional(),
@@ -125,261 +133,305 @@ const SaveTransactionScheme = z.object({
     .array(
       z.object({
         sku_id: z.string(),
-        quantity: z.number().min(0.01),
+        quantity: z.number(),
         price: z.number().min(0),
-        note: z.string().optional(),
-        discount_id: z.string().optional(),
+        note: z.string().nullable().optional(),
+        discount_id: z.string().nullable().optional(),
         discount_value: z.number().optional(),
-        discount_type: z.enum(["percent", "fixed"]).optional(),
+        discount_type: z.enum(["percent", "fixed"]).nullable().optional(),
+        selected_stock_location_id: z.uuid(),
       }),
     )
     .min(1, "Minimal 1 item"),
-  payments: z
-    .array(
-      z.object({
-        payment_method_id: z.string(),
-        total: z.number().min(0),
-      }),
-    )
-    .optional(),
+  payment_method_id: z.uuid(),
+  customer_pay_amount: z.number().optional().nullable(),
 });
 
 export const saveTransactionFn = createServerFn({ method: "POST" })
   .inputValidator(parseZod(SaveTransactionScheme))
-  .handler(async ({ data }) =>
+  .middleware([authMiddleware("pos", "create", false)])
+  .handler(async ({ data, context }) =>
     wrap(async () => {
+      const user_id = context.user_id;
+
       const result = await prisma.$transaction(async (tx) => {
-        let priceTotal = 0;
-        let discountTotal = 0;
-        let anotherTotal = 0;
-        let grandTotal = 0;
+        if (data.status === "done") {
+          let transactionDiscountAmount = 0;
+          let transactionItemsDiscountAmount = 0;
+          let transactionDiscountTotal = 0;
+          let transactionPriceTotal = 0;
+          let transactionOtherCostTotal = 0;
+          let transactionGrandTotal = 0;
+          let transactionPriceBeforeDiscountTotal = 0;
 
-        // Calculate totals
-        for (const item of data.items) {
-          const subtotal = item.price * item.quantity;
-          priceTotal = priceTotal + subtotal;
+          const transactionID = randomUUID();
+          const code = generateTransactionCode();
 
-          let itemDiscount = 0;
-          if (item.discount_value && item.discount_value > 0) {
-            if (item.discount_type === "percent") {
-              itemDiscount = (subtotal * item.discount_value) / 100;
-            } else {
-              itemDiscount = item.discount_value;
-            }
-          }
-          discountTotal = discountTotal + itemDiscount;
-        }
-
-        // Calculate another fees total
-        if (data.another_fees) {
-          for (const fee of data.another_fees) {
-            anotherTotal = anotherTotal + fee.price;
-          }
-        }
-
-        // Calculate discount from promotion
-        let promotionDiscount = 0;
-        if (data.discount_value && data.discount_value > 0) {
-          if (data.discount_type === "percent") {
-            promotionDiscount = (priceTotal * data.discount_value) / 100;
-          } else {
-            promotionDiscount = data.discount_value;
-          }
-        }
-
-        const totalDiscount = discountTotal + promotionDiscount;
-        grandTotal = Math.round(priceTotal + anotherTotal - totalDiscount);
-
-        // Create or update transaction
-        let transaction;
-        if (data.id) {
-          // Update existing draft
-          transaction = await tx.transaction.update({
-            where: { id: data.id },
+          const errorItems: ErrorItem[] = [];
+          await tx.transaction.create({
             data: {
-              status: data.status,
+              code: code,
+              id: transactionID,
+              maker_id: user_id,
               customer_id: data.customer_id,
-              promotion_id: data.promotion_id,
-              note: data.note,
-              discount_value: data.discount_value ?? null,
-              discount_type: data.discount_type,
-              discount_total: Math.round(totalDiscount),
-              price_total: Math.round(priceTotal),
-              another_total: Math.round(anotherTotal),
-              grand_total: grandTotal,
-              transaction_date: data.status === "done" ? new Date() : undefined,
+              discount_total: 0,
+              grand_total: 0,
+              items_discount_amount: 0,
+              other_cost_total: 0,
+              price_total: 0,
+              status: "done",
+              transaction_discount_amount: 0,
+              price_before_discount_total: 0,
+              payment_status: "paid",
             },
           });
 
-          // Delete existing items
-          await tx.transactionItem.deleteMany({
-            where: { transaction_id: transaction.id },
-          });
+          for (let itemIndex = 0; itemIndex < data.items.length; itemIndex++) {
+            const item = data.items[itemIndex];
 
-          // Delete existing another fees
-          await tx.anotherFee.deleteMany({
-            where: { transaction_id: transaction.id },
-          });
-
-          // Delete existing payments if status is draft
-          if (data.status === "draft") {
-            await tx.payment.deleteMany({
-              where: { transaction_id: transaction.id },
-            });
-          }
-        } else {
-          // Create new transaction
-          transaction = await tx.transaction.create({
-            data: {
-              status: data.status,
-              customer_id: data.customer_id,
-              promotion_id: data.promotion_id,
-              note: data.note,
-              discount_value: data.discount_value ?? null,
-              discount_type: data.discount_type,
-              discount_total: Math.round(totalDiscount),
-              price_total: Math.round(priceTotal),
-              another_total: Math.round(anotherTotal),
-              grand_total: grandTotal,
-            },
-          });
-        }
-
-        // Create transaction items
-        for (const item of data.items) {
-          const sku = await tx.productSku.findUnique({
-            where: { id: item.sku_id },
-            include: { product: true },
-          });
-
-          if (!sku) {
-            throw new ResponseError("SKU tidak ditemukan");
-          }
-
-          const subtotal = item.price * item.quantity;
-          let itemDiscountTotal = 0;
-
-          if (item.discount_value && item.discount_value > 0) {
-            if (item.discount_type === "percent") {
-              itemDiscountTotal = (subtotal * item.discount_value) / 100;
-            } else {
-              itemDiscountTotal = item.discount_value;
-            }
-          }
-
-          const itemTotal = Math.round(subtotal - itemDiscountTotal);
-
-          await tx.transactionItem.create({
-            data: {
-              transaction_id: transaction.id,
-              product_sku_id: item.sku_id,
-              quantity: item.quantity,
-              price: item.price,
-              subtotal: Math.round(subtotal),
-              discount_value: item.discount_value ?? null,
-              discount_type: item.discount_type,
-              discount_total: Math.round(itemDiscountTotal),
-              total: itemTotal,
-              note: item.note,
-            },
-          });
-
-          // Update stock if status is done
-          if (data.status === "done") {
-            const stockProduct = await tx.stockProductSku.findFirst({
+            const findedProductSku = await tx.productSku.findUnique({
               where: {
-                product_sku_id: item.sku_id,
-                is_primary: true,
+                id: item.sku_id,
+              },
+              include: {
+                stockProductSkus: {
+                  include: {
+                    stockLocation: true,
+                  },
+                },
               },
             });
 
-            if (stockProduct) {
-              const newQuantity = stockProduct.quantity - item.quantity;
-              if (newQuantity < 0) {
-                throw new ResponseError(
-                  `Stok ${sku.product.name} tidak mencukupi`,
-                );
-              }
-
-              await tx.stockProductSku.update({
-                where: { id: stockProduct.id },
-                data: { quantity: newQuantity },
+            if (!findedProductSku) {
+              errorItems.push({
+                key: `item.${itemIndex}.product_sku_id`,
+                message: "Produk tidak valid",
               });
+              continue;
+            }
 
-              // Create stock movement
-              await tx.stockMovement.create({
-                data: {
-                  reference_type: "sale",
-                  reference_id: transaction.id,
-                  stock_product_sku_id: stockProduct.id,
-                  prev_quantity: stockProduct.quantity,
-                  quantity: -item.quantity,
-                  current_quantity: newQuantity,
-                  type: "out",
-                  note: `Penjualan - ${sku.product.name}`,
+            if (findedProductSku.stock_quantity.lessThan(item.quantity)) {
+              errorItems.push({
+                key: `item.${itemIndex}.product_sku_id`,
+                message: "Stock produk tidak mencukupi",
+              });
+              continue;
+            }
+
+            let discountAmount = 0;
+            const discountValue = item.discount_value || 0;
+            if (item.discount_type === "fixed") {
+              discountAmount = findedProductSku.price - discountValue;
+            } else if (item.discount_type === "percent") {
+              discountAmount = findedProductSku.price * (discountValue / 100);
+            }
+
+            const priceBeforeDiscountTotal = new Decimal(item.quantity)
+              .mul(findedProductSku.price)
+              .toNumber();
+            const discountedPrice = findedProductSku.price - discountAmount;
+            const subtotal = new Decimal(item.quantity)
+              .mul(new Decimal(discountedPrice))
+              .toNumber();
+            const discountTotal = new Decimal(item.quantity)
+              .mul(new Decimal(discountAmount))
+              .toNumber();
+
+            const selectedStockPerLocation =
+              findedProductSku.stockProductSkus.find(
+                (l) => l.stock_location_id === item.selected_stock_location_id,
+              );
+            const enough =
+              selectedStockPerLocation?.quantity?.greaterThan(item.quantity) ||
+              false;
+
+            console.log(enough, selectedStockPerLocation);
+
+            // @note: @todo: Some units may not be splittable across different locations.
+            // For example, for a cable, if the user wants to buy 5 meters,
+            // they must receive a continuous 5-meter length, not split into
+            // multiple pieces.
+            if (enough && selectedStockPerLocation) {
+              const stockBatches = await tx.stockBatches.findMany({
+                where: {
+                  stock_product_sku_id: selectedStockPerLocation.id,
+                  product_sku_id: selectedStockPerLocation.product_sku_id,
+                  remaining_quantity: {
+                    gt: 0,
+                  },
+                },
+                orderBy: {
+                  date: "asc",
                 },
               });
+
+              if (stockBatches.length === 0) {
+                throw new ResponseError("Produk tida memiliki stock.");
+              }
+
+              const qty = new Decimal(item.quantity);
+              let consumedQuantity = new Decimal(0);
+              for (
+                let stockBatchIndex = 0;
+                stockBatchIndex < stockBatches.length;
+                stockBatchIndex++
+              ) {
+                const batch = stockBatches[stockBatchIndex];
+                const feedQty = qty.sub(consumedQuantity);
+                if (batch.quantity.sub(feedQty).isNeg()) {
+                  continue;
+                }
+
+                const createdItem = await tx.transactionItem.create({
+                  data: {
+                    transaction_id: transactionID,
+                    buy_price: batch.buy_price,
+                    product_sku_id: item.sku_id,
+                    quantity: feedQty,
+                    price: findedProductSku.price,
+                    discounted_price: discountedPrice,
+                    subtotal: subtotal,
+                    discount_value: discountValue,
+                    discount_type: item.discount_type,
+                    discount_amount: discountAmount,
+                    discount_total: discountTotal,
+                    note: item.note,
+                  },
+                });
+
+                transactionItemsDiscountAmount =
+                  transactionItemsDiscountAmount + createdItem.discount_total;
+                transactionPriceTotal =
+                  transactionPriceTotal + createdItem.subtotal;
+                transactionPriceBeforeDiscountTotal =
+                  transactionPriceBeforeDiscountTotal +
+                  priceBeforeDiscountTotal;
+
+                await saveMovementOut(tx, {
+                  location_id: selectedStockPerLocation.stockLocation.id,
+                  note: "",
+                  product_sku_id: item.sku_id,
+                  quantity: feedQty,
+                  reference_id: transactionID,
+                  reference_type: "sales",
+                  stock_batch_id: batch.id,
+                });
+
+                consumedQuantity = consumedQuantity.add(feedQty);
+
+                if (consumedQuantity.eq(qty)) {
+                  break;
+                }
+              }
+            } else {
+              for (
+                let stockLocationIndex = 0;
+                stockLocationIndex < findedProductSku.stockProductSkus.length;
+                stockLocationIndex++
+              ) {
+                // @todo: multiple loation stocks
+              }
             }
           }
-        }
 
-        // Create another fees
-        if (data.another_fees && data.another_fees.length > 0) {
-          for (const fee of data.another_fees) {
-            await tx.anotherFee.create({
-              data: {
-                transaction_id: transaction.id,
-                note: fee.note,
-                price: Math.round(fee.price),
-              },
-            });
-          }
-        }
+          if (data.other_fees) {
+            for (
+              let otherCostIndex = 0;
+              otherCostIndex < data.other_fees?.length;
+              otherCostIndex++
+            ) {
+              const item = data.other_fees[otherCostIndex];
+              const created = await tx.otherCost.create({
+                data: {
+                  transaction_id: transactionID,
+                  price: item.amount,
+                  note: item.note,
+                },
+              });
 
-        // Create payments if status is done
-        if (
-          data.status === "done" &&
-          data.payments &&
-          data.payments.length > 0
-        ) {
-          let totalPaid = 0;
-          for (const payment of data.payments) {
-            totalPaid = totalPaid + payment.total;
-            await tx.payment.create({
-              data: {
-                transaction_id: transaction.id,
-                payment_method_id: payment.payment_method_id,
-                total: payment.total,
-                status: "paid",
-                change: 0,
-                balance: 0,
-              },
-            });
+              transactionOtherCostTotal =
+                transactionOtherCostTotal + created.price;
+            }
           }
 
-          const change = totalPaid - grandTotal;
-          if (change < 0) {
-            throw new ResponseError("Pembayaran kurang");
-          }
+          transactionDiscountTotal =
+            transactionDiscountAmount + transactionItemsDiscountAmount;
+          transactionGrandTotal =
+            transactionOtherCostTotal + transactionPriceTotal;
 
-          // Update payment with change
-          const lastPayment = await tx.payment.findFirst({
-            where: { transaction_id: transaction.id },
-            orderBy: { created_at: "desc" },
+          const createdTransaction = await tx.transaction.update({
+            where: {
+              id: transactionID,
+            },
+            data: {
+              other_cost_total: transactionOtherCostTotal,
+              grand_total: transactionGrandTotal,
+              price_before_discount_total: transactionPriceBeforeDiscountTotal,
+              price_total: transactionPriceTotal,
+              // discount
+              items_discount_amount: transactionItemsDiscountAmount,
+              transaction_discount_amount: transactionDiscountAmount,
+              discount_total: transactionDiscountTotal,
+            },
           });
 
-          if (lastPayment) {
-            await tx.payment.update({
-              where: { id: lastPayment.id },
-              data: {
-                change: change,
-                balance: change,
+          const balance =
+            data.customer_pay_amount || createdTransaction.grand_total;
+          await tx.payment.create({
+            data: {
+              transaction_id: transactionID,
+              balance: balance,
+              change: balance - createdTransaction.grand_total,
+              payment_method_id: data.payment_method_id,
+              status: "paid",
+              total: createdTransaction.grand_total,
+            },
+          });
+
+          if (errorItems.length > 0) {
+            throw new ResponseError(errorItems);
+          }
+
+          {
+            const setting = await tx.setting.findFirst();
+            const transaction = await tx.transaction.findUnique({
+              where: {
+                id: transactionID,
+              },
+              include: {
+                anotherFees: true,
+                customer: true,
+                discount: true,
+                maker: true,
+                payments: {
+                  include: {
+                    paymentMethod: true,
+                  },
+                },
+                promotion: true,
+                transactionItems: {
+                  include: {
+                    productSku: {
+                      include: {
+                        product: true,
+                        unit: true,
+                      },
+                    },
+                  },
+                },
               },
             });
-          }
-        }
 
-        return transaction;
+            const result = generateReceipt({
+              setting: setting!,
+              transaction: transaction!,
+            });
+
+            return result;
+          }
+        } else {
+          // @todo: safe as a draft
+        }
       });
 
       return result;
@@ -473,7 +525,7 @@ export const deleteDraftTransactionFn = createServerFn({ method: "POST" })
         await tx.transactionItem.deleteMany({
           where: { transaction_id: data.id },
         });
-        await tx.anotherFee.deleteMany({
+        await tx.otherCost.deleteMany({
           where: { transaction_id: data.id },
         });
         await tx.payment.deleteMany({

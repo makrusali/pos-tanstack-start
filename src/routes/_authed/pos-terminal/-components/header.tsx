@@ -1,6 +1,7 @@
 import {
   BarcodeIcon,
   CameraIcon,
+  ChevronLeftIcon,
   ExpandIcon,
   MinimizeIcon,
   RotateCcwIcon,
@@ -14,10 +15,24 @@ import { usePosDispatch, usePosState } from "./use-pos";
 import { toast } from "sonner";
 import { useCameraBaroceScanner } from "./use-camera-scanner-dialog";
 import { useBarcodeScanner } from "./use-barcode-scanner";
+import { getRouteApi, useNavigate, useRouter } from "@tanstack/react-router";
+import { useQuery } from "@tanstack/react-query";
+import { wrapFn } from "#/lib/utils";
+import { getPosProductsFn } from "#/lib/server/pos";
+import Decimal from "decimal.js";
+
+const Route = getRouteApi("/_authed/pos-terminal/");
 
 const Header = () => {
   const state = usePosState();
   const dispatch = usePosDispatch();
+  const { products: initialProducts } = Route.useLoaderData();
+  const { data: products } = useQuery({
+    queryKey: ["pos-products"],
+    initialData: initialProducts,
+    queryFn: () => wrapFn(getPosProductsFn(), []),
+  });
+  const router = useRouter();
 
   const resetDialog = useConfirmDialog({
     onConfirm: () => {
@@ -31,12 +46,70 @@ const Header = () => {
   });
 
   const cameraBarcodeScanner = useCameraBaroceScanner({
-    onScanned: () => {},
+    onScanned: (code) => {
+      const findedProducts = products.find((p) => p.code === code);
+      if (!findedProducts) {
+        toast.error("Produk tidak ditemukan.", {
+          position: "top-center",
+        });
+        return;
+      }
+
+      dispatch({
+        type: "addToCart",
+        payload: {
+          selected_stock_location_id: null,
+          stock_locations: findedProducts.stock_locations,
+          product_sku_id: findedProducts.sku_id,
+          product_display_name: findedProducts.display_name,
+          product_image_path: findedProducts.sku_image_path,
+          stock_quantity: findedProducts.stock_quantity,
+          unit: findedProducts.unit,
+          price: findedProducts.price,
+          quantity: new Decimal(0),
+          discount_type: null,
+          discount_value: 0,
+          note: "",
+          discount_amount: 0,
+          subtotal: 0,
+          discount_total: 0,
+          price_after_discount: 0,
+        },
+      });
+    },
   });
 
   useBarcodeScanner({
     onEnter: (code) => {
-      console.log("on scanned", code);
+      const findedProducts = products.find((p) => p.code === code);
+      if (!findedProducts) {
+        toast.error("Produk tidak ditemukan.", {
+          position: "top-center",
+        });
+        return;
+      }
+
+      dispatch({
+        type: "addToCart",
+        payload: {
+          selected_stock_location_id: null,
+          stock_locations: findedProducts.stock_locations,
+          product_sku_id: findedProducts.sku_id,
+          product_display_name: findedProducts.display_name,
+          product_image_path: findedProducts.sku_image_path,
+          stock_quantity: findedProducts.stock_quantity,
+          unit: findedProducts.unit,
+          price: findedProducts.price,
+          quantity: new Decimal(0),
+          discount_type: null,
+          discount_value: 0,
+          note: "",
+          discount_amount: 0,
+          subtotal: 0,
+          discount_total: 0,
+          price_after_discount: 0,
+        },
+      });
     },
     active: state.mode === "barcode_scanner",
   });
@@ -47,8 +120,13 @@ const Header = () => {
       <cameraBarcodeScanner.Dialog />
 
       <div className="flex items-center gap-2 sm:gap-3 flex-1 min-w-0">
-        <div className="w-9 h-9 sm:w-10 sm:h-10 bg-linear-to-br from-slate-800 to-slate-900 rounded-xl flex items-center justify-center text-white shrink-0 shadow-lg shadow-slate-900/20">
-          <StoreIcon className="w-5 h-5" />
+        <div
+          className="w-9 h-9 sm:w-10 sm:h-10 bg-linear-to-br from-slate-800 to-slate-900 rounded-xl flex items-center justify-center text-white shrink-0 shadow-lg shadow-slate-900/20"
+          onClick={() => {
+            router.history.back();
+          }}
+        >
+          <ChevronLeftIcon className="w-5 h-5" />
         </div>
 
         <CustomButton
@@ -66,6 +144,9 @@ const Header = () => {
               state.mode === "barcode_scanner"
                 ? "Mode scan barcode dinonaktifkan"
                 : "Mode scan barcode diaktifkan",
+              {
+                position: "top-center",
+              },
             );
           }}
         >

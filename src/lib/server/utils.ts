@@ -11,20 +11,19 @@ export class ResponseError extends Error {
     this.errors =
       typeof errors === "string"
         ? [
-          {
-            key: "global",
-            message: errors,
-          },
-        ]
+            {
+              key: "global",
+              message: errors,
+            },
+          ]
         : errors;
   }
 }
 
-type ErrorItem = {
+export type ErrorItem = {
   key: string;
   message: string;
 };
-
 
 export type Response<T> = {
   success: boolean;
@@ -33,9 +32,7 @@ export type Response<T> = {
   errors?: ErrorItem[];
 };
 
-export const wrap = async <T>(
-  func: () => Promise<T>
-): Promise<Response<T>> => {
+export const wrap = async <T>(func: () => Promise<T>): Promise<Response<T>> => {
   try {
     const data = await func();
 
@@ -46,7 +43,6 @@ export const wrap = async <T>(
     };
   } catch (error) {
     console.log("[SERVER ERROR]: ", error);
-
 
     if (error instanceof ZodError) {
       throw {
@@ -72,7 +68,6 @@ export const wrap = async <T>(
       };
     }
 
-
     throw {
       success: false,
       errors: [
@@ -80,13 +75,13 @@ export const wrap = async <T>(
           key: "global",
           message: "Terjadi kesalahan pada server.",
         },
-      ]
+      ],
     };
   }
 };
 
 export function parseZod<Schema extends z.ZodSchema>(
-  schema: Schema
+  schema: Schema,
 ): (input: z.input<Schema>) => z.output<Schema> {
   return (input: z.input<Schema>) => {
     const res = schema.safeParse(input);

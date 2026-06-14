@@ -11,7 +11,9 @@ export const applyFormErrors = (form: any, err: any) => {
   const errors = err?.errors ?? [];
   errors.forEach((e: any) => {
     if (e.key === "global") {
-      toast.error(e.message);
+      toast.error(e.message, {
+        position: "top-center",
+      });
       return;
     }
 
@@ -272,4 +274,12 @@ export function inputFormatRP(value?: number | string): string {
 
 export function inputParseRP(value: string): number {
   return Number(value.replace(/\./g, "").replace(/,/g, "."));
+}
+
+export async function wrapFn<T>(
+  promise: Promise<{ data?: T }>,
+  fallback: T,
+): Promise<T> {
+  const result = await promise;
+  return result?.data ?? fallback;
 }

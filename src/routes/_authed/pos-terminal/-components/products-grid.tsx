@@ -3,7 +3,10 @@ import { usePosDispatch, usePosState } from "./use-pos";
 import { useMemo } from "react";
 import { ScrollArea } from "#/components/ui/scroll-area";
 import { ImageIcon, LayersIcon, ScaleIcon } from "lucide-react";
-import { cn, formatCurrencyIDR } from "#/lib/utils";
+import { cn, formatCurrencyIDR, wrapFn } from "#/lib/utils";
+import Decimal from "decimal.js";
+import { useQuery } from "@tanstack/react-query";
+import { getPosProductsFn } from "#/lib/server/pos";
 
 const Route = getRouteApi("/_authed/pos-terminal/");
 
@@ -11,12 +14,18 @@ const ProductGrid = () => {
   const state = usePosState();
   const dispatch = usePosDispatch();
 
-  const { products } = Route.useLoaderData();
+  const { products: initialProducts } = Route.useLoaderData();
+  const { data: products } = useQuery({
+    queryKey: ["pos-products"],
+    initialData: initialProducts,
+    queryFn: () => wrapFn(getPosProductsFn(), []),
+  });
+
   const filteredProducts = useMemo(() => {
     return products.filter((p) =>
       p.display_name.toLowerCase().includes(state.searchProductKeyword),
     );
-  }, [state.searchProductKeyword]);
+  }, [state.searchProductKeyword, products]);
 
   return (
     <div className="flex-1 overflow-hidden">
@@ -24,7 +33,7 @@ const ProductGrid = () => {
         <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 xl:grid-cols-6 p-3 gap-3">
           {filteredProducts.map((p) => {
             const totalStock = p.stock_quantity;
-            const isLowStock = totalStock <= 5;
+            const isLowStock = totalStock.lessThanOrEqualTo(new Decimal(5));
 
             return (
               <div
@@ -38,10 +47,10 @@ const ProductGrid = () => {
                       product_sku_id: p.sku_id,
                       product_display_name: p.display_name,
                       product_image_path: p.sku_image_path,
-                      stock_quantity: p.stock_quantity || 0,
+                      stock_quantity: p.stock_quantity,
                       unit: p.unit,
                       price: p.price,
-                      quantity: 0,
+                      quantity: new Decimal(0),
                       discount_type: null,
                       discount_value: 0,
                       note: "",
@@ -77,11 +86,11 @@ const ProductGrid = () => {
                   <div className="absolute top-2 right-2">
                     {isLowStock ? (
                       <span className="px-2 py-1 bg-rose-500 text-white text-[10px] font-bold rounded-lg shadow-lg">
-                        Stok {totalStock}
+                        Stok {totalStock.toNumber().toLocaleString("id-ID")}
                       </span>
                     ) : (
                       <span className="px-2 py-1 bg-black text-white text-[10px] font-bold rounded-lg shadow-lg">
-                        Stok {totalStock}
+                        Stok {totalStock.toNumber().toLocaleString("id-ID")}
                       </span>
                     )}
                   </div>

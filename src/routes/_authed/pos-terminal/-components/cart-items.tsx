@@ -12,7 +12,6 @@ import {
 import { usePosDispatch, usePosState } from "./use-pos";
 import { cn, formatCurrencyIDR } from "#/lib/utils";
 import { CustomButton } from "./button";
-import { Input } from "#/components/ui/input";
 import { QuantityInput } from "./quantity-input";
 
 const CartItems = () => {
@@ -143,7 +142,7 @@ const CartItems = () => {
                         dispatch({
                           type: "updateCartItemQuantity",
                           payload: {
-                            newQty: item.quantity - 1,
+                            newQty: item.quantity.toNumber() - 1,
                             product_sku_id: item.product_sku_id,
                           },
                         });
@@ -177,7 +176,7 @@ const CartItems = () => {
                       className={cn(
                         "w-20 h-10 text-center font-bold text-slate-800 rounded-xl border-0 bg-white focus:ring-2 focus:ring-emerald-500",
                       )}
-                      value={item.quantity}
+                      value={item.quantity.toNumber()}
                       type={item.unit.type}
                       onChange={(value) => {
                         dispatch({
@@ -196,7 +195,7 @@ const CartItems = () => {
                         dispatch({
                           type: "updateCartItemQuantity",
                           payload: {
-                            newQty: item.quantity + 1,
+                            newQty: item.quantity.toNumber() + 1,
                             product_sku_id: item.product_sku_id,
                           },
                         });

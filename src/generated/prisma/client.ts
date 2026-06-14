@@ -102,6 +102,16 @@ export type StockLocation = Prisma.StockLocationModel
  */
 export type StockProductSku = Prisma.StockProductSkuModel
 /**
+ * Model StockBatches
+ * 
+ */
+export type StockBatches = Prisma.StockBatchesModel
+/**
+ * Model StockBatchUsage
+ * 
+ */
+export type StockBatchUsage = Prisma.StockBatchUsageModel
+/**
  * Model Promotion
  * 
  */
@@ -147,10 +157,10 @@ export type Payment = Prisma.PaymentModel
  */
 export type TransactionItem = Prisma.TransactionItemModel
 /**
- * Model AnotherFee
+ * Model OtherCost
  * 
  */
-export type AnotherFee = Prisma.AnotherFeeModel
+export type OtherCost = Prisma.OtherCostModel
 /**
  * Model StockMovement
  * 

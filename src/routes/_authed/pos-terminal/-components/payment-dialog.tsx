@@ -17,6 +17,7 @@ import {
 import { CustomButton } from "./button";
 import { usePosDispatch, usePosState } from "./use-pos";
 import {
+  applyFormErrors,
   cn,
   formatCurrencyIDR,
   inputFormatRP,
@@ -27,7 +28,7 @@ import { getRouteApi } from "@tanstack/react-router";
 import { Input } from "#/components/ui/input";
 import { Separator } from "#/components/ui/separator";
 import { useState } from "react";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { saveTransactionFn } from "#/lib/server/pos";
 
 const Route = getRouteApi("/_authed/pos-terminal/");
@@ -38,6 +39,7 @@ const PaymentDialog = () => {
   const state = usePosState();
   const dispatch = usePosDispatch();
   const [paidAmount, setPaidAmount] = useState<number>(0);
+  const queryClient = useQueryClient();
 
   const processPayment = useMutation({
     onMutate: () => {
@@ -49,6 +51,7 @@ const PaymentDialog = () => {
       });
     },
     onError: () => {
+      queryClient.invalidateQueries({ queryKey: ["pos-products"] });
       dispatch({
         type: "changePaymentStep",
         payload: {
@@ -56,11 +59,72 @@ const PaymentDialog = () => {
         },
       });
     },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["pos-products"] });
+      dispatch({
+        type: "changePaymentStep",
+        payload: {
+          step: "success",
+        },
+      });
+    },
     mutationFn: saveTransactionFn,
   });
 
-  const saveTransaction = () => {
-    processPayment.mutate();
+  const handleSaveReceipt = () => {
+    if (
+      processPayment.data?.data?.bytes &&
+      processPayment.data?.data?.filename
+    ) {
+      const filename = processPayment.data.data.filename;
+      const bytes = processPayment.data.data.bytes;
+      const blob = new Blob([new Uint8Array(bytes)], {
+        type: "application/pdf",
+      });
+
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = filename;
+      a.click();
+
+      URL.revokeObjectURL(url);
+    }
+  };
+
+  const saveTransaction = async () => {
+    if (state.selectedPaymentMethod === null) {
+      return;
+    }
+
+    try {
+      const result = await processPayment.mutateAsync({
+        data: {
+          customer_id: state.selectedCustomerId,
+          status: "done",
+          items: state.carts.map((c) => ({
+            price: c.price,
+            quantity: c.quantity.toNumber(),
+            selected_stock_location_id: c.selected_stock_location_id!,
+            discount_type: c.discount_type,
+            discount_value: c.discount_value,
+            note: c.note,
+            sku_id: c.product_sku_id,
+            discount_id: c.discount_id,
+          })),
+          payment_method_id: state.selectedPaymentMethod.id,
+          customer_pay_amount: paidAmount,
+          other_fees: state.otherCosts.map((oc) => ({
+            note: oc.note,
+            amount: oc.amount,
+          })),
+        },
+      });
+      console.log("result: ", result);
+    } catch (error: any) {
+      applyFormErrors(null, error);
+    }
   };
 
   return (
@@ -315,21 +379,28 @@ const PaymentDialog = () => {
             </div>
 
             <div className="px-6 flex gap-3">
-              <CustomButton variant="secondary" className="flex-1 py-4">
+              <CustomButton
+                variant="secondary"
+                className="flex-1 py-4"
+                onClick={() => handleSaveReceipt()}
+              >
                 <ReceiptIcon className="w-5 h-5 mr-2 inline" />
                 Cetak
               </CustomButton>
               <CustomButton
                 variant="primary"
                 className="flex-1 py-4"
-                onClick={() =>
+                onClick={() => {
+                  dispatch({
+                    type: "clearCart",
+                  });
                   dispatch({
                     type: "changeDialogMode",
                     payload: {
                       mode: "none",
                     },
-                  })
-                }
+                  });
+                }}
               >
                 Transaksi Baru
               </CustomButton>

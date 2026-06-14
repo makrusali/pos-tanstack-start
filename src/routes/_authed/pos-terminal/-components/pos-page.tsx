@@ -17,7 +17,7 @@ import { CustomerDialog } from "./customer-dialog";
 export const Route = getRouteApi("/_authed/pos-terminal/");
 
 const PosPage = () => {
-  const { categories, products, customers } = Route.useLoaderData();
+  const { customers } = Route.useLoaderData();
 
   const dispatch = usePosDispatch();
   const state = usePosState();
@@ -38,37 +38,18 @@ const PosPage = () => {
     (c) => c.id === state.selectedCustomerId,
   );
 
-  // ── Render ────────────────────────────────────────────────────────
-  //
   return (
     <div className="fixed inset-0 w-screen h-screen bg-slate-50 z-50 flex">
-      {/* ═══ RESET CONFIRMATION DIALOG ═══ */}
       <resetDialog.Dialog />
-
-      {/* ═══ EDIT ITEM DIALOG ═══ */}
       <CartItemEditDialog />
-
-      {/* ═══ CUSTOMER DIALOG ═══ */}
       <CustomerDialog />
-
-      {/* ═══ PROMOTION DIALOG ═══ */}
-
-      {/* ═══ CALCULATOR DIALOG ═══ */}
       <calculator.Dialog />
-
-      {/* ═══ PAYMENT DIALOG ═══ */}
       <PaymentDialog />
 
       <div className="flex flex-col h-full w-full min-w-0 bg-slate-50">
-        {/* ─── Header ─── */}
         <Header />
 
-        {/* ─── Categories ─── */}
-
-        {/* ─── Products Grid ─── */}
         <ProductGrid />
-
-        {/* ─── Bottom Bar ─── */}
         <div className="p-3 border-t border-slate-100 bg-white/80 backdrop-blur-sm shrink-0 flex gap-2">
           <calculator.Trigger>
             {({ setOpen }) => (

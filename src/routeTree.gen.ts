@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as AuthedRouteImport } from './routes/_authed'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as ErrorAuthorizationIndexRouteImport } from './routes/error-authorization/index'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AuthedUnitsIndexRouteImport } from './routes/_authed/units/index'
 import { Route as AuthedStockMovementsIndexRouteImport } from './routes/_authed/stock-movements/index'
@@ -46,6 +47,11 @@ const AuthedRoute = AuthedRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ErrorAuthorizationIndexRoute = ErrorAuthorizationIndexRouteImport.update({
+  id: '/error-authorization/',
+  path: '/error-authorization/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthLoginRoute = AuthLoginRouteImport.update({
@@ -194,6 +200,7 @@ const AuthedCategoriesEditIdRoute = AuthedCategoriesEditIdRouteImport.update({
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth/login': typeof AuthLoginRoute
+  '/error-authorization/': typeof ErrorAuthorizationIndexRoute
   '/categories/add': typeof AuthedCategoriesAddRoute
   '/customers/add': typeof AuthedCustomersAddRoute
   '/payment-methods/add': typeof AuthedPaymentMethodsAddRoute
@@ -224,6 +231,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth/login': typeof AuthLoginRoute
+  '/error-authorization': typeof ErrorAuthorizationIndexRoute
   '/categories/add': typeof AuthedCategoriesAddRoute
   '/customers/add': typeof AuthedCustomersAddRoute
   '/payment-methods/add': typeof AuthedPaymentMethodsAddRoute
@@ -256,6 +264,7 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authed': typeof AuthedRouteWithChildren
   '/auth/login': typeof AuthLoginRoute
+  '/error-authorization/': typeof ErrorAuthorizationIndexRoute
   '/_authed/categories/add': typeof AuthedCategoriesAddRoute
   '/_authed/customers/add': typeof AuthedCustomersAddRoute
   '/_authed/payment-methods/add': typeof AuthedPaymentMethodsAddRoute
@@ -288,6 +297,7 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth/login'
+    | '/error-authorization/'
     | '/categories/add'
     | '/customers/add'
     | '/payment-methods/add'
@@ -318,6 +328,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/auth/login'
+    | '/error-authorization'
     | '/categories/add'
     | '/customers/add'
     | '/payment-methods/add'
@@ -349,6 +360,7 @@ export interface FileRouteTypes {
     | '/'
     | '/_authed'
     | '/auth/login'
+    | '/error-authorization/'
     | '/_authed/categories/add'
     | '/_authed/customers/add'
     | '/_authed/payment-methods/add'
@@ -381,6 +393,7 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthedRoute: typeof AuthedRouteWithChildren
   AuthLoginRoute: typeof AuthLoginRoute
+  ErrorAuthorizationIndexRoute: typeof ErrorAuthorizationIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -397,6 +410,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/error-authorization/': {
+      id: '/error-authorization/'
+      path: '/error-authorization'
+      fullPath: '/error-authorization/'
+      preLoaderRoute: typeof ErrorAuthorizationIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/auth/login': {
@@ -656,6 +676,7 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthedRoute: AuthedRouteWithChildren,
   AuthLoginRoute: AuthLoginRoute,
+  ErrorAuthorizationIndexRoute: ErrorAuthorizationIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

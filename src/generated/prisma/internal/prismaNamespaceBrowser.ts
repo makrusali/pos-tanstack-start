@@ -63,6 +63,8 @@ export const ModelName = {
   ProductSkuImage: 'ProductSkuImage',
   StockLocation: 'StockLocation',
   StockProductSku: 'StockProductSku',
+  StockBatches: 'StockBatches',
+  StockBatchUsage: 'StockBatchUsage',
   Promotion: 'Promotion',
   PromotionTransaction: 'PromotionTransaction',
   PromotionItem: 'PromotionItem',
@@ -72,7 +74,7 @@ export const ModelName = {
   PaymentMethod: 'PaymentMethod',
   Payment: 'Payment',
   TransactionItem: 'TransactionItem',
-  AnotherFee: 'AnotherFee',
+  OtherCost: 'OtherCost',
   StockMovement: 'StockMovement',
   PurchaseStock: 'PurchaseStock',
   PurchaseStockItem: 'PurchaseStockItem',
@@ -245,6 +247,35 @@ export const StockProductSkuScalarFieldEnum = {
 export type StockProductSkuScalarFieldEnum = (typeof StockProductSkuScalarFieldEnum)[keyof typeof StockProductSkuScalarFieldEnum]
 
 
+export const StockBatchesScalarFieldEnum = {
+  id: 'id',
+  product_sku_id: 'product_sku_id',
+  stock_product_sku_id: 'stock_product_sku_id',
+  quantity: 'quantity',
+  remaining_quantity: 'remaining_quantity',
+  buy_price: 'buy_price',
+  date: 'date',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  source_reference: 'source_reference',
+  source_id: 'source_id',
+  stock_location_id: 'stock_location_id'
+} as const
+
+export type StockBatchesScalarFieldEnum = (typeof StockBatchesScalarFieldEnum)[keyof typeof StockBatchesScalarFieldEnum]
+
+
+export const StockBatchUsageScalarFieldEnum = {
+  id: 'id',
+  stock_batches_id: 'stock_batches_id',
+  prev_quantity: 'prev_quantity',
+  quantity: 'quantity',
+  current_quantity: 'current_quantity'
+} as const
+
+export type StockBatchUsageScalarFieldEnum = (typeof StockBatchUsageScalarFieldEnum)[keyof typeof StockBatchUsageScalarFieldEnum]
+
+
 export const PromotionScalarFieldEnum = {
   id: 'id',
   name: 'name',
@@ -316,7 +347,9 @@ export type SupplierScalarFieldEnum = (typeof SupplierScalarFieldEnum)[keyof typ
 
 export const TransactionScalarFieldEnum = {
   id: 'id',
+  code: 'code',
   status: 'status',
+  payment_status: 'payment_status',
   customer_id: 'customer_id',
   note: 'note',
   promotion_id: 'promotion_id',
@@ -326,13 +359,14 @@ export const TransactionScalarFieldEnum = {
   transaction_discount_amount: 'transaction_discount_amount',
   items_discount_amount: 'items_discount_amount',
   discount_total: 'discount_total',
+  price_before_discount_total: 'price_before_discount_total',
   price_total: 'price_total',
   other_cost_total: 'other_cost_total',
   grand_total: 'grand_total',
   transaction_date: 'transaction_date',
+  maker_id: 'maker_id',
   created_at: 'created_at',
-  updated_at: 'updated_at',
-  supplierId: 'supplierId'
+  updated_at: 'updated_at'
 } as const
 
 export type TransactionScalarFieldEnum = (typeof TransactionScalarFieldEnum)[keyof typeof TransactionScalarFieldEnum]
@@ -381,6 +415,8 @@ export const TransactionItemScalarFieldEnum = {
   discount_type: 'discount_type',
   discount_amount: 'discount_amount',
   discount_total: 'discount_total',
+  discount_min_qty: 'discount_min_qty',
+  discount_is_multiple_allowed: 'discount_is_multiple_allowed',
   created_at: 'created_at',
   updated_at: 'updated_at'
 } as const
@@ -388,7 +424,7 @@ export const TransactionItemScalarFieldEnum = {
 export type TransactionItemScalarFieldEnum = (typeof TransactionItemScalarFieldEnum)[keyof typeof TransactionItemScalarFieldEnum]
 
 
-export const AnotherFeeScalarFieldEnum = {
+export const OtherCostScalarFieldEnum = {
   id: 'id',
   transaction_id: 'transaction_id',
   note: 'note',
@@ -397,7 +433,7 @@ export const AnotherFeeScalarFieldEnum = {
   updated_at: 'updated_at'
 } as const
 
-export type AnotherFeeScalarFieldEnum = (typeof AnotherFeeScalarFieldEnum)[keyof typeof AnotherFeeScalarFieldEnum]
+export type OtherCostScalarFieldEnum = (typeof OtherCostScalarFieldEnum)[keyof typeof OtherCostScalarFieldEnum]
 
 
 export const StockMovementScalarFieldEnum = {
@@ -405,7 +441,6 @@ export const StockMovementScalarFieldEnum = {
   reference_type: 'reference_type',
   reference_id: 'reference_id',
   stock_product_sku_id: 'stock_product_sku_id',
-  buy_price: 'buy_price',
   prev_quantity: 'prev_quantity',
   quantity: 'quantity',
   current_quantity: 'current_quantity',
@@ -413,7 +448,8 @@ export const StockMovementScalarFieldEnum = {
   transaction_date: 'transaction_date',
   note: 'note',
   created_at: 'created_at',
-  updated_at: 'updated_at'
+  updated_at: 'updated_at',
+  stockBatchesId: 'stockBatchesId'
 } as const
 
 export type StockMovementScalarFieldEnum = (typeof StockMovementScalarFieldEnum)[keyof typeof StockMovementScalarFieldEnum]
@@ -656,6 +692,26 @@ export const StockProductSkuOrderByRelevanceFieldEnum = {
 export type StockProductSkuOrderByRelevanceFieldEnum = (typeof StockProductSkuOrderByRelevanceFieldEnum)[keyof typeof StockProductSkuOrderByRelevanceFieldEnum]
 
 
+export const StockBatchesOrderByRelevanceFieldEnum = {
+  id: 'id',
+  product_sku_id: 'product_sku_id',
+  stock_product_sku_id: 'stock_product_sku_id',
+  source_reference: 'source_reference',
+  source_id: 'source_id',
+  stock_location_id: 'stock_location_id'
+} as const
+
+export type StockBatchesOrderByRelevanceFieldEnum = (typeof StockBatchesOrderByRelevanceFieldEnum)[keyof typeof StockBatchesOrderByRelevanceFieldEnum]
+
+
+export const StockBatchUsageOrderByRelevanceFieldEnum = {
+  id: 'id',
+  stock_batches_id: 'stock_batches_id'
+} as const
+
+export type StockBatchUsageOrderByRelevanceFieldEnum = (typeof StockBatchUsageOrderByRelevanceFieldEnum)[keyof typeof StockBatchUsageOrderByRelevanceFieldEnum]
+
+
 export const PromotionOrderByRelevanceFieldEnum = {
   id: 'id',
   name: 'name',
@@ -707,11 +763,12 @@ export type SupplierOrderByRelevanceFieldEnum = (typeof SupplierOrderByRelevance
 
 export const TransactionOrderByRelevanceFieldEnum = {
   id: 'id',
+  code: 'code',
   customer_id: 'customer_id',
   note: 'note',
   promotion_id: 'promotion_id',
   transaction_discount_id: 'transaction_discount_id',
-  supplierId: 'supplierId'
+  maker_id: 'maker_id'
 } as const
 
 export type TransactionOrderByRelevanceFieldEnum = (typeof TransactionOrderByRelevanceFieldEnum)[keyof typeof TransactionOrderByRelevanceFieldEnum]
@@ -747,13 +804,13 @@ export const TransactionItemOrderByRelevanceFieldEnum = {
 export type TransactionItemOrderByRelevanceFieldEnum = (typeof TransactionItemOrderByRelevanceFieldEnum)[keyof typeof TransactionItemOrderByRelevanceFieldEnum]
 
 
-export const AnotherFeeOrderByRelevanceFieldEnum = {
+export const OtherCostOrderByRelevanceFieldEnum = {
   id: 'id',
   transaction_id: 'transaction_id',
   note: 'note'
 } as const
 
-export type AnotherFeeOrderByRelevanceFieldEnum = (typeof AnotherFeeOrderByRelevanceFieldEnum)[keyof typeof AnotherFeeOrderByRelevanceFieldEnum]
+export type OtherCostOrderByRelevanceFieldEnum = (typeof OtherCostOrderByRelevanceFieldEnum)[keyof typeof OtherCostOrderByRelevanceFieldEnum]
 
 
 export const StockMovementOrderByRelevanceFieldEnum = {
@@ -761,7 +818,8 @@ export const StockMovementOrderByRelevanceFieldEnum = {
   reference_type: 'reference_type',
   reference_id: 'reference_id',
   stock_product_sku_id: 'stock_product_sku_id',
-  note: 'note'
+  note: 'note',
+  stockBatchesId: 'stockBatchesId'
 } as const
 
 export type StockMovementOrderByRelevanceFieldEnum = (typeof StockMovementOrderByRelevanceFieldEnum)[keyof typeof StockMovementOrderByRelevanceFieldEnum]

@@ -1,4 +1,5 @@
-import type { PaymentMethod } from "#/generated/prisma/client";
+import type { PaymentMethod } from "#/generated/prisma/browser";
+import Decimal from "decimal.js";
 import { createContext, useContext, useReducer, type ReactNode } from "react";
 import { toast } from "sonner";
 
@@ -6,7 +7,7 @@ type StockLocation = {
   id: string;
   name: string;
   is_primary: boolean;
-  quantity: number;
+  quantity: Decimal;
 };
 
 type CartItem = {
@@ -20,14 +21,15 @@ type CartItem = {
     name: string;
   };
 
-  stock_quantity: number;
-  quantity: number;
+  stock_quantity: Decimal;
+  quantity: Decimal;
   price: number;
   subtotal: number;
 
   selected_stock_location_id: null | string;
   stock_locations: StockLocation[];
 
+  discount_id?: string | null;
   discount_type: null | "percent" | "fixed";
   discount_value: number;
   discount_amount: number;
@@ -259,8 +261,8 @@ const calculateCartItem = (item: CartItem): CartItem => {
         ? item.discount_value
         : item.price * (item.discount_value / 100);
   const priceAfterDiscount = item.price - discountAmount;
-  const subtotal = item.quantity * priceAfterDiscount;
-  const discountTotal = item.quantity * discountAmount;
+  const subtotal = item.quantity.mul(priceAfterDiscount).toNumber();
+  const discountTotal = item.quantity.mul(discountAmount).toNumber();
 
   return {
     ...item,
@@ -280,10 +282,10 @@ const reducer = (state: PosData, action: PosAction): PosData => {
         (ci) => ci.product_sku_id === product.product_sku_id,
       );
 
-      const existingQuantity = existing?.quantity || 0;
+      const existingQuantity = existing?.quantity || new Decimal(0);
       const addQty = 1;
 
-      if (existingQuantity + addQty > product.stock_quantity) {
+      if (existingQuantity.add(addQty).greaterThan(product.stock_quantity)) {
         toast.error("Stok produk tidak mencukupi.", {
           position: "top-center",
         });
@@ -293,7 +295,7 @@ const reducer = (state: PosData, action: PosAction): PosData => {
       if (existing) {
         const newCarts = state.carts.map((pi) => {
           if (pi.product_sku_id == existing.product_sku_id) {
-            const newQty = pi.quantity + addQty;
+            const newQty = pi.quantity.add(addQty);
             return calculateCartItem({
               ...pi,
               quantity: newQty,
@@ -313,7 +315,7 @@ const reducer = (state: PosData, action: PosAction): PosData => {
         ...state.carts,
         calculateCartItem({
           ...product,
-          quantity: 1,
+          quantity: new Decimal(1),
           selected_stock_location_id:
             product.stock_locations.find((sl) => sl.is_primary === true)?.id ??
             null,
@@ -336,7 +338,7 @@ const reducer = (state: PosData, action: PosAction): PosData => {
 
     case "updateCartItemQuantity": {
       const product_sku_id = action.payload.product_sku_id;
-      let newQty = action.payload.newQty;
+      let newQty = new Decimal(action.payload.newQty);
 
       const existing = state.carts.find(
         (ci) => ci.product_sku_id === product_sku_id,
@@ -349,7 +351,7 @@ const reducer = (state: PosData, action: PosAction): PosData => {
         return state;
       }
 
-      if (newQty > existing.stock_quantity) {
+      if (newQty.greaterThan(existing.stock_quantity)) {
         toast.error(
           `Stok produk tidak mencukupi. jumlah stock tersedia adalah: ${existing.stock_quantity} ${existing.unit.name}.`,
           {
@@ -359,7 +361,7 @@ const reducer = (state: PosData, action: PosAction): PosData => {
         return state;
       }
 
-      if (newQty < 1) {
+      if (newQty.lessThan(1)) {
         const newCarts = state.carts.filter(
           (ci) => ci.product_sku_id !== product_sku_id,
         );
@@ -543,11 +545,8 @@ const reducer = (state: PosData, action: PosAction): PosData => {
     }
 
     case "clearCart": {
-      const newCarts: CartItem[] = [];
-      return calculateSummary({
-        ...state,
-        carts: newCarts,
-      });
+      // const newCarts: CartItem[] = [];
+      return initialState;
     }
 
     case "addOtherCost": {
