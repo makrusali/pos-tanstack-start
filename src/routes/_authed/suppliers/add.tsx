@@ -10,7 +10,7 @@ import { toast } from "sonner";
 import { applyFormErrors } from "#/lib/utils";
 import { ArrowLeft } from "lucide-react";
 
-export const Route = createFileRoute("/_authed/customers/add")({
+export const Route = createFileRoute("/_authed/suppliers/add")({
   component: AddCustomerComponent,
 });
 

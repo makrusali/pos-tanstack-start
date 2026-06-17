@@ -296,6 +296,7 @@ export const saveTransactionFn = createServerFn({ method: "POST" })
                     discount_amount: discountAmount,
                     discount_total: discountTotal,
                     note: item.note,
+                    stock_batches_id: batch.id,
                   },
                 });
 

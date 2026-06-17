@@ -350,6 +350,7 @@ export const TransactionScalarFieldEnum = {
   code: 'code',
   status: 'status',
   payment_status: 'payment_status',
+  remaining_payment: 'remaining_payment',
   customer_id: 'customer_id',
   note: 'note',
   promotion_id: 'promotion_id',
@@ -406,6 +407,7 @@ export const TransactionItemScalarFieldEnum = {
   transaction_id: 'transaction_id',
   product_sku_id: 'product_sku_id',
   quantity: 'quantity',
+  stock_batches_id: 'stock_batches_id',
   buy_price: 'buy_price',
   price: 'price',
   discounted_price: 'discounted_price',
@@ -449,7 +451,7 @@ export const StockMovementScalarFieldEnum = {
   note: 'note',
   created_at: 'created_at',
   updated_at: 'updated_at',
-  stockBatchesId: 'stockBatchesId'
+  stock_batches_id: 'stock_batches_id'
 } as const
 
 export type StockMovementScalarFieldEnum = (typeof StockMovementScalarFieldEnum)[keyof typeof StockMovementScalarFieldEnum]
@@ -798,6 +800,7 @@ export const TransactionItemOrderByRelevanceFieldEnum = {
   note: 'note',
   transaction_id: 'transaction_id',
   product_sku_id: 'product_sku_id',
+  stock_batches_id: 'stock_batches_id',
   discount_id: 'discount_id'
 } as const
 
@@ -819,7 +822,7 @@ export const StockMovementOrderByRelevanceFieldEnum = {
   reference_id: 'reference_id',
   stock_product_sku_id: 'stock_product_sku_id',
   note: 'note',
-  stockBatchesId: 'stockBatchesId'
+  stock_batches_id: 'stock_batches_id'
 } as const
 
 export type StockMovementOrderByRelevanceFieldEnum = (typeof StockMovementOrderByRelevanceFieldEnum)[keyof typeof StockMovementOrderByRelevanceFieldEnum]

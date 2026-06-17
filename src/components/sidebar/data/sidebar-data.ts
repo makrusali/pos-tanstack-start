@@ -15,6 +15,7 @@ import {
   MapPin,
   Users,
   ShieldCheck,
+  UserIcon,
 } from "lucide-react";
 
 import type { SidebarData } from "../types";
@@ -38,6 +39,11 @@ export const sidebarData: SidebarData = {
           title: "Pengaturan",
           url: "/settings",
           icon: SettingsIcon,
+        },
+        {
+          title: "Pelanggan",
+          url: "/customers",
+          icon: UserIcon,
         },
       ],
     },
@@ -84,6 +90,11 @@ export const sidebarData: SidebarData = {
     {
       title: "Stok",
       items: [
+        {
+          title: "Suplier",
+          url: "/suppliers",
+          icon: UserIcon,
+        },
         {
           title: "Perpindahan Stok",
           url: "/stock-movements",

@@ -6,7 +6,7 @@ import { CustomersTable } from "./-components/customers-table";
 import { CustomersTableSkeleton } from "./-components/customers-table-skeleton";
 import { wrapFn } from "#/lib/utils";
 
-export const Route = createFileRoute("/_authed/customers/")({
+export const Route = createFileRoute("/_authed/suppliers/")({
   component: CustomersComponent,
 });
 

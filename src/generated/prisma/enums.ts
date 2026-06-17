@@ -58,6 +58,15 @@ export const PaymentStatus = {
 export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]
 
 
+export const TransactionPaymentStatus = {
+  paid: 'paid',
+  unpaid: 'unpaid',
+  partial: 'partial'
+} as const
+
+export type TransactionPaymentStatus = (typeof TransactionPaymentStatus)[keyof typeof TransactionPaymentStatus]
+
+
 export const MovementType = {
   in: 'in',
   out: 'out'

@@ -23,42 +23,39 @@ import {
   TableRow,
 } from "#/components/ui/table";
 import { DataTablePagination, DataTableToolbar } from "#/components/data-table";
-import { stockMovementColumns } from "./stock-movement-columns";
-import type Decimal from "decimal.js";
+import {
+  FileText,
+  Clock,
+  CheckCircle,
+  XCircle,
+  CreditCard,
+  Ban,
+  SplitSquareVertical,
+} from "lucide-react";
+import { transactionsColumns } from "./transactions-columns";
 
-export type StockMovement = {
+export type Transaction = {
   id: string;
-  reference_type: string;
-  reference_id: string;
-  prev_quantity: Decimal;
-  quantity: Decimal;
-  current_quantity: Decimal;
-  type: "in" | "out";
-  transaction_date: Date;
-  note: string | null;
-  stockProductSku: {
-    productSku: {
-      product: {
-        name: string;
-      };
-      name: string | null;
-      unit: {
-        name: string;
-      } | null;
-    };
-    stockLocation: {
-      name: string;
-    };
-  };
+  code: string;
+  cashier_name: string;
+  customer_name?: string;
+  date: Date;
+  discount_total: number;
+  price_total_before_discount: number;
+  other_cost_total: number;
+  grand_total: number;
+  items_count: number;
+  status: string;
+  payment_status: string;
 };
 
-const route = getRouteApi("/_authed/stock-movements/");
+const Route = getRouteApi("/_authed/transactions/");
 
 type DataTableProps = {
-  data: StockMovement[];
+  data: Transaction[];
 };
 
-export function StockMovementsTable({ data }: DataTableProps) {
+export function TransactionsTable({ data }: DataTableProps) {
   const [rowSelection, setRowSelection] = useState({});
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
@@ -72,18 +69,16 @@ export function StockMovementsTable({ data }: DataTableProps) {
     onPaginationChange,
     ensurePageInRange,
   } = useTableUrlState({
-    search: route.useSearch(),
-    navigate: route.useNavigate(),
+    search: Route.useSearch(),
+    navigate: Route.useNavigate(),
     pagination: { defaultPage: 1, defaultPageSize: 10 },
     globalFilter: { enabled: true, key: "filter" },
-    columnFilters: [
-      { columnId: "type", searchKey: "movement_type", type: "array" },
-    ],
+    columnFilters: [{ columnId: "status", searchKey: "status", type: "array" }],
   });
 
   const table = useReactTable({
     data,
-    columns: stockMovementColumns,
+    columns: transactionsColumns,
     state: {
       sorting,
       columnVisibility,
@@ -97,14 +92,10 @@ export function StockMovementsTable({ data }: DataTableProps) {
     onSortingChange: setSorting,
     onColumnVisibilityChange: setColumnVisibility,
     globalFilterFn: (row, _columnId, filterValue) => {
-      const product = String(
-        row.original.stockProductSku?.productSku?.product?.name || "",
-      ).toLowerCase();
-      const location = String(
-        row.original.stockProductSku?.stockLocation?.name || "",
-      ).toLowerCase();
+      const code = String(row.getValue("code")).toLowerCase();
+      const customerName = String(row.getValue("customer_name")).toLowerCase();
       const searchValue = String(filterValue).toLowerCase();
-      return product.includes(searchValue) || location.includes(searchValue);
+      return code.includes(searchValue) || customerName.includes(searchValue);
     },
     getCoreRowModel: getCoreRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
@@ -126,20 +117,31 @@ export function StockMovementsTable({ data }: DataTableProps) {
     <div className={cn("flex flex-1 flex-col gap-4")}>
       <DataTableToolbar
         table={table}
-        searchPlaceholder="Cari berdasarkan produk atau lokasi"
+        searchPlaceholder="Cari berdasarkan kode, kasir, dan nama pelanggan"
         filters={[
           {
-            columnId: "type",
-            title: "Jenis Pergerakan",
+            columnId: "status",
+            title: "Status",
             options: [
-              { label: "Masuk", value: "in" },
-              { label: "Keluar", value: "out" },
+              { label: "Draft", value: "draft", icon: FileText },
+              { label: "Pending", value: "pending", icon: Clock },
+              { label: "Selesai", value: "done", icon: CheckCircle },
+              { label: "Dibatalkan", value: "cancelled", icon: XCircle },
+            ],
+          },
+          {
+            columnId: "payment_status",
+            title: "Status Pembayaran",
+            options: [
+              { label: "Lunas", value: "paid", icon: CreditCard },
+              { label: "Belum Dibayar", value: "unpaid", icon: Ban },
+              { label: "Cicilan", value: "partial", icon: SplitSquareVertical },
             ],
           },
         ]}
       />
       <div className="overflow-hidden rounded-md border">
-        <Table>
+        <Table className="min-w-xl">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -176,10 +178,10 @@ export function StockMovementsTable({ data }: DataTableProps) {
             ) : (
               <TableRow>
                 <TableCell
-                  colSpan={stockMovementColumns.length}
+                  colSpan={transactionsColumns.length}
                   className="h-24 text-center"
                 >
-                  Tidak ada data.
+                  Belum ada transaksi.
                 </TableCell>
               </TableRow>
             )}

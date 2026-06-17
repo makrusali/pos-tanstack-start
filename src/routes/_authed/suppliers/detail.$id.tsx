@@ -21,7 +21,7 @@ import {
 import { Badge } from "#/components/ui/badge";
 import { formatDate, formatCurrency } from "#/lib/utils";
 
-export const Route = createFileRoute("/_authed/customers/detail/$id")({
+export const Route = createFileRoute("/_authed/suppliers/detail/$id")({
   component: CustomerDetailComponent,
   loader: async ({ params, context: { queryClient } }) => {
     return queryClient.ensureQueryData({

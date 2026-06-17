@@ -1,7 +1,7 @@
 import { Button } from "#/components/ui/button";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
-import { useMutation } from "@tanstack/react-query";
-import { createCustomerFn } from "#/lib/server/customers";
+import { useMutation, useQuery } from "@tanstack/react-query";
+import { getCustomerFn, updateCustomerFn } from "#/lib/server/customers";
 import { Input } from "#/components/ui/input";
 import { Label } from "#/components/ui/label";
 import { Textarea } from "#/components/ui/textarea";
@@ -9,38 +9,66 @@ import { useForm } from "@tanstack/react-form";
 import { toast } from "sonner";
 import { applyFormErrors } from "#/lib/utils";
 import { ArrowLeft } from "lucide-react";
+import { CustomersTableSkeleton } from "./-components/customers-table-skeleton";
 
-export const Route = createFileRoute("/_authed/customers/add")({
-  component: AddCustomerComponent,
+export const Route = createFileRoute("/_authed/suppliers/edit/$id")({
+  component: EditCustomerComponent,
+  loader: async ({ params, context: { queryClient } }) => {
+    return queryClient.ensureQueryData({
+      queryKey: ["customer", params.id],
+      queryFn: () =>
+        getCustomerFn({
+          data: {
+            id: params.id,
+          },
+        }),
+    });
+  },
 });
 
-function AddCustomerComponent() {
+function EditCustomerComponent() {
   const navigate = useNavigate();
+  const { id } = Route.useParams();
+  const initialData = Route.useLoaderData();
 
-  const createCustomer = useMutation({
-    mutationFn: createCustomerFn,
+  const customerQuery = useQuery({
+    queryKey: ["customer", id],
+    queryFn: () =>
+      getCustomerFn({
+        data: {
+          id,
+        },
+      }),
+    initialData,
+  });
+
+  const updateCustomer = useMutation({
+    mutationFn: updateCustomerFn,
   });
 
   const form = useForm({
     defaultValues: {
-      name: "",
-      address: "",
-      email: "",
-      phone: "",
+      name: customerQuery.data?.data?.name || "",
+      address: customerQuery.data?.data?.address || "",
+      email: customerQuery.data?.data?.email || "",
+      phone: customerQuery.data?.data?.phone || "",
     },
     onSubmit: async ({ value }) => {
-      const toastId = toast.loading("Menyimpan customer...");
+      const toastId = toast.loading("Menyimpan perubahan...");
 
       try {
-        const res = await createCustomer.mutateAsync({
-          data: value,
+        const res = await updateCustomer.mutateAsync({
+          data: {
+            id: id,
+            data: value,
+          },
         });
 
         if (res.success) {
           toast.success(res.message, { id: toastId });
           navigate({ to: "/customers" });
         } else {
-          toast.error(res.message || "Gagal menambah customer", {
+          toast.error(res.message || "Gagal mengupdate customer", {
             id: toastId,
           });
         }
@@ -50,6 +78,10 @@ function AddCustomerComponent() {
       }
     },
   });
+
+  if (customerQuery.isFetching) {
+    return <CustomersTableSkeleton />;
+  }
 
   return (
     <div className="flex flex-1 flex-col gap-4 sm:gap-6">
@@ -62,10 +94,8 @@ function AddCustomerComponent() {
           <ArrowLeft className="h-4 w-4" />
         </Button>
         <div>
-          <h2 className="text-2xl font-bold tracking-tight">Tambah Customer</h2>
-          <p className="text-muted-foreground">
-            Isi form di bawah untuk menambahkan customer baru
-          </p>
+          <h2 className="text-2xl font-bold tracking-tight">Edit Customer</h2>
+          <p className="text-muted-foreground">Ubah informasi customer</p>
         </div>
       </div>
 
@@ -175,8 +205,8 @@ function AddCustomerComponent() {
           />
 
           <div className="flex gap-2 pt-4">
-            <Button type="submit" disabled={createCustomer.isPending}>
-              {createCustomer.isPending ? "Menyimpan..." : "Simpan Customer"}
+            <Button type="submit" disabled={updateCustomer.isPending}>
+              {updateCustomer.isPending ? "Menyimpan..." : "Simpan Perubahan"}
             </Button>
             <Button
               type="button"

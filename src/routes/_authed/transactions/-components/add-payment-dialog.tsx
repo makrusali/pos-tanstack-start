@@ -3,6 +3,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTitle,
+  DialogTrigger,
 } from "#/components/ui/dialog";
 import {
   AlertTriangleIcon,
@@ -14,8 +15,7 @@ import {
   RotateCcwIcon,
   XIcon,
 } from "lucide-react";
-import { CustomButton } from "./button";
-import { usePosDispatch, usePosState } from "./use-pos";
+import { CustomButton } from "../../pos-terminal/-components/button";
 import {
   applyFormErrors,
   cn,
@@ -27,48 +27,46 @@ import { Label } from "#/components/ui/label";
 import { getRouteApi } from "@tanstack/react-router";
 import { Input } from "#/components/ui/input";
 import { Separator } from "#/components/ui/separator";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { saveTransactionFn } from "#/lib/server/pos";
+import type { PaymentMethod } from "#/generated/prisma/browser";
+import { savePaymentFn } from "#/lib/server/transactions";
 
-const Route = getRouteApi("/_authed/pos-terminal/");
+const Route = getRouteApi("/_authed/transactions/detail/$id");
 
-const PaymentDialog = () => {
-  const { paymentMethods } = Route.useLoaderData();
+type Props = {
+  Trigger: ReactNode;
+  disabled?: boolean;
+};
 
-  const state = usePosState();
-  const dispatch = usePosDispatch();
+const AddPaymentDialog = ({ Trigger, disabled = false }: Props) => {
+  const { id: transactionID } = Route.useParams();
+  const { paymentMethods, transaction } = Route.useLoaderData();
+  const [open, setOpen] = useState(false);
+  const [selectedPaymentMethod, setSelectedPaymentMethod] =
+    useState<PaymentMethod | null>(null);
+  const [paymentStep, setPaymentStep] = useState<
+    | "selecting_payment_method"
+    | "input_amount"
+    | "processing"
+    | "success"
+    | "failed"
+  >("selecting_payment_method");
+
   const [paidAmount, setPaidAmount] = useState<number>(0);
   const queryClient = useQueryClient();
 
   const processPayment = useMutation({
     onMutate: () => {
-      dispatch({
-        type: "changePaymentStep",
-        payload: {
-          step: "processing",
-        },
-      });
+      setPaymentStep("processing");
     },
     onError: () => {
-      queryClient.invalidateQueries({ queryKey: ["pos-products"] });
-      dispatch({
-        type: "changePaymentStep",
-        payload: {
-          step: "failed",
-        },
-      });
+      setPaymentStep("failed");
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["pos-products"] });
-      dispatch({
-        type: "changePaymentStep",
-        payload: {
-          step: "success",
-        },
-      });
+      setPaymentStep("success");
     },
-    mutationFn: saveTransactionFn,
+    mutationFn: savePaymentFn,
   });
 
   const handleSaveReceipt = () => {
@@ -93,32 +91,17 @@ const PaymentDialog = () => {
     }
   };
 
-  const saveTransaction = async () => {
-    if (state.selectedPaymentMethod === null) {
+  const savePayment = async () => {
+    if (selectedPaymentMethod === null) {
       return;
     }
 
     try {
-      const result = await processPayment.mutateAsync({
+      await processPayment.mutateAsync({
         data: {
-          customer_id: state.selectedCustomerId,
-          status: "done",
-          items: state.carts.map((c) => ({
-            price: c.price,
-            quantity: c.quantity.toNumber(),
-            selected_stock_location_id: c.selected_stock_location_id!,
-            discount_type: c.discount_type,
-            discount_value: c.discount_value,
-            note: c.note,
-            sku_id: c.product_sku_id,
-            discount_id: c.discount_id,
-          })),
-          payment_method_id: state.selectedPaymentMethod.id,
+          transaction_id: transactionID,
           customer_pay_amount: paidAmount,
-          other_fees: state.otherCosts.map((oc) => ({
-            note: oc.note,
-            amount: oc.amount,
-          })),
+          payment_method_id: selectedPaymentMethod.id,
         },
       });
     } catch (error: any) {
@@ -126,21 +109,27 @@ const PaymentDialog = () => {
     }
   };
 
+  if (transaction === null) {
+    return null;
+  }
+
   return (
     <Dialog
-      open={state.dialogMode === "payment"}
-      onOpenChange={(open) => {
+      open={open}
+      onOpenChange={(state) => {
         setPaidAmount(0);
-        dispatch({
-          type: "changeDialogMode",
-          payload: {
-            mode: open ? "payment" : "none",
-          },
-        });
+        setOpen(state);
+        if (state === false) {
+          queryClient.invalidateQueries({
+            queryKey: ["transactions", transactionID],
+          });
+        }
       }}
     >
+      <DialogTrigger disabled={disabled}>{Trigger}</DialogTrigger>
+
       <DialogContent className="max-w-md rounded-3xl border-0 shadow-2xl p-0 gap-0 overflow-hidden">
-        {state.paymentStep === "selecting_payment_method" && (
+        {paymentStep === "selecting_payment_method" && (
           <div className="py-6">
             <div className="px-6 mb-6">
               <DialogHeader>
@@ -155,12 +144,10 @@ const PaymentDialog = () => {
                 <CustomButton
                   variant="ghost"
                   className="w-full p-5 bg-slate-50 hover:bg-emerald-50 rounded-2xl flex items-center gap-4 transition-all group justify-start"
-                  onClick={() =>
-                    dispatch({
-                      type: "changePaymentMethod",
-                      payload: pm,
-                    })
-                  }
+                  onClick={() => {
+                    setSelectedPaymentMethod(pm);
+                    setPaymentStep("input_amount");
+                  }}
                 >
                   <div className="w-14 h-14 bg-emerald-100 rounded-2xl flex items-center justify-center group-hover:scale-110 transition-transform">
                     {pm.image_path ? (
@@ -187,27 +174,20 @@ const PaymentDialog = () => {
               <div className="flex justify-between items-center">
                 <span className="text-slate-500">Total Bayar</span>
                 <span className="text-2xl font-bold text-emerald-600">
-                  {formatCurrencyIDR(state.total)}
+                  {formatCurrencyIDR(transaction.remaining_payment)}
                 </span>
               </div>
             </div>
           </div>
         )}
 
-        {state.paymentStep === "input_amount" && (
+        {paymentStep === "input_amount" && (
           <div className="py-6">
             <div className="px-6">
               <CustomButton
                 variant="ghost"
                 className="flex items-center gap-2 text-slate-500 mb-4 hover:text-slate-800"
-                onClick={() =>
-                  dispatch({
-                    type: "changePaymentStep",
-                    payload: {
-                      step: "selecting_payment_method",
-                    },
-                  })
-                }
+                onClick={() => setPaymentStep("selecting_payment_method")}
               >
                 <ArrowLeftIcon className="w-4 h-4" />
                 Kembali
@@ -224,7 +204,7 @@ const PaymentDialog = () => {
               <div className="bg-slate-50 rounded-2xl p-5 text-center">
                 <p className="text-sm text-slate-400 mb-1">Total Tagihan</p>
                 <p className="text-3xl font-bold text-emerald-600">
-                  {formatCurrencyIDR(state.total)}
+                  {formatCurrencyIDR(transaction.remaining_payment)}
                 </p>
               </div>
 
@@ -266,7 +246,9 @@ const PaymentDialog = () => {
                   variant="primary"
                   className="py-3 rounded-xl text-sm"
                   onClick={() =>
-                    setPaidAmount(Math.ceil(state.total / 1000) * 1000)
+                    setPaidAmount(
+                      Math.ceil(transaction.remaining_payment / 1000) * 1000,
+                    )
                   }
                 >
                   <CheckIcon className="w-4 h-4 mr-1 inline" />
@@ -278,21 +260,27 @@ const PaymentDialog = () => {
                 <div
                   className={cn(
                     "p-5 rounded-2xl text-center",
-                    paidAmount >= state.total ? "bg-emerald-50" : "bg-rose-50",
+                    paidAmount >= transaction.remaining_payment
+                      ? "bg-emerald-50"
+                      : "bg-rose-50",
                   )}
                 >
                   <p className="text-sm text-slate-500 mb-1">
-                    {paidAmount >= state.total ? "Kembalian" : "Kurang"}
+                    {paidAmount >= transaction.remaining_payment
+                      ? "Kembalian"
+                      : "Kurang"}
                   </p>
                   <p
                     className={cn(
                       "text-2xl font-bold",
-                      paidAmount >= state.total
+                      paidAmount >= transaction.remaining_payment
                         ? "text-emerald-600"
                         : "text-rose-600",
                     )}
                   >
-                    {formatCurrencyIDR(Math.abs(paidAmount) - state.total)}
+                    {formatCurrencyIDR(
+                      Math.abs(paidAmount) - transaction.remaining_payment,
+                    )}
                   </p>
                 </div>
               )}
@@ -300,9 +288,11 @@ const PaymentDialog = () => {
               <CustomButton
                 variant="primary"
                 className="w-full py-4 text-lg gap-2"
-                disabled={!paidAmount || paidAmount < state.total}
+                disabled={
+                  !paidAmount || paidAmount < transaction.remaining_payment
+                }
                 onClick={() => {
-                  saveTransaction();
+                  savePayment();
                 }}
               >
                 <CheckIcon className="w-5 h-5" />
@@ -312,7 +302,7 @@ const PaymentDialog = () => {
           </div>
         )}
 
-        {state.paymentStep === "processing" && (
+        {paymentStep === "processing" && (
           <div className="py-16 text-center space-y-6">
             <div className="w-24 h-24 bg-emerald-100 rounded-full flex items-center justify-center mx-auto relative">
               <div className="absolute inset-0 rounded-full border-4 border-emerald-200 animate-ping" />
@@ -330,7 +320,7 @@ const PaymentDialog = () => {
           </div>
         )}
 
-        {state.paymentStep === "success" && (
+        {paymentStep === "success" && (
           <div className="py-8 text-center space-y-6">
             <div className="w-24 h-24 bg-emerald-100 rounded-full flex items-center justify-center mx-auto">
               <CheckIcon className="w-12 h-12 text-emerald-600" />
@@ -344,12 +334,6 @@ const PaymentDialog = () => {
 
             <div className="mx-6 bg-slate-50 rounded-2xl p-5 text-left space-y-3">
               <div className="flex justify-between text-sm">
-                <span className="text-slate-400">ID Transaksi</span>
-                <span className="font-mono font-medium text-slate-700">
-                  #TRX-{Date.now().toString().slice(-6)}
-                </span>
-              </div>
-              <div className="flex justify-between text-sm">
                 <span className="text-slate-400">Waktu</span>
                 <span className="text-slate-700">
                   {new Date().toLocaleString("id-ID")}
@@ -359,7 +343,7 @@ const PaymentDialog = () => {
               <div className="flex justify-between text-sm">
                 <span className="text-slate-400">Total</span>
                 <span className="font-bold text-slate-800">
-                  {formatCurrencyIDR(state.total)}
+                  {formatCurrencyIDR(transaction.remaining_payment)}
                 </span>
               </div>
 
@@ -372,7 +356,9 @@ const PaymentDialog = () => {
               <div className="flex justify-between text-sm text-emerald-600">
                 <span>Kembalian</span>
                 <span className="font-bold">
-                  {formatCurrencyIDR(paidAmount - state.total)}
+                  {formatCurrencyIDR(
+                    paidAmount - transaction.remaining_payment,
+                  )}
                 </span>
               </div>
             </div>
@@ -386,28 +372,11 @@ const PaymentDialog = () => {
                 <ReceiptIcon className="w-5 h-5 mr-2 inline" />
                 Cetak
               </CustomButton>
-              <CustomButton
-                variant="primary"
-                className="flex-1 py-4"
-                onClick={() => {
-                  dispatch({
-                    type: "clearCart",
-                  });
-                  dispatch({
-                    type: "changeDialogMode",
-                    payload: {
-                      mode: "none",
-                    },
-                  });
-                }}
-              >
-                Transaksi Baru
-              </CustomButton>
             </div>
           </div>
         )}
 
-        {state.paymentStep === "failed" && (
+        {paymentStep === "failed" && (
           <div className="py-8 text-center space-y-6">
             <div className="w-24 h-24 bg-rose-100 rounded-full flex items-center justify-center mx-auto">
               <AlertTriangleIcon className="w-12 h-12 text-rose-600" />
@@ -430,7 +399,7 @@ const PaymentDialog = () => {
               <div className="flex justify-between text-sm">
                 <span className="text-slate-400">Total</span>
                 <span className="font-bold text-slate-800">
-                  {formatCurrencyIDR(state.total)}
+                  {formatCurrencyIDR(transaction.remaining_payment)}
                 </span>
               </div>
             </div>
@@ -440,7 +409,7 @@ const PaymentDialog = () => {
                 variant="secondary"
                 className="flex-1 py-4"
                 onClick={() => {
-                  saveTransaction();
+                  savePayment();
                 }}
               >
                 <RotateCcwIcon className="w-5 h-5 mr-2 inline" />
@@ -453,16 +422,11 @@ const PaymentDialog = () => {
                 variant="danger"
                 className="w-full py-3 text-sm"
                 onClick={() => {
-                  dispatch({
-                    type: "changeDialogMode",
-                    payload: {
-                      mode: "none",
-                    },
-                  });
+                  setOpen(false);
                 }}
               >
                 <XIcon className="w-4 h-4 mr-2 inline" />
-                Batalkan Transaksi
+                Batalkan Pembayaran
               </CustomButton>
             </div>
           </div>
@@ -472,4 +436,4 @@ const PaymentDialog = () => {
   );
 };
 
-export { PaymentDialog };
+export { AddPaymentDialog };

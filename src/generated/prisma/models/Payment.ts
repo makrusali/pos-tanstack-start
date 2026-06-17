@@ -554,6 +554,10 @@ export type PaymentUncheckedUpdateManyWithoutPaymentMethodNestedInput = {
   deleteMany?: Prisma.PaymentScalarWhereInput | Prisma.PaymentScalarWhereInput[]
 }
 
+export type EnumPaymentStatusFieldUpdateOperationsInput = {
+  set?: $Enums.PaymentStatus
+}
+
 export type PaymentCreateWithoutTransactionInput = {
   id?: string
   status: $Enums.PaymentStatus

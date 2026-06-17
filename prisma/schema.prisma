@@ -200,8 +200,9 @@ model StockBatches {
   stockMovements   StockMovement[]
   stockBatchUsages StockBatchUsage[]
 
-  stockLocation     StockLocation? @relation(fields: [stock_location_id], references: [id])
-  stock_location_id String?        @map("stock_location_id")
+  stockLocation     StockLocation?    @relation(fields: [stock_location_id], references: [id])
+  stock_location_id String?           @map("stock_location_id")
+  transactionItems  TransactionItem[]
 
   @@index([product_sku_id], map: "stock_batches_product_sku_id_fkey")
   @@index([stock_product_sku_id], map: "stock_batches_stock_product_skus_id_fkey")
@@ -300,10 +301,11 @@ model Supplier {
 }
 
 model Transaction {
-  id                          String            @id @default(uuid())
+  id                          String                   @id @default(uuid())
   code                        String
   status                      TransactionStatus
-  payment_status              PaymentStatus
+  payment_status              TransactionPaymentStatus
+  remaining_payment           Int                      @default(0)
   customer_id                 String?
   note                        String?
   promotion_id                String?
@@ -327,8 +329,8 @@ model Transaction {
   promotion        Promotion?            @relation(fields: [promotion_id], references: [id])
   discount         PromotionTransaction? @relation(fields: [transaction_discount_id], references: [id])
 
-  maker    User?   @relation(fields: [maker_id], references: [id])
-  maker_id String?
+  maker    User   @relation(fields: [maker_id], references: [id])
+  maker_id String
 
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -371,11 +373,13 @@ model Payment {
 }
 
 model TransactionItem {
-  id               String        @id @default(uuid())
-  note             String?
-  transaction_id   String
-  product_sku_id   String
-  quantity         Decimal       @db.Decimal(10, 4)
+  id             String  @id @default(uuid())
+  note           String?
+  transaction_id String
+  product_sku_id String
+  quantity       Decimal @db.Decimal(10, 4)
+
+  stock_batches_id String?
   buy_price        Int
   price            Int
   discounted_price Int
@@ -394,6 +398,7 @@ model TransactionItem {
   discount    PromotionItem? @relation(fields: [discount_id], references: [id])
   productSku  ProductSku     @relation(fields: [product_sku_id], references: [id])
   transaction Transaction    @relation(fields: [transaction_id], references: [id])
+  stockBatch  StockBatches?  @relation(fields: [stock_batches_id], references: [id])
 
   @@index([discount_id], map: "transaction_items_discount_id_fkey")
   @@index([product_sku_id], map: "transaction_items_product_sku_id_fkey")
@@ -428,8 +433,8 @@ model StockMovement {
   created_at           DateTime        @default(now())
   updated_at           DateTime        @updatedAt
   stockProductSku      StockProductSku @relation(fields: [stock_product_sku_id], references: [id])
-  stockBatches         StockBatches?   @relation(fields: [stockBatchesId], references: [id])
-  stockBatchesId       String?
+  stockBatches         StockBatches?   @relation(fields: [stock_batches_id], references: [id])
+  stock_batches_id     String?
 
   @@index([stock_product_sku_id], map: "stock_movements_stock_product_sku_id_fkey")
   @@map("stock_movements")
@@ -581,6 +586,12 @@ enum TransactionStatus {
 enum PaymentStatus {
   paid
   unpaid
+}
+
+enum TransactionPaymentStatus {
+  paid
+  unpaid
+  partial
 }
 
 enum MovementType {

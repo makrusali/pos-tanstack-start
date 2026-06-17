@@ -101,7 +101,7 @@ export const saveMovementOut = async (
       type: "out",
       note: note,
       transaction_date: new Date(),
-      stockBatchesId: stock_batch_id,
+      stock_batches_id: stock_batch_id,
     },
   });
 
@@ -206,7 +206,7 @@ export const saveMovementIn = async (
       type: "in",
       note: note,
       transaction_date: date,
-      stockBatchesId: stockBatch.id,
+      stock_batches_id: stockBatch.id,
     },
   });
 

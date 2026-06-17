@@ -27,6 +27,7 @@ export type AggregateTransaction = {
 }
 
 export type TransactionAvgAggregateOutputType = {
+  remaining_payment: number | null
   transaction_discount_value: number | null
   transaction_discount_amount: number | null
   items_discount_amount: number | null
@@ -38,6 +39,7 @@ export type TransactionAvgAggregateOutputType = {
 }
 
 export type TransactionSumAggregateOutputType = {
+  remaining_payment: number | null
   transaction_discount_value: number | null
   transaction_discount_amount: number | null
   items_discount_amount: number | null
@@ -52,7 +54,8 @@ export type TransactionMinAggregateOutputType = {
   id: string | null
   code: string | null
   status: $Enums.TransactionStatus | null
-  payment_status: $Enums.PaymentStatus | null
+  payment_status: $Enums.TransactionPaymentStatus | null
+  remaining_payment: number | null
   customer_id: string | null
   note: string | null
   promotion_id: string | null
@@ -76,7 +79,8 @@ export type TransactionMaxAggregateOutputType = {
   id: string | null
   code: string | null
   status: $Enums.TransactionStatus | null
-  payment_status: $Enums.PaymentStatus | null
+  payment_status: $Enums.TransactionPaymentStatus | null
+  remaining_payment: number | null
   customer_id: string | null
   note: string | null
   promotion_id: string | null
@@ -101,6 +105,7 @@ export type TransactionCountAggregateOutputType = {
   code: number
   status: number
   payment_status: number
+  remaining_payment: number
   customer_id: number
   note: number
   promotion_id: number
@@ -123,6 +128,7 @@ export type TransactionCountAggregateOutputType = {
 
 
 export type TransactionAvgAggregateInputType = {
+  remaining_payment?: true
   transaction_discount_value?: true
   transaction_discount_amount?: true
   items_discount_amount?: true
@@ -134,6 +140,7 @@ export type TransactionAvgAggregateInputType = {
 }
 
 export type TransactionSumAggregateInputType = {
+  remaining_payment?: true
   transaction_discount_value?: true
   transaction_discount_amount?: true
   items_discount_amount?: true
@@ -149,6 +156,7 @@ export type TransactionMinAggregateInputType = {
   code?: true
   status?: true
   payment_status?: true
+  remaining_payment?: true
   customer_id?: true
   note?: true
   promotion_id?: true
@@ -173,6 +181,7 @@ export type TransactionMaxAggregateInputType = {
   code?: true
   status?: true
   payment_status?: true
+  remaining_payment?: true
   customer_id?: true
   note?: true
   promotion_id?: true
@@ -197,6 +206,7 @@ export type TransactionCountAggregateInputType = {
   code?: true
   status?: true
   payment_status?: true
+  remaining_payment?: true
   customer_id?: true
   note?: true
   promotion_id?: true
@@ -307,7 +317,8 @@ export type TransactionGroupByOutputType = {
   id: string
   code: string
   status: $Enums.TransactionStatus
-  payment_status: $Enums.PaymentStatus
+  payment_status: $Enums.TransactionPaymentStatus
+  remaining_payment: number
   customer_id: string | null
   note: string | null
   promotion_id: string | null
@@ -322,7 +333,7 @@ export type TransactionGroupByOutputType = {
   other_cost_total: number
   grand_total: number
   transaction_date: Date
-  maker_id: string | null
+  maker_id: string
   created_at: Date
   updated_at: Date
   _count: TransactionCountAggregateOutputType | null
@@ -354,7 +365,8 @@ export type TransactionWhereInput = {
   id?: Prisma.StringFilter<"Transaction"> | string
   code?: Prisma.StringFilter<"Transaction"> | string
   status?: Prisma.EnumTransactionStatusFilter<"Transaction"> | $Enums.TransactionStatus
-  payment_status?: Prisma.EnumPaymentStatusFilter<"Transaction"> | $Enums.PaymentStatus
+  payment_status?: Prisma.EnumTransactionPaymentStatusFilter<"Transaction"> | $Enums.TransactionPaymentStatus
+  remaining_payment?: Prisma.IntFilter<"Transaction"> | number
   customer_id?: Prisma.StringNullableFilter<"Transaction"> | string | null
   note?: Prisma.StringNullableFilter<"Transaction"> | string | null
   promotion_id?: Prisma.StringNullableFilter<"Transaction"> | string | null
@@ -369,7 +381,7 @@ export type TransactionWhereInput = {
   other_cost_total?: Prisma.IntFilter<"Transaction"> | number
   grand_total?: Prisma.IntFilter<"Transaction"> | number
   transaction_date?: Prisma.DateTimeFilter<"Transaction"> | Date | string
-  maker_id?: Prisma.StringNullableFilter<"Transaction"> | string | null
+  maker_id?: Prisma.StringFilter<"Transaction"> | string
   created_at?: Prisma.DateTimeFilter<"Transaction"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Transaction"> | Date | string
   anotherFees?: Prisma.OtherCostListRelationFilter
@@ -378,7 +390,7 @@ export type TransactionWhereInput = {
   customer?: Prisma.XOR<Prisma.CustomerNullableScalarRelationFilter, Prisma.CustomerWhereInput> | null
   promotion?: Prisma.XOR<Prisma.PromotionNullableScalarRelationFilter, Prisma.PromotionWhereInput> | null
   discount?: Prisma.XOR<Prisma.PromotionTransactionNullableScalarRelationFilter, Prisma.PromotionTransactionWhereInput> | null
-  maker?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  maker?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
 
 export type TransactionOrderByWithRelationInput = {
@@ -386,6 +398,7 @@ export type TransactionOrderByWithRelationInput = {
   code?: Prisma.SortOrder
   status?: Prisma.SortOrder
   payment_status?: Prisma.SortOrder
+  remaining_payment?: Prisma.SortOrder
   customer_id?: Prisma.SortOrderInput | Prisma.SortOrder
   note?: Prisma.SortOrderInput | Prisma.SortOrder
   promotion_id?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -400,7 +413,7 @@ export type TransactionOrderByWithRelationInput = {
   other_cost_total?: Prisma.SortOrder
   grand_total?: Prisma.SortOrder
   transaction_date?: Prisma.SortOrder
-  maker_id?: Prisma.SortOrderInput | Prisma.SortOrder
+  maker_id?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   anotherFees?: Prisma.OtherCostOrderByRelationAggregateInput
@@ -420,7 +433,8 @@ export type TransactionWhereUniqueInput = Prisma.AtLeast<{
   NOT?: Prisma.TransactionWhereInput | Prisma.TransactionWhereInput[]
   code?: Prisma.StringFilter<"Transaction"> | string
   status?: Prisma.EnumTransactionStatusFilter<"Transaction"> | $Enums.TransactionStatus
-  payment_status?: Prisma.EnumPaymentStatusFilter<"Transaction"> | $Enums.PaymentStatus
+  payment_status?: Prisma.EnumTransactionPaymentStatusFilter<"Transaction"> | $Enums.TransactionPaymentStatus
+  remaining_payment?: Prisma.IntFilter<"Transaction"> | number
   customer_id?: Prisma.StringNullableFilter<"Transaction"> | string | null
   note?: Prisma.StringNullableFilter<"Transaction"> | string | null
   promotion_id?: Prisma.StringNullableFilter<"Transaction"> | string | null
@@ -435,7 +449,7 @@ export type TransactionWhereUniqueInput = Prisma.AtLeast<{
   other_cost_total?: Prisma.IntFilter<"Transaction"> | number
   grand_total?: Prisma.IntFilter<"Transaction"> | number
   transaction_date?: Prisma.DateTimeFilter<"Transaction"> | Date | string
-  maker_id?: Prisma.StringNullableFilter<"Transaction"> | string | null
+  maker_id?: Prisma.StringFilter<"Transaction"> | string
   created_at?: Prisma.DateTimeFilter<"Transaction"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Transaction"> | Date | string
   anotherFees?: Prisma.OtherCostListRelationFilter
@@ -444,7 +458,7 @@ export type TransactionWhereUniqueInput = Prisma.AtLeast<{
   customer?: Prisma.XOR<Prisma.CustomerNullableScalarRelationFilter, Prisma.CustomerWhereInput> | null
   promotion?: Prisma.XOR<Prisma.PromotionNullableScalarRelationFilter, Prisma.PromotionWhereInput> | null
   discount?: Prisma.XOR<Prisma.PromotionTransactionNullableScalarRelationFilter, Prisma.PromotionTransactionWhereInput> | null
-  maker?: Prisma.XOR<Prisma.UserNullableScalarRelationFilter, Prisma.UserWhereInput> | null
+  maker?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id">
 
 export type TransactionOrderByWithAggregationInput = {
@@ -452,6 +466,7 @@ export type TransactionOrderByWithAggregationInput = {
   code?: Prisma.SortOrder
   status?: Prisma.SortOrder
   payment_status?: Prisma.SortOrder
+  remaining_payment?: Prisma.SortOrder
   customer_id?: Prisma.SortOrderInput | Prisma.SortOrder
   note?: Prisma.SortOrderInput | Prisma.SortOrder
   promotion_id?: Prisma.SortOrderInput | Prisma.SortOrder
@@ -466,7 +481,7 @@ export type TransactionOrderByWithAggregationInput = {
   other_cost_total?: Prisma.SortOrder
   grand_total?: Prisma.SortOrder
   transaction_date?: Prisma.SortOrder
-  maker_id?: Prisma.SortOrderInput | Prisma.SortOrder
+  maker_id?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
   _count?: Prisma.TransactionCountOrderByAggregateInput
@@ -483,7 +498,8 @@ export type TransactionScalarWhereWithAggregatesInput = {
   id?: Prisma.StringWithAggregatesFilter<"Transaction"> | string
   code?: Prisma.StringWithAggregatesFilter<"Transaction"> | string
   status?: Prisma.EnumTransactionStatusWithAggregatesFilter<"Transaction"> | $Enums.TransactionStatus
-  payment_status?: Prisma.EnumPaymentStatusWithAggregatesFilter<"Transaction"> | $Enums.PaymentStatus
+  payment_status?: Prisma.EnumTransactionPaymentStatusWithAggregatesFilter<"Transaction"> | $Enums.TransactionPaymentStatus
+  remaining_payment?: Prisma.IntWithAggregatesFilter<"Transaction"> | number
   customer_id?: Prisma.StringNullableWithAggregatesFilter<"Transaction"> | string | null
   note?: Prisma.StringNullableWithAggregatesFilter<"Transaction"> | string | null
   promotion_id?: Prisma.StringNullableWithAggregatesFilter<"Transaction"> | string | null
@@ -498,7 +514,7 @@ export type TransactionScalarWhereWithAggregatesInput = {
   other_cost_total?: Prisma.IntWithAggregatesFilter<"Transaction"> | number
   grand_total?: Prisma.IntWithAggregatesFilter<"Transaction"> | number
   transaction_date?: Prisma.DateTimeWithAggregatesFilter<"Transaction"> | Date | string
-  maker_id?: Prisma.StringNullableWithAggregatesFilter<"Transaction"> | string | null
+  maker_id?: Prisma.StringWithAggregatesFilter<"Transaction"> | string
   created_at?: Prisma.DateTimeWithAggregatesFilter<"Transaction"> | Date | string
   updated_at?: Prisma.DateTimeWithAggregatesFilter<"Transaction"> | Date | string
 }
@@ -507,7 +523,8 @@ export type TransactionCreateInput = {
   id?: string
   code: string
   status: $Enums.TransactionStatus
-  payment_status: $Enums.PaymentStatus
+  payment_status: $Enums.TransactionPaymentStatus
+  remaining_payment?: number
   note?: string | null
   transaction_discount_type?: $Enums.DiscountType | null
   transaction_discount_value?: number | null
@@ -527,14 +544,15 @@ export type TransactionCreateInput = {
   customer?: Prisma.CustomerCreateNestedOneWithoutTransactionsInput
   promotion?: Prisma.PromotionCreateNestedOneWithoutTransactionsInput
   discount?: Prisma.PromotionTransactionCreateNestedOneWithoutTransactionsInput
-  maker?: Prisma.UserCreateNestedOneWithoutTransactionsInput
+  maker: Prisma.UserCreateNestedOneWithoutTransactionsInput
 }
 
 export type TransactionUncheckedCreateInput = {
   id?: string
   code: string
   status: $Enums.TransactionStatus
-  payment_status: $Enums.PaymentStatus
+  payment_status: $Enums.TransactionPaymentStatus
+  remaining_payment?: number
   customer_id?: string | null
   note?: string | null
   promotion_id?: string | null
@@ -549,7 +567,7 @@ export type TransactionUncheckedCreateInput = {
   other_cost_total: number
   grand_total: number
   transaction_date?: Date | string
-  maker_id?: string | null
+  maker_id: string
   created_at?: Date | string
   updated_at?: Date | string
   anotherFees?: Prisma.OtherCostUncheckedCreateNestedManyWithoutTransactionInput
@@ -561,7 +579,8 @@ export type TransactionUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
-  payment_status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  payment_status?: Prisma.EnumTransactionPaymentStatusFieldUpdateOperationsInput | $Enums.TransactionPaymentStatus
+  remaining_payment?: Prisma.IntFieldUpdateOperationsInput | number
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transaction_discount_type?: Prisma.NullableEnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType | null
   transaction_discount_value?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -581,14 +600,15 @@ export type TransactionUpdateInput = {
   customer?: Prisma.CustomerUpdateOneWithoutTransactionsNestedInput
   promotion?: Prisma.PromotionUpdateOneWithoutTransactionsNestedInput
   discount?: Prisma.PromotionTransactionUpdateOneWithoutTransactionsNestedInput
-  maker?: Prisma.UserUpdateOneWithoutTransactionsNestedInput
+  maker?: Prisma.UserUpdateOneRequiredWithoutTransactionsNestedInput
 }
 
 export type TransactionUncheckedUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
-  payment_status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  payment_status?: Prisma.EnumTransactionPaymentStatusFieldUpdateOperationsInput | $Enums.TransactionPaymentStatus
+  remaining_payment?: Prisma.IntFieldUpdateOperationsInput | number
   customer_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   promotion_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -603,7 +623,7 @@ export type TransactionUncheckedUpdateInput = {
   other_cost_total?: Prisma.IntFieldUpdateOperationsInput | number
   grand_total?: Prisma.IntFieldUpdateOperationsInput | number
   transaction_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  maker_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  maker_id?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   anotherFees?: Prisma.OtherCostUncheckedUpdateManyWithoutTransactionNestedInput
@@ -615,7 +635,8 @@ export type TransactionCreateManyInput = {
   id?: string
   code: string
   status: $Enums.TransactionStatus
-  payment_status: $Enums.PaymentStatus
+  payment_status: $Enums.TransactionPaymentStatus
+  remaining_payment?: number
   customer_id?: string | null
   note?: string | null
   promotion_id?: string | null
@@ -630,7 +651,7 @@ export type TransactionCreateManyInput = {
   other_cost_total: number
   grand_total: number
   transaction_date?: Date | string
-  maker_id?: string | null
+  maker_id: string
   created_at?: Date | string
   updated_at?: Date | string
 }
@@ -639,7 +660,8 @@ export type TransactionUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
-  payment_status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  payment_status?: Prisma.EnumTransactionPaymentStatusFieldUpdateOperationsInput | $Enums.TransactionPaymentStatus
+  remaining_payment?: Prisma.IntFieldUpdateOperationsInput | number
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transaction_discount_type?: Prisma.NullableEnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType | null
   transaction_discount_value?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -659,7 +681,8 @@ export type TransactionUncheckedUpdateManyInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
-  payment_status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  payment_status?: Prisma.EnumTransactionPaymentStatusFieldUpdateOperationsInput | $Enums.TransactionPaymentStatus
+  remaining_payment?: Prisma.IntFieldUpdateOperationsInput | number
   customer_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   promotion_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -674,7 +697,7 @@ export type TransactionUncheckedUpdateManyInput = {
   other_cost_total?: Prisma.IntFieldUpdateOperationsInput | number
   grand_total?: Prisma.IntFieldUpdateOperationsInput | number
   transaction_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  maker_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  maker_id?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -700,6 +723,7 @@ export type TransactionCountOrderByAggregateInput = {
   code?: Prisma.SortOrder
   status?: Prisma.SortOrder
   payment_status?: Prisma.SortOrder
+  remaining_payment?: Prisma.SortOrder
   customer_id?: Prisma.SortOrder
   note?: Prisma.SortOrder
   promotion_id?: Prisma.SortOrder
@@ -720,6 +744,7 @@ export type TransactionCountOrderByAggregateInput = {
 }
 
 export type TransactionAvgOrderByAggregateInput = {
+  remaining_payment?: Prisma.SortOrder
   transaction_discount_value?: Prisma.SortOrder
   transaction_discount_amount?: Prisma.SortOrder
   items_discount_amount?: Prisma.SortOrder
@@ -735,6 +760,7 @@ export type TransactionMaxOrderByAggregateInput = {
   code?: Prisma.SortOrder
   status?: Prisma.SortOrder
   payment_status?: Prisma.SortOrder
+  remaining_payment?: Prisma.SortOrder
   customer_id?: Prisma.SortOrder
   note?: Prisma.SortOrder
   promotion_id?: Prisma.SortOrder
@@ -759,6 +785,7 @@ export type TransactionMinOrderByAggregateInput = {
   code?: Prisma.SortOrder
   status?: Prisma.SortOrder
   payment_status?: Prisma.SortOrder
+  remaining_payment?: Prisma.SortOrder
   customer_id?: Prisma.SortOrder
   note?: Prisma.SortOrder
   promotion_id?: Prisma.SortOrder
@@ -779,6 +806,7 @@ export type TransactionMinOrderByAggregateInput = {
 }
 
 export type TransactionSumOrderByAggregateInput = {
+  remaining_payment?: Prisma.SortOrder
   transaction_discount_value?: Prisma.SortOrder
   transaction_discount_amount?: Prisma.SortOrder
   items_discount_amount?: Prisma.SortOrder
@@ -966,8 +994,8 @@ export type EnumTransactionStatusFieldUpdateOperationsInput = {
   set?: $Enums.TransactionStatus
 }
 
-export type EnumPaymentStatusFieldUpdateOperationsInput = {
-  set?: $Enums.PaymentStatus
+export type EnumTransactionPaymentStatusFieldUpdateOperationsInput = {
+  set?: $Enums.TransactionPaymentStatus
 }
 
 export type NullableEnumDiscountTypeFieldUpdateOperationsInput = {
@@ -1028,7 +1056,8 @@ export type TransactionCreateWithoutMakerInput = {
   id?: string
   code: string
   status: $Enums.TransactionStatus
-  payment_status: $Enums.PaymentStatus
+  payment_status: $Enums.TransactionPaymentStatus
+  remaining_payment?: number
   note?: string | null
   transaction_discount_type?: $Enums.DiscountType | null
   transaction_discount_value?: number | null
@@ -1054,7 +1083,8 @@ export type TransactionUncheckedCreateWithoutMakerInput = {
   id?: string
   code: string
   status: $Enums.TransactionStatus
-  payment_status: $Enums.PaymentStatus
+  payment_status: $Enums.TransactionPaymentStatus
+  remaining_payment?: number
   customer_id?: string | null
   note?: string | null
   promotion_id?: string | null
@@ -1109,7 +1139,8 @@ export type TransactionScalarWhereInput = {
   id?: Prisma.StringFilter<"Transaction"> | string
   code?: Prisma.StringFilter<"Transaction"> | string
   status?: Prisma.EnumTransactionStatusFilter<"Transaction"> | $Enums.TransactionStatus
-  payment_status?: Prisma.EnumPaymentStatusFilter<"Transaction"> | $Enums.PaymentStatus
+  payment_status?: Prisma.EnumTransactionPaymentStatusFilter<"Transaction"> | $Enums.TransactionPaymentStatus
+  remaining_payment?: Prisma.IntFilter<"Transaction"> | number
   customer_id?: Prisma.StringNullableFilter<"Transaction"> | string | null
   note?: Prisma.StringNullableFilter<"Transaction"> | string | null
   promotion_id?: Prisma.StringNullableFilter<"Transaction"> | string | null
@@ -1124,7 +1155,7 @@ export type TransactionScalarWhereInput = {
   other_cost_total?: Prisma.IntFilter<"Transaction"> | number
   grand_total?: Prisma.IntFilter<"Transaction"> | number
   transaction_date?: Prisma.DateTimeFilter<"Transaction"> | Date | string
-  maker_id?: Prisma.StringNullableFilter<"Transaction"> | string | null
+  maker_id?: Prisma.StringFilter<"Transaction"> | string
   created_at?: Prisma.DateTimeFilter<"Transaction"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"Transaction"> | Date | string
 }
@@ -1133,7 +1164,8 @@ export type TransactionCreateWithoutPromotionInput = {
   id?: string
   code: string
   status: $Enums.TransactionStatus
-  payment_status: $Enums.PaymentStatus
+  payment_status: $Enums.TransactionPaymentStatus
+  remaining_payment?: number
   note?: string | null
   transaction_discount_type?: $Enums.DiscountType | null
   transaction_discount_value?: number | null
@@ -1152,14 +1184,15 @@ export type TransactionCreateWithoutPromotionInput = {
   transactionItems?: Prisma.TransactionItemCreateNestedManyWithoutTransactionInput
   customer?: Prisma.CustomerCreateNestedOneWithoutTransactionsInput
   discount?: Prisma.PromotionTransactionCreateNestedOneWithoutTransactionsInput
-  maker?: Prisma.UserCreateNestedOneWithoutTransactionsInput
+  maker: Prisma.UserCreateNestedOneWithoutTransactionsInput
 }
 
 export type TransactionUncheckedCreateWithoutPromotionInput = {
   id?: string
   code: string
   status: $Enums.TransactionStatus
-  payment_status: $Enums.PaymentStatus
+  payment_status: $Enums.TransactionPaymentStatus
+  remaining_payment?: number
   customer_id?: string | null
   note?: string | null
   transaction_discount_id?: string | null
@@ -1173,7 +1206,7 @@ export type TransactionUncheckedCreateWithoutPromotionInput = {
   other_cost_total: number
   grand_total: number
   transaction_date?: Date | string
-  maker_id?: string | null
+  maker_id: string
   created_at?: Date | string
   updated_at?: Date | string
   anotherFees?: Prisma.OtherCostUncheckedCreateNestedManyWithoutTransactionInput
@@ -1211,7 +1244,8 @@ export type TransactionCreateWithoutDiscountInput = {
   id?: string
   code: string
   status: $Enums.TransactionStatus
-  payment_status: $Enums.PaymentStatus
+  payment_status: $Enums.TransactionPaymentStatus
+  remaining_payment?: number
   note?: string | null
   transaction_discount_type?: $Enums.DiscountType | null
   transaction_discount_value?: number | null
@@ -1230,14 +1264,15 @@ export type TransactionCreateWithoutDiscountInput = {
   transactionItems?: Prisma.TransactionItemCreateNestedManyWithoutTransactionInput
   customer?: Prisma.CustomerCreateNestedOneWithoutTransactionsInput
   promotion?: Prisma.PromotionCreateNestedOneWithoutTransactionsInput
-  maker?: Prisma.UserCreateNestedOneWithoutTransactionsInput
+  maker: Prisma.UserCreateNestedOneWithoutTransactionsInput
 }
 
 export type TransactionUncheckedCreateWithoutDiscountInput = {
   id?: string
   code: string
   status: $Enums.TransactionStatus
-  payment_status: $Enums.PaymentStatus
+  payment_status: $Enums.TransactionPaymentStatus
+  remaining_payment?: number
   customer_id?: string | null
   note?: string | null
   promotion_id?: string | null
@@ -1251,7 +1286,7 @@ export type TransactionUncheckedCreateWithoutDiscountInput = {
   other_cost_total: number
   grand_total: number
   transaction_date?: Date | string
-  maker_id?: string | null
+  maker_id: string
   created_at?: Date | string
   updated_at?: Date | string
   anotherFees?: Prisma.OtherCostUncheckedCreateNestedManyWithoutTransactionInput
@@ -1289,7 +1324,8 @@ export type TransactionCreateWithoutCustomerInput = {
   id?: string
   code: string
   status: $Enums.TransactionStatus
-  payment_status: $Enums.PaymentStatus
+  payment_status: $Enums.TransactionPaymentStatus
+  remaining_payment?: number
   note?: string | null
   transaction_discount_type?: $Enums.DiscountType | null
   transaction_discount_value?: number | null
@@ -1308,14 +1344,15 @@ export type TransactionCreateWithoutCustomerInput = {
   transactionItems?: Prisma.TransactionItemCreateNestedManyWithoutTransactionInput
   promotion?: Prisma.PromotionCreateNestedOneWithoutTransactionsInput
   discount?: Prisma.PromotionTransactionCreateNestedOneWithoutTransactionsInput
-  maker?: Prisma.UserCreateNestedOneWithoutTransactionsInput
+  maker: Prisma.UserCreateNestedOneWithoutTransactionsInput
 }
 
 export type TransactionUncheckedCreateWithoutCustomerInput = {
   id?: string
   code: string
   status: $Enums.TransactionStatus
-  payment_status: $Enums.PaymentStatus
+  payment_status: $Enums.TransactionPaymentStatus
+  remaining_payment?: number
   note?: string | null
   promotion_id?: string | null
   transaction_discount_id?: string | null
@@ -1329,7 +1366,7 @@ export type TransactionUncheckedCreateWithoutCustomerInput = {
   other_cost_total: number
   grand_total: number
   transaction_date?: Date | string
-  maker_id?: string | null
+  maker_id: string
   created_at?: Date | string
   updated_at?: Date | string
   anotherFees?: Prisma.OtherCostUncheckedCreateNestedManyWithoutTransactionInput
@@ -1367,7 +1404,8 @@ export type TransactionCreateWithoutPaymentsInput = {
   id?: string
   code: string
   status: $Enums.TransactionStatus
-  payment_status: $Enums.PaymentStatus
+  payment_status: $Enums.TransactionPaymentStatus
+  remaining_payment?: number
   note?: string | null
   transaction_discount_type?: $Enums.DiscountType | null
   transaction_discount_value?: number | null
@@ -1386,14 +1424,15 @@ export type TransactionCreateWithoutPaymentsInput = {
   customer?: Prisma.CustomerCreateNestedOneWithoutTransactionsInput
   promotion?: Prisma.PromotionCreateNestedOneWithoutTransactionsInput
   discount?: Prisma.PromotionTransactionCreateNestedOneWithoutTransactionsInput
-  maker?: Prisma.UserCreateNestedOneWithoutTransactionsInput
+  maker: Prisma.UserCreateNestedOneWithoutTransactionsInput
 }
 
 export type TransactionUncheckedCreateWithoutPaymentsInput = {
   id?: string
   code: string
   status: $Enums.TransactionStatus
-  payment_status: $Enums.PaymentStatus
+  payment_status: $Enums.TransactionPaymentStatus
+  remaining_payment?: number
   customer_id?: string | null
   note?: string | null
   promotion_id?: string | null
@@ -1408,7 +1447,7 @@ export type TransactionUncheckedCreateWithoutPaymentsInput = {
   other_cost_total: number
   grand_total: number
   transaction_date?: Date | string
-  maker_id?: string | null
+  maker_id: string
   created_at?: Date | string
   updated_at?: Date | string
   anotherFees?: Prisma.OtherCostUncheckedCreateNestedManyWithoutTransactionInput
@@ -1435,7 +1474,8 @@ export type TransactionUpdateWithoutPaymentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
-  payment_status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  payment_status?: Prisma.EnumTransactionPaymentStatusFieldUpdateOperationsInput | $Enums.TransactionPaymentStatus
+  remaining_payment?: Prisma.IntFieldUpdateOperationsInput | number
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transaction_discount_type?: Prisma.NullableEnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType | null
   transaction_discount_value?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -1454,14 +1494,15 @@ export type TransactionUpdateWithoutPaymentsInput = {
   customer?: Prisma.CustomerUpdateOneWithoutTransactionsNestedInput
   promotion?: Prisma.PromotionUpdateOneWithoutTransactionsNestedInput
   discount?: Prisma.PromotionTransactionUpdateOneWithoutTransactionsNestedInput
-  maker?: Prisma.UserUpdateOneWithoutTransactionsNestedInput
+  maker?: Prisma.UserUpdateOneRequiredWithoutTransactionsNestedInput
 }
 
 export type TransactionUncheckedUpdateWithoutPaymentsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
-  payment_status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  payment_status?: Prisma.EnumTransactionPaymentStatusFieldUpdateOperationsInput | $Enums.TransactionPaymentStatus
+  remaining_payment?: Prisma.IntFieldUpdateOperationsInput | number
   customer_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   promotion_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1476,7 +1517,7 @@ export type TransactionUncheckedUpdateWithoutPaymentsInput = {
   other_cost_total?: Prisma.IntFieldUpdateOperationsInput | number
   grand_total?: Prisma.IntFieldUpdateOperationsInput | number
   transaction_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  maker_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  maker_id?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   anotherFees?: Prisma.OtherCostUncheckedUpdateManyWithoutTransactionNestedInput
@@ -1487,7 +1528,8 @@ export type TransactionCreateWithoutTransactionItemsInput = {
   id?: string
   code: string
   status: $Enums.TransactionStatus
-  payment_status: $Enums.PaymentStatus
+  payment_status: $Enums.TransactionPaymentStatus
+  remaining_payment?: number
   note?: string | null
   transaction_discount_type?: $Enums.DiscountType | null
   transaction_discount_value?: number | null
@@ -1506,14 +1548,15 @@ export type TransactionCreateWithoutTransactionItemsInput = {
   customer?: Prisma.CustomerCreateNestedOneWithoutTransactionsInput
   promotion?: Prisma.PromotionCreateNestedOneWithoutTransactionsInput
   discount?: Prisma.PromotionTransactionCreateNestedOneWithoutTransactionsInput
-  maker?: Prisma.UserCreateNestedOneWithoutTransactionsInput
+  maker: Prisma.UserCreateNestedOneWithoutTransactionsInput
 }
 
 export type TransactionUncheckedCreateWithoutTransactionItemsInput = {
   id?: string
   code: string
   status: $Enums.TransactionStatus
-  payment_status: $Enums.PaymentStatus
+  payment_status: $Enums.TransactionPaymentStatus
+  remaining_payment?: number
   customer_id?: string | null
   note?: string | null
   promotion_id?: string | null
@@ -1528,7 +1571,7 @@ export type TransactionUncheckedCreateWithoutTransactionItemsInput = {
   other_cost_total: number
   grand_total: number
   transaction_date?: Date | string
-  maker_id?: string | null
+  maker_id: string
   created_at?: Date | string
   updated_at?: Date | string
   anotherFees?: Prisma.OtherCostUncheckedCreateNestedManyWithoutTransactionInput
@@ -1555,7 +1598,8 @@ export type TransactionUpdateWithoutTransactionItemsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
-  payment_status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  payment_status?: Prisma.EnumTransactionPaymentStatusFieldUpdateOperationsInput | $Enums.TransactionPaymentStatus
+  remaining_payment?: Prisma.IntFieldUpdateOperationsInput | number
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transaction_discount_type?: Prisma.NullableEnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType | null
   transaction_discount_value?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -1574,14 +1618,15 @@ export type TransactionUpdateWithoutTransactionItemsInput = {
   customer?: Prisma.CustomerUpdateOneWithoutTransactionsNestedInput
   promotion?: Prisma.PromotionUpdateOneWithoutTransactionsNestedInput
   discount?: Prisma.PromotionTransactionUpdateOneWithoutTransactionsNestedInput
-  maker?: Prisma.UserUpdateOneWithoutTransactionsNestedInput
+  maker?: Prisma.UserUpdateOneRequiredWithoutTransactionsNestedInput
 }
 
 export type TransactionUncheckedUpdateWithoutTransactionItemsInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
-  payment_status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  payment_status?: Prisma.EnumTransactionPaymentStatusFieldUpdateOperationsInput | $Enums.TransactionPaymentStatus
+  remaining_payment?: Prisma.IntFieldUpdateOperationsInput | number
   customer_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   promotion_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1596,7 +1641,7 @@ export type TransactionUncheckedUpdateWithoutTransactionItemsInput = {
   other_cost_total?: Prisma.IntFieldUpdateOperationsInput | number
   grand_total?: Prisma.IntFieldUpdateOperationsInput | number
   transaction_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  maker_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  maker_id?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   anotherFees?: Prisma.OtherCostUncheckedUpdateManyWithoutTransactionNestedInput
@@ -1607,7 +1652,8 @@ export type TransactionCreateWithoutAnotherFeesInput = {
   id?: string
   code: string
   status: $Enums.TransactionStatus
-  payment_status: $Enums.PaymentStatus
+  payment_status: $Enums.TransactionPaymentStatus
+  remaining_payment?: number
   note?: string | null
   transaction_discount_type?: $Enums.DiscountType | null
   transaction_discount_value?: number | null
@@ -1626,14 +1672,15 @@ export type TransactionCreateWithoutAnotherFeesInput = {
   customer?: Prisma.CustomerCreateNestedOneWithoutTransactionsInput
   promotion?: Prisma.PromotionCreateNestedOneWithoutTransactionsInput
   discount?: Prisma.PromotionTransactionCreateNestedOneWithoutTransactionsInput
-  maker?: Prisma.UserCreateNestedOneWithoutTransactionsInput
+  maker: Prisma.UserCreateNestedOneWithoutTransactionsInput
 }
 
 export type TransactionUncheckedCreateWithoutAnotherFeesInput = {
   id?: string
   code: string
   status: $Enums.TransactionStatus
-  payment_status: $Enums.PaymentStatus
+  payment_status: $Enums.TransactionPaymentStatus
+  remaining_payment?: number
   customer_id?: string | null
   note?: string | null
   promotion_id?: string | null
@@ -1648,7 +1695,7 @@ export type TransactionUncheckedCreateWithoutAnotherFeesInput = {
   other_cost_total: number
   grand_total: number
   transaction_date?: Date | string
-  maker_id?: string | null
+  maker_id: string
   created_at?: Date | string
   updated_at?: Date | string
   payments?: Prisma.PaymentUncheckedCreateNestedManyWithoutTransactionInput
@@ -1675,7 +1722,8 @@ export type TransactionUpdateWithoutAnotherFeesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
-  payment_status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  payment_status?: Prisma.EnumTransactionPaymentStatusFieldUpdateOperationsInput | $Enums.TransactionPaymentStatus
+  remaining_payment?: Prisma.IntFieldUpdateOperationsInput | number
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transaction_discount_type?: Prisma.NullableEnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType | null
   transaction_discount_value?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -1694,14 +1742,15 @@ export type TransactionUpdateWithoutAnotherFeesInput = {
   customer?: Prisma.CustomerUpdateOneWithoutTransactionsNestedInput
   promotion?: Prisma.PromotionUpdateOneWithoutTransactionsNestedInput
   discount?: Prisma.PromotionTransactionUpdateOneWithoutTransactionsNestedInput
-  maker?: Prisma.UserUpdateOneWithoutTransactionsNestedInput
+  maker?: Prisma.UserUpdateOneRequiredWithoutTransactionsNestedInput
 }
 
 export type TransactionUncheckedUpdateWithoutAnotherFeesInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
-  payment_status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  payment_status?: Prisma.EnumTransactionPaymentStatusFieldUpdateOperationsInput | $Enums.TransactionPaymentStatus
+  remaining_payment?: Prisma.IntFieldUpdateOperationsInput | number
   customer_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   promotion_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1716,7 +1765,7 @@ export type TransactionUncheckedUpdateWithoutAnotherFeesInput = {
   other_cost_total?: Prisma.IntFieldUpdateOperationsInput | number
   grand_total?: Prisma.IntFieldUpdateOperationsInput | number
   transaction_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  maker_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  maker_id?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   payments?: Prisma.PaymentUncheckedUpdateManyWithoutTransactionNestedInput
@@ -1727,7 +1776,8 @@ export type TransactionCreateManyMakerInput = {
   id?: string
   code: string
   status: $Enums.TransactionStatus
-  payment_status: $Enums.PaymentStatus
+  payment_status: $Enums.TransactionPaymentStatus
+  remaining_payment?: number
   customer_id?: string | null
   note?: string | null
   promotion_id?: string | null
@@ -1750,7 +1800,8 @@ export type TransactionUpdateWithoutMakerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
-  payment_status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  payment_status?: Prisma.EnumTransactionPaymentStatusFieldUpdateOperationsInput | $Enums.TransactionPaymentStatus
+  remaining_payment?: Prisma.IntFieldUpdateOperationsInput | number
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transaction_discount_type?: Prisma.NullableEnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType | null
   transaction_discount_value?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -1776,7 +1827,8 @@ export type TransactionUncheckedUpdateWithoutMakerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
-  payment_status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  payment_status?: Prisma.EnumTransactionPaymentStatusFieldUpdateOperationsInput | $Enums.TransactionPaymentStatus
+  remaining_payment?: Prisma.IntFieldUpdateOperationsInput | number
   customer_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   promotion_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1802,7 +1854,8 @@ export type TransactionUncheckedUpdateManyWithoutMakerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
-  payment_status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  payment_status?: Prisma.EnumTransactionPaymentStatusFieldUpdateOperationsInput | $Enums.TransactionPaymentStatus
+  remaining_payment?: Prisma.IntFieldUpdateOperationsInput | number
   customer_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   promotion_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1825,7 +1878,8 @@ export type TransactionCreateManyPromotionInput = {
   id?: string
   code: string
   status: $Enums.TransactionStatus
-  payment_status: $Enums.PaymentStatus
+  payment_status: $Enums.TransactionPaymentStatus
+  remaining_payment?: number
   customer_id?: string | null
   note?: string | null
   transaction_discount_id?: string | null
@@ -1839,7 +1893,7 @@ export type TransactionCreateManyPromotionInput = {
   other_cost_total: number
   grand_total: number
   transaction_date?: Date | string
-  maker_id?: string | null
+  maker_id: string
   created_at?: Date | string
   updated_at?: Date | string
 }
@@ -1848,7 +1902,8 @@ export type TransactionUpdateWithoutPromotionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
-  payment_status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  payment_status?: Prisma.EnumTransactionPaymentStatusFieldUpdateOperationsInput | $Enums.TransactionPaymentStatus
+  remaining_payment?: Prisma.IntFieldUpdateOperationsInput | number
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transaction_discount_type?: Prisma.NullableEnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType | null
   transaction_discount_value?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -1867,14 +1922,15 @@ export type TransactionUpdateWithoutPromotionInput = {
   transactionItems?: Prisma.TransactionItemUpdateManyWithoutTransactionNestedInput
   customer?: Prisma.CustomerUpdateOneWithoutTransactionsNestedInput
   discount?: Prisma.PromotionTransactionUpdateOneWithoutTransactionsNestedInput
-  maker?: Prisma.UserUpdateOneWithoutTransactionsNestedInput
+  maker?: Prisma.UserUpdateOneRequiredWithoutTransactionsNestedInput
 }
 
 export type TransactionUncheckedUpdateWithoutPromotionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
-  payment_status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  payment_status?: Prisma.EnumTransactionPaymentStatusFieldUpdateOperationsInput | $Enums.TransactionPaymentStatus
+  remaining_payment?: Prisma.IntFieldUpdateOperationsInput | number
   customer_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transaction_discount_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1888,7 +1944,7 @@ export type TransactionUncheckedUpdateWithoutPromotionInput = {
   other_cost_total?: Prisma.IntFieldUpdateOperationsInput | number
   grand_total?: Prisma.IntFieldUpdateOperationsInput | number
   transaction_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  maker_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  maker_id?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   anotherFees?: Prisma.OtherCostUncheckedUpdateManyWithoutTransactionNestedInput
@@ -1900,7 +1956,8 @@ export type TransactionUncheckedUpdateManyWithoutPromotionInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
-  payment_status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  payment_status?: Prisma.EnumTransactionPaymentStatusFieldUpdateOperationsInput | $Enums.TransactionPaymentStatus
+  remaining_payment?: Prisma.IntFieldUpdateOperationsInput | number
   customer_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transaction_discount_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1914,7 +1971,7 @@ export type TransactionUncheckedUpdateManyWithoutPromotionInput = {
   other_cost_total?: Prisma.IntFieldUpdateOperationsInput | number
   grand_total?: Prisma.IntFieldUpdateOperationsInput | number
   transaction_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  maker_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  maker_id?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -1923,7 +1980,8 @@ export type TransactionCreateManyDiscountInput = {
   id?: string
   code: string
   status: $Enums.TransactionStatus
-  payment_status: $Enums.PaymentStatus
+  payment_status: $Enums.TransactionPaymentStatus
+  remaining_payment?: number
   customer_id?: string | null
   note?: string | null
   promotion_id?: string | null
@@ -1937,7 +1995,7 @@ export type TransactionCreateManyDiscountInput = {
   other_cost_total: number
   grand_total: number
   transaction_date?: Date | string
-  maker_id?: string | null
+  maker_id: string
   created_at?: Date | string
   updated_at?: Date | string
 }
@@ -1946,7 +2004,8 @@ export type TransactionUpdateWithoutDiscountInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
-  payment_status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  payment_status?: Prisma.EnumTransactionPaymentStatusFieldUpdateOperationsInput | $Enums.TransactionPaymentStatus
+  remaining_payment?: Prisma.IntFieldUpdateOperationsInput | number
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transaction_discount_type?: Prisma.NullableEnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType | null
   transaction_discount_value?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -1965,14 +2024,15 @@ export type TransactionUpdateWithoutDiscountInput = {
   transactionItems?: Prisma.TransactionItemUpdateManyWithoutTransactionNestedInput
   customer?: Prisma.CustomerUpdateOneWithoutTransactionsNestedInput
   promotion?: Prisma.PromotionUpdateOneWithoutTransactionsNestedInput
-  maker?: Prisma.UserUpdateOneWithoutTransactionsNestedInput
+  maker?: Prisma.UserUpdateOneRequiredWithoutTransactionsNestedInput
 }
 
 export type TransactionUncheckedUpdateWithoutDiscountInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
-  payment_status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  payment_status?: Prisma.EnumTransactionPaymentStatusFieldUpdateOperationsInput | $Enums.TransactionPaymentStatus
+  remaining_payment?: Prisma.IntFieldUpdateOperationsInput | number
   customer_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   promotion_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -1986,7 +2046,7 @@ export type TransactionUncheckedUpdateWithoutDiscountInput = {
   other_cost_total?: Prisma.IntFieldUpdateOperationsInput | number
   grand_total?: Prisma.IntFieldUpdateOperationsInput | number
   transaction_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  maker_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  maker_id?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   anotherFees?: Prisma.OtherCostUncheckedUpdateManyWithoutTransactionNestedInput
@@ -1998,7 +2058,8 @@ export type TransactionUncheckedUpdateManyWithoutDiscountInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
-  payment_status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  payment_status?: Prisma.EnumTransactionPaymentStatusFieldUpdateOperationsInput | $Enums.TransactionPaymentStatus
+  remaining_payment?: Prisma.IntFieldUpdateOperationsInput | number
   customer_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   promotion_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2012,7 +2073,7 @@ export type TransactionUncheckedUpdateManyWithoutDiscountInput = {
   other_cost_total?: Prisma.IntFieldUpdateOperationsInput | number
   grand_total?: Prisma.IntFieldUpdateOperationsInput | number
   transaction_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  maker_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  maker_id?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -2021,7 +2082,8 @@ export type TransactionCreateManyCustomerInput = {
   id?: string
   code: string
   status: $Enums.TransactionStatus
-  payment_status: $Enums.PaymentStatus
+  payment_status: $Enums.TransactionPaymentStatus
+  remaining_payment?: number
   note?: string | null
   promotion_id?: string | null
   transaction_discount_id?: string | null
@@ -2035,7 +2097,7 @@ export type TransactionCreateManyCustomerInput = {
   other_cost_total: number
   grand_total: number
   transaction_date?: Date | string
-  maker_id?: string | null
+  maker_id: string
   created_at?: Date | string
   updated_at?: Date | string
 }
@@ -2044,7 +2106,8 @@ export type TransactionUpdateWithoutCustomerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
-  payment_status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  payment_status?: Prisma.EnumTransactionPaymentStatusFieldUpdateOperationsInput | $Enums.TransactionPaymentStatus
+  remaining_payment?: Prisma.IntFieldUpdateOperationsInput | number
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transaction_discount_type?: Prisma.NullableEnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType | null
   transaction_discount_value?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
@@ -2063,14 +2126,15 @@ export type TransactionUpdateWithoutCustomerInput = {
   transactionItems?: Prisma.TransactionItemUpdateManyWithoutTransactionNestedInput
   promotion?: Prisma.PromotionUpdateOneWithoutTransactionsNestedInput
   discount?: Prisma.PromotionTransactionUpdateOneWithoutTransactionsNestedInput
-  maker?: Prisma.UserUpdateOneWithoutTransactionsNestedInput
+  maker?: Prisma.UserUpdateOneRequiredWithoutTransactionsNestedInput
 }
 
 export type TransactionUncheckedUpdateWithoutCustomerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
-  payment_status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  payment_status?: Prisma.EnumTransactionPaymentStatusFieldUpdateOperationsInput | $Enums.TransactionPaymentStatus
+  remaining_payment?: Prisma.IntFieldUpdateOperationsInput | number
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   promotion_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transaction_discount_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2084,7 +2148,7 @@ export type TransactionUncheckedUpdateWithoutCustomerInput = {
   other_cost_total?: Prisma.IntFieldUpdateOperationsInput | number
   grand_total?: Prisma.IntFieldUpdateOperationsInput | number
   transaction_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  maker_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  maker_id?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   anotherFees?: Prisma.OtherCostUncheckedUpdateManyWithoutTransactionNestedInput
@@ -2096,7 +2160,8 @@ export type TransactionUncheckedUpdateManyWithoutCustomerInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   code?: Prisma.StringFieldUpdateOperationsInput | string
   status?: Prisma.EnumTransactionStatusFieldUpdateOperationsInput | $Enums.TransactionStatus
-  payment_status?: Prisma.EnumPaymentStatusFieldUpdateOperationsInput | $Enums.PaymentStatus
+  payment_status?: Prisma.EnumTransactionPaymentStatusFieldUpdateOperationsInput | $Enums.TransactionPaymentStatus
+  remaining_payment?: Prisma.IntFieldUpdateOperationsInput | number
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   promotion_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transaction_discount_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
@@ -2110,7 +2175,7 @@ export type TransactionUncheckedUpdateManyWithoutCustomerInput = {
   other_cost_total?: Prisma.IntFieldUpdateOperationsInput | number
   grand_total?: Prisma.IntFieldUpdateOperationsInput | number
   transaction_date?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  maker_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  maker_id?: Prisma.StringFieldUpdateOperationsInput | string
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -2169,6 +2234,7 @@ export type TransactionSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   code?: boolean
   status?: boolean
   payment_status?: boolean
+  remaining_payment?: boolean
   customer_id?: boolean
   note?: boolean
   promotion_id?: boolean
@@ -2192,7 +2258,7 @@ export type TransactionSelect<ExtArgs extends runtime.Types.Extensions.InternalA
   customer?: boolean | Prisma.Transaction$customerArgs<ExtArgs>
   promotion?: boolean | Prisma.Transaction$promotionArgs<ExtArgs>
   discount?: boolean | Prisma.Transaction$discountArgs<ExtArgs>
-  maker?: boolean | Prisma.Transaction$makerArgs<ExtArgs>
+  maker?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.TransactionCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["transaction"]>
 
@@ -2203,6 +2269,7 @@ export type TransactionSelectScalar = {
   code?: boolean
   status?: boolean
   payment_status?: boolean
+  remaining_payment?: boolean
   customer_id?: boolean
   note?: boolean
   promotion_id?: boolean
@@ -2222,7 +2289,7 @@ export type TransactionSelectScalar = {
   updated_at?: boolean
 }
 
-export type TransactionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "code" | "status" | "payment_status" | "customer_id" | "note" | "promotion_id" | "transaction_discount_id" | "transaction_discount_type" | "transaction_discount_value" | "transaction_discount_amount" | "items_discount_amount" | "discount_total" | "price_before_discount_total" | "price_total" | "other_cost_total" | "grand_total" | "transaction_date" | "maker_id" | "created_at" | "updated_at", ExtArgs["result"]["transaction"]>
+export type TransactionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "code" | "status" | "payment_status" | "remaining_payment" | "customer_id" | "note" | "promotion_id" | "transaction_discount_id" | "transaction_discount_type" | "transaction_discount_value" | "transaction_discount_amount" | "items_discount_amount" | "discount_total" | "price_before_discount_total" | "price_total" | "other_cost_total" | "grand_total" | "transaction_date" | "maker_id" | "created_at" | "updated_at", ExtArgs["result"]["transaction"]>
 export type TransactionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   anotherFees?: boolean | Prisma.Transaction$anotherFeesArgs<ExtArgs>
   payments?: boolean | Prisma.Transaction$paymentsArgs<ExtArgs>
@@ -2230,7 +2297,7 @@ export type TransactionInclude<ExtArgs extends runtime.Types.Extensions.Internal
   customer?: boolean | Prisma.Transaction$customerArgs<ExtArgs>
   promotion?: boolean | Prisma.Transaction$promotionArgs<ExtArgs>
   discount?: boolean | Prisma.Transaction$discountArgs<ExtArgs>
-  maker?: boolean | Prisma.Transaction$makerArgs<ExtArgs>
+  maker?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   _count?: boolean | Prisma.TransactionCountOutputTypeDefaultArgs<ExtArgs>
 }
 
@@ -2243,13 +2310,14 @@ export type $TransactionPayload<ExtArgs extends runtime.Types.Extensions.Interna
     customer: Prisma.$CustomerPayload<ExtArgs> | null
     promotion: Prisma.$PromotionPayload<ExtArgs> | null
     discount: Prisma.$PromotionTransactionPayload<ExtArgs> | null
-    maker: Prisma.$UserPayload<ExtArgs> | null
+    maker: Prisma.$UserPayload<ExtArgs>
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
     code: string
     status: $Enums.TransactionStatus
-    payment_status: $Enums.PaymentStatus
+    payment_status: $Enums.TransactionPaymentStatus
+    remaining_payment: number
     customer_id: string | null
     note: string | null
     promotion_id: string | null
@@ -2264,7 +2332,7 @@ export type $TransactionPayload<ExtArgs extends runtime.Types.Extensions.Interna
     other_cost_total: number
     grand_total: number
     transaction_date: Date
-    maker_id: string | null
+    maker_id: string
     created_at: Date
     updated_at: Date
   }, ExtArgs["result"]["transaction"]>
@@ -2613,7 +2681,7 @@ export interface Prisma__TransactionClient<T, Null = never, ExtArgs extends runt
   customer<T extends Prisma.Transaction$customerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Transaction$customerArgs<ExtArgs>>): Prisma.Prisma__CustomerClient<runtime.Types.Result.GetResult<Prisma.$CustomerPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   promotion<T extends Prisma.Transaction$promotionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Transaction$promotionArgs<ExtArgs>>): Prisma.Prisma__PromotionClient<runtime.Types.Result.GetResult<Prisma.$PromotionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   discount<T extends Prisma.Transaction$discountArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Transaction$discountArgs<ExtArgs>>): Prisma.Prisma__PromotionTransactionClient<runtime.Types.Result.GetResult<Prisma.$PromotionTransactionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
-  maker<T extends Prisma.Transaction$makerArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Transaction$makerArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  maker<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2646,7 +2714,8 @@ export interface TransactionFieldRefs {
   readonly id: Prisma.FieldRef<"Transaction", 'String'>
   readonly code: Prisma.FieldRef<"Transaction", 'String'>
   readonly status: Prisma.FieldRef<"Transaction", 'TransactionStatus'>
-  readonly payment_status: Prisma.FieldRef<"Transaction", 'PaymentStatus'>
+  readonly payment_status: Prisma.FieldRef<"Transaction", 'TransactionPaymentStatus'>
+  readonly remaining_payment: Prisma.FieldRef<"Transaction", 'Int'>
   readonly customer_id: Prisma.FieldRef<"Transaction", 'String'>
   readonly note: Prisma.FieldRef<"Transaction", 'String'>
   readonly promotion_id: Prisma.FieldRef<"Transaction", 'String'>
@@ -3138,25 +3207,6 @@ export type Transaction$discountArgs<ExtArgs extends runtime.Types.Extensions.In
    */
   include?: Prisma.PromotionTransactionInclude<ExtArgs> | null
   where?: Prisma.PromotionTransactionWhereInput
-}
-
-/**
- * Transaction.maker
- */
-export type Transaction$makerArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
-  /**
-   * Select specific fields to fetch from the User
-   */
-  select?: Prisma.UserSelect<ExtArgs> | null
-  /**
-   * Omit specific fields from the User
-   */
-  omit?: Prisma.UserOmit<ExtArgs> | null
-  /**
-   * Choose, which related nodes to fetch as well
-   */
-  include?: Prisma.UserInclude<ExtArgs> | null
-  where?: Prisma.UserWhereInput
 }
 
 /**

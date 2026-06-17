@@ -14,6 +14,8 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as ErrorAuthorizationIndexRouteImport } from './routes/error-authorization/index'
 import { Route as AuthLoginRouteImport } from './routes/auth/login'
 import { Route as AuthedUnitsIndexRouteImport } from './routes/_authed/units/index'
+import { Route as AuthedTransactionsIndexRouteImport } from './routes/_authed/transactions/index'
+import { Route as AuthedSuppliersIndexRouteImport } from './routes/_authed/suppliers/index'
 import { Route as AuthedStockMovementsIndexRouteImport } from './routes/_authed/stock-movements/index'
 import { Route as AuthedStockLocationsIndexRouteImport } from './routes/_authed/stock-locations/index'
 import { Route as AuthedSettingsIndexRouteImport } from './routes/_authed/settings/index'
@@ -24,12 +26,16 @@ import { Route as AuthedDashboardIndexRouteImport } from './routes/_authed/dashb
 import { Route as AuthedCustomersIndexRouteImport } from './routes/_authed/customers/index'
 import { Route as AuthedCategoriesIndexRouteImport } from './routes/_authed/categories/index'
 import { Route as AuthedUnitsAddRouteImport } from './routes/_authed/units/add'
+import { Route as AuthedSuppliersAddRouteImport } from './routes/_authed/suppliers/add'
 import { Route as AuthedStockLocationsAddRouteImport } from './routes/_authed/stock-locations/add'
 import { Route as AuthedProductsAddRouteImport } from './routes/_authed/products/add'
 import { Route as AuthedPaymentMethodsAddRouteImport } from './routes/_authed/payment-methods/add'
 import { Route as AuthedCustomersAddRouteImport } from './routes/_authed/customers/add'
 import { Route as AuthedCategoriesAddRouteImport } from './routes/_authed/categories/add'
 import { Route as AuthedUnitsEditIdRouteImport } from './routes/_authed/units/edit.$id'
+import { Route as AuthedTransactionsDetailIdRouteImport } from './routes/_authed/transactions/detail.$id'
+import { Route as AuthedSuppliersEditIdRouteImport } from './routes/_authed/suppliers/edit.$id'
+import { Route as AuthedSuppliersDetailIdRouteImport } from './routes/_authed/suppliers/detail.$id'
 import { Route as AuthedStockLocationsEditIdRouteImport } from './routes/_authed/stock-locations/edit.$id'
 import { Route as AuthedStockLocationsDetailIdRouteImport } from './routes/_authed/stock-locations/detail.$id'
 import { Route as AuthedProductsEditIdRouteImport } from './routes/_authed/products/edit.$id'
@@ -62,6 +68,16 @@ const AuthLoginRoute = AuthLoginRouteImport.update({
 const AuthedUnitsIndexRoute = AuthedUnitsIndexRouteImport.update({
   id: '/units/',
   path: '/units/',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const AuthedTransactionsIndexRoute = AuthedTransactionsIndexRouteImport.update({
+  id: '/transactions/',
+  path: '/transactions/',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const AuthedSuppliersIndexRoute = AuthedSuppliersIndexRouteImport.update({
+  id: '/suppliers/',
+  path: '/suppliers/',
   getParentRoute: () => AuthedRoute,
 } as any)
 const AuthedStockMovementsIndexRoute =
@@ -117,6 +133,11 @@ const AuthedUnitsAddRoute = AuthedUnitsAddRouteImport.update({
   path: '/units/add',
   getParentRoute: () => AuthedRoute,
 } as any)
+const AuthedSuppliersAddRoute = AuthedSuppliersAddRouteImport.update({
+  id: '/suppliers/add',
+  path: '/suppliers/add',
+  getParentRoute: () => AuthedRoute,
+} as any)
 const AuthedStockLocationsAddRoute = AuthedStockLocationsAddRouteImport.update({
   id: '/stock-locations/add',
   path: '/stock-locations/add',
@@ -145,6 +166,22 @@ const AuthedCategoriesAddRoute = AuthedCategoriesAddRouteImport.update({
 const AuthedUnitsEditIdRoute = AuthedUnitsEditIdRouteImport.update({
   id: '/units/edit/$id',
   path: '/units/edit/$id',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const AuthedTransactionsDetailIdRoute =
+  AuthedTransactionsDetailIdRouteImport.update({
+    id: '/transactions/detail/$id',
+    path: '/transactions/detail/$id',
+    getParentRoute: () => AuthedRoute,
+  } as any)
+const AuthedSuppliersEditIdRoute = AuthedSuppliersEditIdRouteImport.update({
+  id: '/suppliers/edit/$id',
+  path: '/suppliers/edit/$id',
+  getParentRoute: () => AuthedRoute,
+} as any)
+const AuthedSuppliersDetailIdRoute = AuthedSuppliersDetailIdRouteImport.update({
+  id: '/suppliers/detail/$id',
+  path: '/suppliers/detail/$id',
   getParentRoute: () => AuthedRoute,
 } as any)
 const AuthedStockLocationsEditIdRoute =
@@ -206,6 +243,7 @@ export interface FileRoutesByFullPath {
   '/payment-methods/add': typeof AuthedPaymentMethodsAddRoute
   '/products/add': typeof AuthedProductsAddRoute
   '/stock-locations/add': typeof AuthedStockLocationsAddRoute
+  '/suppliers/add': typeof AuthedSuppliersAddRoute
   '/units/add': typeof AuthedUnitsAddRoute
   '/categories/': typeof AuthedCategoriesIndexRoute
   '/customers/': typeof AuthedCustomersIndexRoute
@@ -216,6 +254,8 @@ export interface FileRoutesByFullPath {
   '/settings/': typeof AuthedSettingsIndexRoute
   '/stock-locations/': typeof AuthedStockLocationsIndexRoute
   '/stock-movements/': typeof AuthedStockMovementsIndexRoute
+  '/suppliers/': typeof AuthedSuppliersIndexRoute
+  '/transactions/': typeof AuthedTransactionsIndexRoute
   '/units/': typeof AuthedUnitsIndexRoute
   '/categories/edit/$id': typeof AuthedCategoriesEditIdRoute
   '/customers/detail/$id': typeof AuthedCustomersDetailIdRoute
@@ -226,6 +266,9 @@ export interface FileRoutesByFullPath {
   '/products/edit/$id': typeof AuthedProductsEditIdRoute
   '/stock-locations/detail/$id': typeof AuthedStockLocationsDetailIdRoute
   '/stock-locations/edit/$id': typeof AuthedStockLocationsEditIdRoute
+  '/suppliers/detail/$id': typeof AuthedSuppliersDetailIdRoute
+  '/suppliers/edit/$id': typeof AuthedSuppliersEditIdRoute
+  '/transactions/detail/$id': typeof AuthedTransactionsDetailIdRoute
   '/units/edit/$id': typeof AuthedUnitsEditIdRoute
 }
 export interface FileRoutesByTo {
@@ -237,6 +280,7 @@ export interface FileRoutesByTo {
   '/payment-methods/add': typeof AuthedPaymentMethodsAddRoute
   '/products/add': typeof AuthedProductsAddRoute
   '/stock-locations/add': typeof AuthedStockLocationsAddRoute
+  '/suppliers/add': typeof AuthedSuppliersAddRoute
   '/units/add': typeof AuthedUnitsAddRoute
   '/categories': typeof AuthedCategoriesIndexRoute
   '/customers': typeof AuthedCustomersIndexRoute
@@ -247,6 +291,8 @@ export interface FileRoutesByTo {
   '/settings': typeof AuthedSettingsIndexRoute
   '/stock-locations': typeof AuthedStockLocationsIndexRoute
   '/stock-movements': typeof AuthedStockMovementsIndexRoute
+  '/suppliers': typeof AuthedSuppliersIndexRoute
+  '/transactions': typeof AuthedTransactionsIndexRoute
   '/units': typeof AuthedUnitsIndexRoute
   '/categories/edit/$id': typeof AuthedCategoriesEditIdRoute
   '/customers/detail/$id': typeof AuthedCustomersDetailIdRoute
@@ -257,6 +303,9 @@ export interface FileRoutesByTo {
   '/products/edit/$id': typeof AuthedProductsEditIdRoute
   '/stock-locations/detail/$id': typeof AuthedStockLocationsDetailIdRoute
   '/stock-locations/edit/$id': typeof AuthedStockLocationsEditIdRoute
+  '/suppliers/detail/$id': typeof AuthedSuppliersDetailIdRoute
+  '/suppliers/edit/$id': typeof AuthedSuppliersEditIdRoute
+  '/transactions/detail/$id': typeof AuthedTransactionsDetailIdRoute
   '/units/edit/$id': typeof AuthedUnitsEditIdRoute
 }
 export interface FileRoutesById {
@@ -270,6 +319,7 @@ export interface FileRoutesById {
   '/_authed/payment-methods/add': typeof AuthedPaymentMethodsAddRoute
   '/_authed/products/add': typeof AuthedProductsAddRoute
   '/_authed/stock-locations/add': typeof AuthedStockLocationsAddRoute
+  '/_authed/suppliers/add': typeof AuthedSuppliersAddRoute
   '/_authed/units/add': typeof AuthedUnitsAddRoute
   '/_authed/categories/': typeof AuthedCategoriesIndexRoute
   '/_authed/customers/': typeof AuthedCustomersIndexRoute
@@ -280,6 +330,8 @@ export interface FileRoutesById {
   '/_authed/settings/': typeof AuthedSettingsIndexRoute
   '/_authed/stock-locations/': typeof AuthedStockLocationsIndexRoute
   '/_authed/stock-movements/': typeof AuthedStockMovementsIndexRoute
+  '/_authed/suppliers/': typeof AuthedSuppliersIndexRoute
+  '/_authed/transactions/': typeof AuthedTransactionsIndexRoute
   '/_authed/units/': typeof AuthedUnitsIndexRoute
   '/_authed/categories/edit/$id': typeof AuthedCategoriesEditIdRoute
   '/_authed/customers/detail/$id': typeof AuthedCustomersDetailIdRoute
@@ -290,6 +342,9 @@ export interface FileRoutesById {
   '/_authed/products/edit/$id': typeof AuthedProductsEditIdRoute
   '/_authed/stock-locations/detail/$id': typeof AuthedStockLocationsDetailIdRoute
   '/_authed/stock-locations/edit/$id': typeof AuthedStockLocationsEditIdRoute
+  '/_authed/suppliers/detail/$id': typeof AuthedSuppliersDetailIdRoute
+  '/_authed/suppliers/edit/$id': typeof AuthedSuppliersEditIdRoute
+  '/_authed/transactions/detail/$id': typeof AuthedTransactionsDetailIdRoute
   '/_authed/units/edit/$id': typeof AuthedUnitsEditIdRoute
 }
 export interface FileRouteTypes {
@@ -303,6 +358,7 @@ export interface FileRouteTypes {
     | '/payment-methods/add'
     | '/products/add'
     | '/stock-locations/add'
+    | '/suppliers/add'
     | '/units/add'
     | '/categories/'
     | '/customers/'
@@ -313,6 +369,8 @@ export interface FileRouteTypes {
     | '/settings/'
     | '/stock-locations/'
     | '/stock-movements/'
+    | '/suppliers/'
+    | '/transactions/'
     | '/units/'
     | '/categories/edit/$id'
     | '/customers/detail/$id'
@@ -323,6 +381,9 @@ export interface FileRouteTypes {
     | '/products/edit/$id'
     | '/stock-locations/detail/$id'
     | '/stock-locations/edit/$id'
+    | '/suppliers/detail/$id'
+    | '/suppliers/edit/$id'
+    | '/transactions/detail/$id'
     | '/units/edit/$id'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -334,6 +395,7 @@ export interface FileRouteTypes {
     | '/payment-methods/add'
     | '/products/add'
     | '/stock-locations/add'
+    | '/suppliers/add'
     | '/units/add'
     | '/categories'
     | '/customers'
@@ -344,6 +406,8 @@ export interface FileRouteTypes {
     | '/settings'
     | '/stock-locations'
     | '/stock-movements'
+    | '/suppliers'
+    | '/transactions'
     | '/units'
     | '/categories/edit/$id'
     | '/customers/detail/$id'
@@ -354,6 +418,9 @@ export interface FileRouteTypes {
     | '/products/edit/$id'
     | '/stock-locations/detail/$id'
     | '/stock-locations/edit/$id'
+    | '/suppliers/detail/$id'
+    | '/suppliers/edit/$id'
+    | '/transactions/detail/$id'
     | '/units/edit/$id'
   id:
     | '__root__'
@@ -366,6 +433,7 @@ export interface FileRouteTypes {
     | '/_authed/payment-methods/add'
     | '/_authed/products/add'
     | '/_authed/stock-locations/add'
+    | '/_authed/suppliers/add'
     | '/_authed/units/add'
     | '/_authed/categories/'
     | '/_authed/customers/'
@@ -376,6 +444,8 @@ export interface FileRouteTypes {
     | '/_authed/settings/'
     | '/_authed/stock-locations/'
     | '/_authed/stock-movements/'
+    | '/_authed/suppliers/'
+    | '/_authed/transactions/'
     | '/_authed/units/'
     | '/_authed/categories/edit/$id'
     | '/_authed/customers/detail/$id'
@@ -386,6 +456,9 @@ export interface FileRouteTypes {
     | '/_authed/products/edit/$id'
     | '/_authed/stock-locations/detail/$id'
     | '/_authed/stock-locations/edit/$id'
+    | '/_authed/suppliers/detail/$id'
+    | '/_authed/suppliers/edit/$id'
+    | '/_authed/transactions/detail/$id'
     | '/_authed/units/edit/$id'
   fileRoutesById: FileRoutesById
 }
@@ -431,6 +504,20 @@ declare module '@tanstack/react-router' {
       path: '/units'
       fullPath: '/units/'
       preLoaderRoute: typeof AuthedUnitsIndexRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/transactions/': {
+      id: '/_authed/transactions/'
+      path: '/transactions'
+      fullPath: '/transactions/'
+      preLoaderRoute: typeof AuthedTransactionsIndexRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/suppliers/': {
+      id: '/_authed/suppliers/'
+      path: '/suppliers'
+      fullPath: '/suppliers/'
+      preLoaderRoute: typeof AuthedSuppliersIndexRouteImport
       parentRoute: typeof AuthedRoute
     }
     '/_authed/stock-movements/': {
@@ -503,6 +590,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthedUnitsAddRouteImport
       parentRoute: typeof AuthedRoute
     }
+    '/_authed/suppliers/add': {
+      id: '/_authed/suppliers/add'
+      path: '/suppliers/add'
+      fullPath: '/suppliers/add'
+      preLoaderRoute: typeof AuthedSuppliersAddRouteImport
+      parentRoute: typeof AuthedRoute
+    }
     '/_authed/stock-locations/add': {
       id: '/_authed/stock-locations/add'
       path: '/stock-locations/add'
@@ -543,6 +637,27 @@ declare module '@tanstack/react-router' {
       path: '/units/edit/$id'
       fullPath: '/units/edit/$id'
       preLoaderRoute: typeof AuthedUnitsEditIdRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/transactions/detail/$id': {
+      id: '/_authed/transactions/detail/$id'
+      path: '/transactions/detail/$id'
+      fullPath: '/transactions/detail/$id'
+      preLoaderRoute: typeof AuthedTransactionsDetailIdRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/suppliers/edit/$id': {
+      id: '/_authed/suppliers/edit/$id'
+      path: '/suppliers/edit/$id'
+      fullPath: '/suppliers/edit/$id'
+      preLoaderRoute: typeof AuthedSuppliersEditIdRouteImport
+      parentRoute: typeof AuthedRoute
+    }
+    '/_authed/suppliers/detail/$id': {
+      id: '/_authed/suppliers/detail/$id'
+      path: '/suppliers/detail/$id'
+      fullPath: '/suppliers/detail/$id'
+      preLoaderRoute: typeof AuthedSuppliersDetailIdRouteImport
       parentRoute: typeof AuthedRoute
     }
     '/_authed/stock-locations/edit/$id': {
@@ -617,6 +732,7 @@ interface AuthedRouteChildren {
   AuthedPaymentMethodsAddRoute: typeof AuthedPaymentMethodsAddRoute
   AuthedProductsAddRoute: typeof AuthedProductsAddRoute
   AuthedStockLocationsAddRoute: typeof AuthedStockLocationsAddRoute
+  AuthedSuppliersAddRoute: typeof AuthedSuppliersAddRoute
   AuthedUnitsAddRoute: typeof AuthedUnitsAddRoute
   AuthedCategoriesIndexRoute: typeof AuthedCategoriesIndexRoute
   AuthedCustomersIndexRoute: typeof AuthedCustomersIndexRoute
@@ -627,6 +743,8 @@ interface AuthedRouteChildren {
   AuthedSettingsIndexRoute: typeof AuthedSettingsIndexRoute
   AuthedStockLocationsIndexRoute: typeof AuthedStockLocationsIndexRoute
   AuthedStockMovementsIndexRoute: typeof AuthedStockMovementsIndexRoute
+  AuthedSuppliersIndexRoute: typeof AuthedSuppliersIndexRoute
+  AuthedTransactionsIndexRoute: typeof AuthedTransactionsIndexRoute
   AuthedUnitsIndexRoute: typeof AuthedUnitsIndexRoute
   AuthedCategoriesEditIdRoute: typeof AuthedCategoriesEditIdRoute
   AuthedCustomersDetailIdRoute: typeof AuthedCustomersDetailIdRoute
@@ -637,6 +755,9 @@ interface AuthedRouteChildren {
   AuthedProductsEditIdRoute: typeof AuthedProductsEditIdRoute
   AuthedStockLocationsDetailIdRoute: typeof AuthedStockLocationsDetailIdRoute
   AuthedStockLocationsEditIdRoute: typeof AuthedStockLocationsEditIdRoute
+  AuthedSuppliersDetailIdRoute: typeof AuthedSuppliersDetailIdRoute
+  AuthedSuppliersEditIdRoute: typeof AuthedSuppliersEditIdRoute
+  AuthedTransactionsDetailIdRoute: typeof AuthedTransactionsDetailIdRoute
   AuthedUnitsEditIdRoute: typeof AuthedUnitsEditIdRoute
 }
 
@@ -646,6 +767,7 @@ const AuthedRouteChildren: AuthedRouteChildren = {
   AuthedPaymentMethodsAddRoute: AuthedPaymentMethodsAddRoute,
   AuthedProductsAddRoute: AuthedProductsAddRoute,
   AuthedStockLocationsAddRoute: AuthedStockLocationsAddRoute,
+  AuthedSuppliersAddRoute: AuthedSuppliersAddRoute,
   AuthedUnitsAddRoute: AuthedUnitsAddRoute,
   AuthedCategoriesIndexRoute: AuthedCategoriesIndexRoute,
   AuthedCustomersIndexRoute: AuthedCustomersIndexRoute,
@@ -656,6 +778,8 @@ const AuthedRouteChildren: AuthedRouteChildren = {
   AuthedSettingsIndexRoute: AuthedSettingsIndexRoute,
   AuthedStockLocationsIndexRoute: AuthedStockLocationsIndexRoute,
   AuthedStockMovementsIndexRoute: AuthedStockMovementsIndexRoute,
+  AuthedSuppliersIndexRoute: AuthedSuppliersIndexRoute,
+  AuthedTransactionsIndexRoute: AuthedTransactionsIndexRoute,
   AuthedUnitsIndexRoute: AuthedUnitsIndexRoute,
   AuthedCategoriesEditIdRoute: AuthedCategoriesEditIdRoute,
   AuthedCustomersDetailIdRoute: AuthedCustomersDetailIdRoute,
@@ -666,6 +790,9 @@ const AuthedRouteChildren: AuthedRouteChildren = {
   AuthedProductsEditIdRoute: AuthedProductsEditIdRoute,
   AuthedStockLocationsDetailIdRoute: AuthedStockLocationsDetailIdRoute,
   AuthedStockLocationsEditIdRoute: AuthedStockLocationsEditIdRoute,
+  AuthedSuppliersDetailIdRoute: AuthedSuppliersDetailIdRoute,
+  AuthedSuppliersEditIdRoute: AuthedSuppliersEditIdRoute,
+  AuthedTransactionsDetailIdRoute: AuthedTransactionsDetailIdRoute,
   AuthedUnitsEditIdRoute: AuthedUnitsEditIdRoute,
 }
 

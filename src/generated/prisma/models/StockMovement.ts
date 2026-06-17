@@ -51,7 +51,7 @@ export type StockMovementMinAggregateOutputType = {
   note: string | null
   created_at: Date | null
   updated_at: Date | null
-  stockBatchesId: string | null
+  stock_batches_id: string | null
 }
 
 export type StockMovementMaxAggregateOutputType = {
@@ -67,7 +67,7 @@ export type StockMovementMaxAggregateOutputType = {
   note: string | null
   created_at: Date | null
   updated_at: Date | null
-  stockBatchesId: string | null
+  stock_batches_id: string | null
 }
 
 export type StockMovementCountAggregateOutputType = {
@@ -83,7 +83,7 @@ export type StockMovementCountAggregateOutputType = {
   note: number
   created_at: number
   updated_at: number
-  stockBatchesId: number
+  stock_batches_id: number
   _all: number
 }
 
@@ -113,7 +113,7 @@ export type StockMovementMinAggregateInputType = {
   note?: true
   created_at?: true
   updated_at?: true
-  stockBatchesId?: true
+  stock_batches_id?: true
 }
 
 export type StockMovementMaxAggregateInputType = {
@@ -129,7 +129,7 @@ export type StockMovementMaxAggregateInputType = {
   note?: true
   created_at?: true
   updated_at?: true
-  stockBatchesId?: true
+  stock_batches_id?: true
 }
 
 export type StockMovementCountAggregateInputType = {
@@ -145,7 +145,7 @@ export type StockMovementCountAggregateInputType = {
   note?: true
   created_at?: true
   updated_at?: true
-  stockBatchesId?: true
+  stock_batches_id?: true
   _all?: true
 }
 
@@ -248,7 +248,7 @@ export type StockMovementGroupByOutputType = {
   note: string | null
   created_at: Date
   updated_at: Date
-  stockBatchesId: string | null
+  stock_batches_id: string | null
   _count: StockMovementCountAggregateOutputType | null
   _avg: StockMovementAvgAggregateOutputType | null
   _sum: StockMovementSumAggregateOutputType | null
@@ -287,7 +287,7 @@ export type StockMovementWhereInput = {
   note?: Prisma.StringNullableFilter<"StockMovement"> | string | null
   created_at?: Prisma.DateTimeFilter<"StockMovement"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"StockMovement"> | Date | string
-  stockBatchesId?: Prisma.StringNullableFilter<"StockMovement"> | string | null
+  stock_batches_id?: Prisma.StringNullableFilter<"StockMovement"> | string | null
   stockProductSku?: Prisma.XOR<Prisma.StockProductSkuScalarRelationFilter, Prisma.StockProductSkuWhereInput>
   stockBatches?: Prisma.XOR<Prisma.StockBatchesNullableScalarRelationFilter, Prisma.StockBatchesWhereInput> | null
 }
@@ -305,7 +305,7 @@ export type StockMovementOrderByWithRelationInput = {
   note?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
-  stockBatchesId?: Prisma.SortOrderInput | Prisma.SortOrder
+  stock_batches_id?: Prisma.SortOrderInput | Prisma.SortOrder
   stockProductSku?: Prisma.StockProductSkuOrderByWithRelationInput
   stockBatches?: Prisma.StockBatchesOrderByWithRelationInput
   _relevance?: Prisma.StockMovementOrderByRelevanceInput
@@ -327,7 +327,7 @@ export type StockMovementWhereUniqueInput = Prisma.AtLeast<{
   note?: Prisma.StringNullableFilter<"StockMovement"> | string | null
   created_at?: Prisma.DateTimeFilter<"StockMovement"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"StockMovement"> | Date | string
-  stockBatchesId?: Prisma.StringNullableFilter<"StockMovement"> | string | null
+  stock_batches_id?: Prisma.StringNullableFilter<"StockMovement"> | string | null
   stockProductSku?: Prisma.XOR<Prisma.StockProductSkuScalarRelationFilter, Prisma.StockProductSkuWhereInput>
   stockBatches?: Prisma.XOR<Prisma.StockBatchesNullableScalarRelationFilter, Prisma.StockBatchesWhereInput> | null
 }, "id">
@@ -345,7 +345,7 @@ export type StockMovementOrderByWithAggregationInput = {
   note?: Prisma.SortOrderInput | Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
-  stockBatchesId?: Prisma.SortOrderInput | Prisma.SortOrder
+  stock_batches_id?: Prisma.SortOrderInput | Prisma.SortOrder
   _count?: Prisma.StockMovementCountOrderByAggregateInput
   _avg?: Prisma.StockMovementAvgOrderByAggregateInput
   _max?: Prisma.StockMovementMaxOrderByAggregateInput
@@ -369,7 +369,7 @@ export type StockMovementScalarWhereWithAggregatesInput = {
   note?: Prisma.StringNullableWithAggregatesFilter<"StockMovement"> | string | null
   created_at?: Prisma.DateTimeWithAggregatesFilter<"StockMovement"> | Date | string
   updated_at?: Prisma.DateTimeWithAggregatesFilter<"StockMovement"> | Date | string
-  stockBatchesId?: Prisma.StringNullableWithAggregatesFilter<"StockMovement"> | string | null
+  stock_batches_id?: Prisma.StringNullableWithAggregatesFilter<"StockMovement"> | string | null
 }
 
 export type StockMovementCreateInput = {
@@ -401,7 +401,7 @@ export type StockMovementUncheckedCreateInput = {
   note?: string | null
   created_at?: Date | string
   updated_at?: Date | string
-  stockBatchesId?: string | null
+  stock_batches_id?: string | null
 }
 
 export type StockMovementUpdateInput = {
@@ -433,7 +433,7 @@ export type StockMovementUncheckedUpdateInput = {
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  stockBatchesId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stock_batches_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type StockMovementCreateManyInput = {
@@ -449,7 +449,7 @@ export type StockMovementCreateManyInput = {
   note?: string | null
   created_at?: Date | string
   updated_at?: Date | string
-  stockBatchesId?: string | null
+  stock_batches_id?: string | null
 }
 
 export type StockMovementUpdateManyMutationInput = {
@@ -479,7 +479,7 @@ export type StockMovementUncheckedUpdateManyInput = {
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  stockBatchesId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stock_batches_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type StockMovementListRelationFilter = {
@@ -511,7 +511,7 @@ export type StockMovementCountOrderByAggregateInput = {
   note?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
-  stockBatchesId?: Prisma.SortOrder
+  stock_batches_id?: Prisma.SortOrder
 }
 
 export type StockMovementAvgOrderByAggregateInput = {
@@ -533,7 +533,7 @@ export type StockMovementMaxOrderByAggregateInput = {
   note?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
-  stockBatchesId?: Prisma.SortOrder
+  stock_batches_id?: Prisma.SortOrder
 }
 
 export type StockMovementMinOrderByAggregateInput = {
@@ -549,7 +549,7 @@ export type StockMovementMinOrderByAggregateInput = {
   note?: Prisma.SortOrder
   created_at?: Prisma.SortOrder
   updated_at?: Prisma.SortOrder
-  stockBatchesId?: Prisma.SortOrder
+  stock_batches_id?: Prisma.SortOrder
 }
 
 export type StockMovementSumOrderByAggregateInput = {
@@ -673,7 +673,7 @@ export type StockMovementUncheckedCreateWithoutStockProductSkuInput = {
   note?: string | null
   created_at?: Date | string
   updated_at?: Date | string
-  stockBatchesId?: string | null
+  stock_batches_id?: string | null
 }
 
 export type StockMovementCreateOrConnectWithoutStockProductSkuInput = {
@@ -718,7 +718,7 @@ export type StockMovementScalarWhereInput = {
   note?: Prisma.StringNullableFilter<"StockMovement"> | string | null
   created_at?: Prisma.DateTimeFilter<"StockMovement"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"StockMovement"> | Date | string
-  stockBatchesId?: Prisma.StringNullableFilter<"StockMovement"> | string | null
+  stock_batches_id?: Prisma.StringNullableFilter<"StockMovement"> | string | null
 }
 
 export type StockMovementCreateWithoutStockBatchesInput = {
@@ -789,7 +789,7 @@ export type StockMovementCreateManyStockProductSkuInput = {
   note?: string | null
   created_at?: Date | string
   updated_at?: Date | string
-  stockBatchesId?: string | null
+  stock_batches_id?: string | null
 }
 
 export type StockMovementUpdateWithoutStockProductSkuInput = {
@@ -819,7 +819,7 @@ export type StockMovementUncheckedUpdateWithoutStockProductSkuInput = {
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  stockBatchesId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stock_batches_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type StockMovementUncheckedUpdateManyWithoutStockProductSkuInput = {
@@ -834,7 +834,7 @@ export type StockMovementUncheckedUpdateManyWithoutStockProductSkuInput = {
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
-  stockBatchesId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  stock_batches_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
 }
 
 export type StockMovementCreateManyStockBatchesInput = {
@@ -912,7 +912,7 @@ export type StockMovementSelect<ExtArgs extends runtime.Types.Extensions.Interna
   note?: boolean
   created_at?: boolean
   updated_at?: boolean
-  stockBatchesId?: boolean
+  stock_batches_id?: boolean
   stockProductSku?: boolean | Prisma.StockProductSkuDefaultArgs<ExtArgs>
   stockBatches?: boolean | Prisma.StockMovement$stockBatchesArgs<ExtArgs>
 }, ExtArgs["result"]["stockMovement"]>
@@ -932,10 +932,10 @@ export type StockMovementSelectScalar = {
   note?: boolean
   created_at?: boolean
   updated_at?: boolean
-  stockBatchesId?: boolean
+  stock_batches_id?: boolean
 }
 
-export type StockMovementOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "reference_type" | "reference_id" | "stock_product_sku_id" | "prev_quantity" | "quantity" | "current_quantity" | "type" | "transaction_date" | "note" | "created_at" | "updated_at" | "stockBatchesId", ExtArgs["result"]["stockMovement"]>
+export type StockMovementOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "reference_type" | "reference_id" | "stock_product_sku_id" | "prev_quantity" | "quantity" | "current_quantity" | "type" | "transaction_date" | "note" | "created_at" | "updated_at" | "stock_batches_id", ExtArgs["result"]["stockMovement"]>
 export type StockMovementInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   stockProductSku?: boolean | Prisma.StockProductSkuDefaultArgs<ExtArgs>
   stockBatches?: boolean | Prisma.StockMovement$stockBatchesArgs<ExtArgs>
@@ -960,7 +960,7 @@ export type $StockMovementPayload<ExtArgs extends runtime.Types.Extensions.Inter
     note: string | null
     created_at: Date
     updated_at: Date
-    stockBatchesId: string | null
+    stock_batches_id: string | null
   }, ExtArgs["result"]["stockMovement"]>
   composites: {}
 }
@@ -1344,7 +1344,7 @@ export interface StockMovementFieldRefs {
   readonly note: Prisma.FieldRef<"StockMovement", 'String'>
   readonly created_at: Prisma.FieldRef<"StockMovement", 'DateTime'>
   readonly updated_at: Prisma.FieldRef<"StockMovement", 'DateTime'>
-  readonly stockBatchesId: Prisma.FieldRef<"StockMovement", 'String'>
+  readonly stock_batches_id: Prisma.FieldRef<"StockMovement", 'String'>
 }
     
 

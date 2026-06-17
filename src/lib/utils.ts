@@ -1,5 +1,6 @@
 import type { ClassValue } from "clsx";
 import { clsx } from "clsx";
+import type Decimal from "decimal.js";
 import { toast } from "sonner";
 import { twMerge } from "tailwind-merge";
 
@@ -135,7 +136,7 @@ export const formatDate = (
  */
 export const formatDateTime = (
   date: Date | string | number,
-  locale: string = "en-US",
+  locale: string = "id-ID",
 ): string => {
   const options: Intl.DateTimeFormatOptions = {
     year: "numeric",
@@ -282,4 +283,8 @@ export async function wrapFn<T>(
 ): Promise<T> {
   const result = await promise;
   return result?.data ?? fallback;
+}
+
+export function formatDecimal(value: Decimal): string {
+  return value.toNumber().toLocaleString();
 }

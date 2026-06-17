@@ -56,6 +56,7 @@ export type TransactionItemMinAggregateOutputType = {
   transaction_id: string | null
   product_sku_id: string | null
   quantity: runtime.Decimal | null
+  stock_batches_id: string | null
   buy_price: number | null
   price: number | null
   discounted_price: number | null
@@ -77,6 +78,7 @@ export type TransactionItemMaxAggregateOutputType = {
   transaction_id: string | null
   product_sku_id: string | null
   quantity: runtime.Decimal | null
+  stock_batches_id: string | null
   buy_price: number | null
   price: number | null
   discounted_price: number | null
@@ -98,6 +100,7 @@ export type TransactionItemCountAggregateOutputType = {
   transaction_id: number
   product_sku_id: number
   quantity: number
+  stock_batches_id: number
   buy_price: number
   price: number
   discounted_price: number
@@ -145,6 +148,7 @@ export type TransactionItemMinAggregateInputType = {
   transaction_id?: true
   product_sku_id?: true
   quantity?: true
+  stock_batches_id?: true
   buy_price?: true
   price?: true
   discounted_price?: true
@@ -166,6 +170,7 @@ export type TransactionItemMaxAggregateInputType = {
   transaction_id?: true
   product_sku_id?: true
   quantity?: true
+  stock_batches_id?: true
   buy_price?: true
   price?: true
   discounted_price?: true
@@ -187,6 +192,7 @@ export type TransactionItemCountAggregateInputType = {
   transaction_id?: true
   product_sku_id?: true
   quantity?: true
+  stock_batches_id?: true
   buy_price?: true
   price?: true
   discounted_price?: true
@@ -295,6 +301,7 @@ export type TransactionItemGroupByOutputType = {
   transaction_id: string
   product_sku_id: string
   quantity: runtime.Decimal
+  stock_batches_id: string | null
   buy_price: number
   price: number
   discounted_price: number
@@ -339,6 +346,7 @@ export type TransactionItemWhereInput = {
   transaction_id?: Prisma.StringFilter<"TransactionItem"> | string
   product_sku_id?: Prisma.StringFilter<"TransactionItem"> | string
   quantity?: Prisma.DecimalFilter<"TransactionItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  stock_batches_id?: Prisma.StringNullableFilter<"TransactionItem"> | string | null
   buy_price?: Prisma.IntFilter<"TransactionItem"> | number
   price?: Prisma.IntFilter<"TransactionItem"> | number
   discounted_price?: Prisma.IntFilter<"TransactionItem"> | number
@@ -355,6 +363,7 @@ export type TransactionItemWhereInput = {
   discount?: Prisma.XOR<Prisma.PromotionItemNullableScalarRelationFilter, Prisma.PromotionItemWhereInput> | null
   productSku?: Prisma.XOR<Prisma.ProductSkuScalarRelationFilter, Prisma.ProductSkuWhereInput>
   transaction?: Prisma.XOR<Prisma.TransactionScalarRelationFilter, Prisma.TransactionWhereInput>
+  stockBatch?: Prisma.XOR<Prisma.StockBatchesNullableScalarRelationFilter, Prisma.StockBatchesWhereInput> | null
 }
 
 export type TransactionItemOrderByWithRelationInput = {
@@ -363,6 +372,7 @@ export type TransactionItemOrderByWithRelationInput = {
   transaction_id?: Prisma.SortOrder
   product_sku_id?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
+  stock_batches_id?: Prisma.SortOrderInput | Prisma.SortOrder
   buy_price?: Prisma.SortOrder
   price?: Prisma.SortOrder
   discounted_price?: Prisma.SortOrder
@@ -379,6 +389,7 @@ export type TransactionItemOrderByWithRelationInput = {
   discount?: Prisma.PromotionItemOrderByWithRelationInput
   productSku?: Prisma.ProductSkuOrderByWithRelationInput
   transaction?: Prisma.TransactionOrderByWithRelationInput
+  stockBatch?: Prisma.StockBatchesOrderByWithRelationInput
   _relevance?: Prisma.TransactionItemOrderByRelevanceInput
 }
 
@@ -391,6 +402,7 @@ export type TransactionItemWhereUniqueInput = Prisma.AtLeast<{
   transaction_id?: Prisma.StringFilter<"TransactionItem"> | string
   product_sku_id?: Prisma.StringFilter<"TransactionItem"> | string
   quantity?: Prisma.DecimalFilter<"TransactionItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  stock_batches_id?: Prisma.StringNullableFilter<"TransactionItem"> | string | null
   buy_price?: Prisma.IntFilter<"TransactionItem"> | number
   price?: Prisma.IntFilter<"TransactionItem"> | number
   discounted_price?: Prisma.IntFilter<"TransactionItem"> | number
@@ -407,6 +419,7 @@ export type TransactionItemWhereUniqueInput = Prisma.AtLeast<{
   discount?: Prisma.XOR<Prisma.PromotionItemNullableScalarRelationFilter, Prisma.PromotionItemWhereInput> | null
   productSku?: Prisma.XOR<Prisma.ProductSkuScalarRelationFilter, Prisma.ProductSkuWhereInput>
   transaction?: Prisma.XOR<Prisma.TransactionScalarRelationFilter, Prisma.TransactionWhereInput>
+  stockBatch?: Prisma.XOR<Prisma.StockBatchesNullableScalarRelationFilter, Prisma.StockBatchesWhereInput> | null
 }, "id">
 
 export type TransactionItemOrderByWithAggregationInput = {
@@ -415,6 +428,7 @@ export type TransactionItemOrderByWithAggregationInput = {
   transaction_id?: Prisma.SortOrder
   product_sku_id?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
+  stock_batches_id?: Prisma.SortOrderInput | Prisma.SortOrder
   buy_price?: Prisma.SortOrder
   price?: Prisma.SortOrder
   discounted_price?: Prisma.SortOrder
@@ -444,6 +458,7 @@ export type TransactionItemScalarWhereWithAggregatesInput = {
   transaction_id?: Prisma.StringWithAggregatesFilter<"TransactionItem"> | string
   product_sku_id?: Prisma.StringWithAggregatesFilter<"TransactionItem"> | string
   quantity?: Prisma.DecimalWithAggregatesFilter<"TransactionItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  stock_batches_id?: Prisma.StringNullableWithAggregatesFilter<"TransactionItem"> | string | null
   buy_price?: Prisma.IntWithAggregatesFilter<"TransactionItem"> | number
   price?: Prisma.IntWithAggregatesFilter<"TransactionItem"> | number
   discounted_price?: Prisma.IntWithAggregatesFilter<"TransactionItem"> | number
@@ -478,6 +493,7 @@ export type TransactionItemCreateInput = {
   discount?: Prisma.PromotionItemCreateNestedOneWithoutTransactionItemsInput
   productSku: Prisma.ProductSkuCreateNestedOneWithoutTransactionItemsInput
   transaction: Prisma.TransactionCreateNestedOneWithoutTransactionItemsInput
+  stockBatch?: Prisma.StockBatchesCreateNestedOneWithoutTransactionItemsInput
 }
 
 export type TransactionItemUncheckedCreateInput = {
@@ -486,6 +502,7 @@ export type TransactionItemUncheckedCreateInput = {
   transaction_id: string
   product_sku_id: string
   quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
+  stock_batches_id?: string | null
   buy_price: number
   price: number
   discounted_price: number
@@ -520,6 +537,7 @@ export type TransactionItemUpdateInput = {
   discount?: Prisma.PromotionItemUpdateOneWithoutTransactionItemsNestedInput
   productSku?: Prisma.ProductSkuUpdateOneRequiredWithoutTransactionItemsNestedInput
   transaction?: Prisma.TransactionUpdateOneRequiredWithoutTransactionItemsNestedInput
+  stockBatch?: Prisma.StockBatchesUpdateOneWithoutTransactionItemsNestedInput
 }
 
 export type TransactionItemUncheckedUpdateInput = {
@@ -528,6 +546,7 @@ export type TransactionItemUncheckedUpdateInput = {
   transaction_id?: Prisma.StringFieldUpdateOperationsInput | string
   product_sku_id?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  stock_batches_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   buy_price?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.IntFieldUpdateOperationsInput | number
   discounted_price?: Prisma.IntFieldUpdateOperationsInput | number
@@ -549,6 +568,7 @@ export type TransactionItemCreateManyInput = {
   transaction_id: string
   product_sku_id: string
   quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
+  stock_batches_id?: string | null
   buy_price: number
   price: number
   discounted_price: number
@@ -588,6 +608,7 @@ export type TransactionItemUncheckedUpdateManyInput = {
   transaction_id?: Prisma.StringFieldUpdateOperationsInput | string
   product_sku_id?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  stock_batches_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   buy_price?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.IntFieldUpdateOperationsInput | number
   discounted_price?: Prisma.IntFieldUpdateOperationsInput | number
@@ -625,6 +646,7 @@ export type TransactionItemCountOrderByAggregateInput = {
   transaction_id?: Prisma.SortOrder
   product_sku_id?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
+  stock_batches_id?: Prisma.SortOrder
   buy_price?: Prisma.SortOrder
   price?: Prisma.SortOrder
   discounted_price?: Prisma.SortOrder
@@ -658,6 +680,7 @@ export type TransactionItemMaxOrderByAggregateInput = {
   transaction_id?: Prisma.SortOrder
   product_sku_id?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
+  stock_batches_id?: Prisma.SortOrder
   buy_price?: Prisma.SortOrder
   price?: Prisma.SortOrder
   discounted_price?: Prisma.SortOrder
@@ -679,6 +702,7 @@ export type TransactionItemMinOrderByAggregateInput = {
   transaction_id?: Prisma.SortOrder
   product_sku_id?: Prisma.SortOrder
   quantity?: Prisma.SortOrder
+  stock_batches_id?: Prisma.SortOrder
   buy_price?: Prisma.SortOrder
   price?: Prisma.SortOrder
   discounted_price?: Prisma.SortOrder
@@ -745,6 +769,48 @@ export type TransactionItemUncheckedUpdateManyWithoutProductSkuNestedInput = {
   connect?: Prisma.TransactionItemWhereUniqueInput | Prisma.TransactionItemWhereUniqueInput[]
   update?: Prisma.TransactionItemUpdateWithWhereUniqueWithoutProductSkuInput | Prisma.TransactionItemUpdateWithWhereUniqueWithoutProductSkuInput[]
   updateMany?: Prisma.TransactionItemUpdateManyWithWhereWithoutProductSkuInput | Prisma.TransactionItemUpdateManyWithWhereWithoutProductSkuInput[]
+  deleteMany?: Prisma.TransactionItemScalarWhereInput | Prisma.TransactionItemScalarWhereInput[]
+}
+
+export type TransactionItemCreateNestedManyWithoutStockBatchInput = {
+  create?: Prisma.XOR<Prisma.TransactionItemCreateWithoutStockBatchInput, Prisma.TransactionItemUncheckedCreateWithoutStockBatchInput> | Prisma.TransactionItemCreateWithoutStockBatchInput[] | Prisma.TransactionItemUncheckedCreateWithoutStockBatchInput[]
+  connectOrCreate?: Prisma.TransactionItemCreateOrConnectWithoutStockBatchInput | Prisma.TransactionItemCreateOrConnectWithoutStockBatchInput[]
+  createMany?: Prisma.TransactionItemCreateManyStockBatchInputEnvelope
+  connect?: Prisma.TransactionItemWhereUniqueInput | Prisma.TransactionItemWhereUniqueInput[]
+}
+
+export type TransactionItemUncheckedCreateNestedManyWithoutStockBatchInput = {
+  create?: Prisma.XOR<Prisma.TransactionItemCreateWithoutStockBatchInput, Prisma.TransactionItemUncheckedCreateWithoutStockBatchInput> | Prisma.TransactionItemCreateWithoutStockBatchInput[] | Prisma.TransactionItemUncheckedCreateWithoutStockBatchInput[]
+  connectOrCreate?: Prisma.TransactionItemCreateOrConnectWithoutStockBatchInput | Prisma.TransactionItemCreateOrConnectWithoutStockBatchInput[]
+  createMany?: Prisma.TransactionItemCreateManyStockBatchInputEnvelope
+  connect?: Prisma.TransactionItemWhereUniqueInput | Prisma.TransactionItemWhereUniqueInput[]
+}
+
+export type TransactionItemUpdateManyWithoutStockBatchNestedInput = {
+  create?: Prisma.XOR<Prisma.TransactionItemCreateWithoutStockBatchInput, Prisma.TransactionItemUncheckedCreateWithoutStockBatchInput> | Prisma.TransactionItemCreateWithoutStockBatchInput[] | Prisma.TransactionItemUncheckedCreateWithoutStockBatchInput[]
+  connectOrCreate?: Prisma.TransactionItemCreateOrConnectWithoutStockBatchInput | Prisma.TransactionItemCreateOrConnectWithoutStockBatchInput[]
+  upsert?: Prisma.TransactionItemUpsertWithWhereUniqueWithoutStockBatchInput | Prisma.TransactionItemUpsertWithWhereUniqueWithoutStockBatchInput[]
+  createMany?: Prisma.TransactionItemCreateManyStockBatchInputEnvelope
+  set?: Prisma.TransactionItemWhereUniqueInput | Prisma.TransactionItemWhereUniqueInput[]
+  disconnect?: Prisma.TransactionItemWhereUniqueInput | Prisma.TransactionItemWhereUniqueInput[]
+  delete?: Prisma.TransactionItemWhereUniqueInput | Prisma.TransactionItemWhereUniqueInput[]
+  connect?: Prisma.TransactionItemWhereUniqueInput | Prisma.TransactionItemWhereUniqueInput[]
+  update?: Prisma.TransactionItemUpdateWithWhereUniqueWithoutStockBatchInput | Prisma.TransactionItemUpdateWithWhereUniqueWithoutStockBatchInput[]
+  updateMany?: Prisma.TransactionItemUpdateManyWithWhereWithoutStockBatchInput | Prisma.TransactionItemUpdateManyWithWhereWithoutStockBatchInput[]
+  deleteMany?: Prisma.TransactionItemScalarWhereInput | Prisma.TransactionItemScalarWhereInput[]
+}
+
+export type TransactionItemUncheckedUpdateManyWithoutStockBatchNestedInput = {
+  create?: Prisma.XOR<Prisma.TransactionItemCreateWithoutStockBatchInput, Prisma.TransactionItemUncheckedCreateWithoutStockBatchInput> | Prisma.TransactionItemCreateWithoutStockBatchInput[] | Prisma.TransactionItemUncheckedCreateWithoutStockBatchInput[]
+  connectOrCreate?: Prisma.TransactionItemCreateOrConnectWithoutStockBatchInput | Prisma.TransactionItemCreateOrConnectWithoutStockBatchInput[]
+  upsert?: Prisma.TransactionItemUpsertWithWhereUniqueWithoutStockBatchInput | Prisma.TransactionItemUpsertWithWhereUniqueWithoutStockBatchInput[]
+  createMany?: Prisma.TransactionItemCreateManyStockBatchInputEnvelope
+  set?: Prisma.TransactionItemWhereUniqueInput | Prisma.TransactionItemWhereUniqueInput[]
+  disconnect?: Prisma.TransactionItemWhereUniqueInput | Prisma.TransactionItemWhereUniqueInput[]
+  delete?: Prisma.TransactionItemWhereUniqueInput | Prisma.TransactionItemWhereUniqueInput[]
+  connect?: Prisma.TransactionItemWhereUniqueInput | Prisma.TransactionItemWhereUniqueInput[]
+  update?: Prisma.TransactionItemUpdateWithWhereUniqueWithoutStockBatchInput | Prisma.TransactionItemUpdateWithWhereUniqueWithoutStockBatchInput[]
+  updateMany?: Prisma.TransactionItemUpdateManyWithWhereWithoutStockBatchInput | Prisma.TransactionItemUpdateManyWithWhereWithoutStockBatchInput[]
   deleteMany?: Prisma.TransactionItemScalarWhereInput | Prisma.TransactionItemScalarWhereInput[]
 }
 
@@ -850,6 +916,7 @@ export type TransactionItemCreateWithoutProductSkuInput = {
   updated_at?: Date | string
   discount?: Prisma.PromotionItemCreateNestedOneWithoutTransactionItemsInput
   transaction: Prisma.TransactionCreateNestedOneWithoutTransactionItemsInput
+  stockBatch?: Prisma.StockBatchesCreateNestedOneWithoutTransactionItemsInput
 }
 
 export type TransactionItemUncheckedCreateWithoutProductSkuInput = {
@@ -857,6 +924,7 @@ export type TransactionItemUncheckedCreateWithoutProductSkuInput = {
   note?: string | null
   transaction_id: string
   quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
+  stock_batches_id?: string | null
   buy_price: number
   price: number
   discounted_price: number
@@ -907,6 +975,7 @@ export type TransactionItemScalarWhereInput = {
   transaction_id?: Prisma.StringFilter<"TransactionItem"> | string
   product_sku_id?: Prisma.StringFilter<"TransactionItem"> | string
   quantity?: Prisma.DecimalFilter<"TransactionItem"> | runtime.Decimal | runtime.DecimalJsLike | number | string
+  stock_batches_id?: Prisma.StringNullableFilter<"TransactionItem"> | string | null
   buy_price?: Prisma.IntFilter<"TransactionItem"> | number
   price?: Prisma.IntFilter<"TransactionItem"> | number
   discounted_price?: Prisma.IntFilter<"TransactionItem"> | number
@@ -920,6 +989,74 @@ export type TransactionItemScalarWhereInput = {
   discount_is_multiple_allowed?: Prisma.BoolNullableFilter<"TransactionItem"> | boolean | null
   created_at?: Prisma.DateTimeFilter<"TransactionItem"> | Date | string
   updated_at?: Prisma.DateTimeFilter<"TransactionItem"> | Date | string
+}
+
+export type TransactionItemCreateWithoutStockBatchInput = {
+  id?: string
+  note?: string | null
+  quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
+  buy_price: number
+  price: number
+  discounted_price: number
+  subtotal: number
+  discount_value?: number | null
+  discount_type?: $Enums.DiscountType | null
+  discount_amount: number
+  discount_total: number
+  discount_min_qty?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discount_is_multiple_allowed?: boolean | null
+  created_at?: Date | string
+  updated_at?: Date | string
+  discount?: Prisma.PromotionItemCreateNestedOneWithoutTransactionItemsInput
+  productSku: Prisma.ProductSkuCreateNestedOneWithoutTransactionItemsInput
+  transaction: Prisma.TransactionCreateNestedOneWithoutTransactionItemsInput
+}
+
+export type TransactionItemUncheckedCreateWithoutStockBatchInput = {
+  id?: string
+  note?: string | null
+  transaction_id: string
+  product_sku_id: string
+  quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
+  buy_price: number
+  price: number
+  discounted_price: number
+  subtotal: number
+  discount_id?: string | null
+  discount_value?: number | null
+  discount_type?: $Enums.DiscountType | null
+  discount_amount: number
+  discount_total: number
+  discount_min_qty?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discount_is_multiple_allowed?: boolean | null
+  created_at?: Date | string
+  updated_at?: Date | string
+}
+
+export type TransactionItemCreateOrConnectWithoutStockBatchInput = {
+  where: Prisma.TransactionItemWhereUniqueInput
+  create: Prisma.XOR<Prisma.TransactionItemCreateWithoutStockBatchInput, Prisma.TransactionItemUncheckedCreateWithoutStockBatchInput>
+}
+
+export type TransactionItemCreateManyStockBatchInputEnvelope = {
+  data: Prisma.TransactionItemCreateManyStockBatchInput | Prisma.TransactionItemCreateManyStockBatchInput[]
+  skipDuplicates?: boolean
+}
+
+export type TransactionItemUpsertWithWhereUniqueWithoutStockBatchInput = {
+  where: Prisma.TransactionItemWhereUniqueInput
+  update: Prisma.XOR<Prisma.TransactionItemUpdateWithoutStockBatchInput, Prisma.TransactionItemUncheckedUpdateWithoutStockBatchInput>
+  create: Prisma.XOR<Prisma.TransactionItemCreateWithoutStockBatchInput, Prisma.TransactionItemUncheckedCreateWithoutStockBatchInput>
+}
+
+export type TransactionItemUpdateWithWhereUniqueWithoutStockBatchInput = {
+  where: Prisma.TransactionItemWhereUniqueInput
+  data: Prisma.XOR<Prisma.TransactionItemUpdateWithoutStockBatchInput, Prisma.TransactionItemUncheckedUpdateWithoutStockBatchInput>
+}
+
+export type TransactionItemUpdateManyWithWhereWithoutStockBatchInput = {
+  where: Prisma.TransactionItemScalarWhereInput
+  data: Prisma.XOR<Prisma.TransactionItemUpdateManyMutationInput, Prisma.TransactionItemUncheckedUpdateManyWithoutStockBatchInput>
 }
 
 export type TransactionItemCreateWithoutDiscountInput = {
@@ -940,6 +1077,7 @@ export type TransactionItemCreateWithoutDiscountInput = {
   updated_at?: Date | string
   productSku: Prisma.ProductSkuCreateNestedOneWithoutTransactionItemsInput
   transaction: Prisma.TransactionCreateNestedOneWithoutTransactionItemsInput
+  stockBatch?: Prisma.StockBatchesCreateNestedOneWithoutTransactionItemsInput
 }
 
 export type TransactionItemUncheckedCreateWithoutDiscountInput = {
@@ -948,6 +1086,7 @@ export type TransactionItemUncheckedCreateWithoutDiscountInput = {
   transaction_id: string
   product_sku_id: string
   quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
+  stock_batches_id?: string | null
   buy_price: number
   price: number
   discounted_price: number
@@ -1006,6 +1145,7 @@ export type TransactionItemCreateWithoutTransactionInput = {
   updated_at?: Date | string
   discount?: Prisma.PromotionItemCreateNestedOneWithoutTransactionItemsInput
   productSku: Prisma.ProductSkuCreateNestedOneWithoutTransactionItemsInput
+  stockBatch?: Prisma.StockBatchesCreateNestedOneWithoutTransactionItemsInput
 }
 
 export type TransactionItemUncheckedCreateWithoutTransactionInput = {
@@ -1013,6 +1153,7 @@ export type TransactionItemUncheckedCreateWithoutTransactionInput = {
   note?: string | null
   product_sku_id: string
   quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
+  stock_batches_id?: string | null
   buy_price: number
   price: number
   discounted_price: number
@@ -1059,6 +1200,7 @@ export type TransactionItemCreateManyProductSkuInput = {
   note?: string | null
   transaction_id: string
   quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
+  stock_batches_id?: string | null
   buy_price: number
   price: number
   discounted_price: number
@@ -1092,6 +1234,7 @@ export type TransactionItemUpdateWithoutProductSkuInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   discount?: Prisma.PromotionItemUpdateOneWithoutTransactionItemsNestedInput
   transaction?: Prisma.TransactionUpdateOneRequiredWithoutTransactionItemsNestedInput
+  stockBatch?: Prisma.StockBatchesUpdateOneWithoutTransactionItemsNestedInput
 }
 
 export type TransactionItemUncheckedUpdateWithoutProductSkuInput = {
@@ -1099,6 +1242,7 @@ export type TransactionItemUncheckedUpdateWithoutProductSkuInput = {
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transaction_id?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  stock_batches_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   buy_price?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.IntFieldUpdateOperationsInput | number
   discounted_price?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1118,6 +1262,91 @@ export type TransactionItemUncheckedUpdateManyWithoutProductSkuInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   transaction_id?: Prisma.StringFieldUpdateOperationsInput | string
+  quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  stock_batches_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  buy_price?: Prisma.IntFieldUpdateOperationsInput | number
+  price?: Prisma.IntFieldUpdateOperationsInput | number
+  discounted_price?: Prisma.IntFieldUpdateOperationsInput | number
+  subtotal?: Prisma.IntFieldUpdateOperationsInput | number
+  discount_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  discount_value?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  discount_type?: Prisma.NullableEnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType | null
+  discount_amount?: Prisma.IntFieldUpdateOperationsInput | number
+  discount_total?: Prisma.IntFieldUpdateOperationsInput | number
+  discount_min_qty?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discount_is_multiple_allowed?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type TransactionItemCreateManyStockBatchInput = {
+  id?: string
+  note?: string | null
+  transaction_id: string
+  product_sku_id: string
+  quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
+  buy_price: number
+  price: number
+  discounted_price: number
+  subtotal: number
+  discount_id?: string | null
+  discount_value?: number | null
+  discount_type?: $Enums.DiscountType | null
+  discount_amount: number
+  discount_total: number
+  discount_min_qty?: runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discount_is_multiple_allowed?: boolean | null
+  created_at?: Date | string
+  updated_at?: Date | string
+}
+
+export type TransactionItemUpdateWithoutStockBatchInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  buy_price?: Prisma.IntFieldUpdateOperationsInput | number
+  price?: Prisma.IntFieldUpdateOperationsInput | number
+  discounted_price?: Prisma.IntFieldUpdateOperationsInput | number
+  subtotal?: Prisma.IntFieldUpdateOperationsInput | number
+  discount_value?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  discount_type?: Prisma.NullableEnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType | null
+  discount_amount?: Prisma.IntFieldUpdateOperationsInput | number
+  discount_total?: Prisma.IntFieldUpdateOperationsInput | number
+  discount_min_qty?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discount_is_multiple_allowed?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  discount?: Prisma.PromotionItemUpdateOneWithoutTransactionItemsNestedInput
+  productSku?: Prisma.ProductSkuUpdateOneRequiredWithoutTransactionItemsNestedInput
+  transaction?: Prisma.TransactionUpdateOneRequiredWithoutTransactionItemsNestedInput
+}
+
+export type TransactionItemUncheckedUpdateWithoutStockBatchInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transaction_id?: Prisma.StringFieldUpdateOperationsInput | string
+  product_sku_id?: Prisma.StringFieldUpdateOperationsInput | string
+  quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  buy_price?: Prisma.IntFieldUpdateOperationsInput | number
+  price?: Prisma.IntFieldUpdateOperationsInput | number
+  discounted_price?: Prisma.IntFieldUpdateOperationsInput | number
+  subtotal?: Prisma.IntFieldUpdateOperationsInput | number
+  discount_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  discount_value?: Prisma.NullableFloatFieldUpdateOperationsInput | number | null
+  discount_type?: Prisma.NullableEnumDiscountTypeFieldUpdateOperationsInput | $Enums.DiscountType | null
+  discount_amount?: Prisma.IntFieldUpdateOperationsInput | number
+  discount_total?: Prisma.IntFieldUpdateOperationsInput | number
+  discount_min_qty?: Prisma.NullableDecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string | null
+  discount_is_multiple_allowed?: Prisma.NullableBoolFieldUpdateOperationsInput | boolean | null
+  created_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type TransactionItemUncheckedUpdateManyWithoutStockBatchInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  transaction_id?: Prisma.StringFieldUpdateOperationsInput | string
+  product_sku_id?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   buy_price?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1140,6 +1369,7 @@ export type TransactionItemCreateManyDiscountInput = {
   transaction_id: string
   product_sku_id: string
   quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
+  stock_batches_id?: string | null
   buy_price: number
   price: number
   discounted_price: number
@@ -1172,6 +1402,7 @@ export type TransactionItemUpdateWithoutDiscountInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   productSku?: Prisma.ProductSkuUpdateOneRequiredWithoutTransactionItemsNestedInput
   transaction?: Prisma.TransactionUpdateOneRequiredWithoutTransactionItemsNestedInput
+  stockBatch?: Prisma.StockBatchesUpdateOneWithoutTransactionItemsNestedInput
 }
 
 export type TransactionItemUncheckedUpdateWithoutDiscountInput = {
@@ -1180,6 +1411,7 @@ export type TransactionItemUncheckedUpdateWithoutDiscountInput = {
   transaction_id?: Prisma.StringFieldUpdateOperationsInput | string
   product_sku_id?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  stock_batches_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   buy_price?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.IntFieldUpdateOperationsInput | number
   discounted_price?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1200,6 +1432,7 @@ export type TransactionItemUncheckedUpdateManyWithoutDiscountInput = {
   transaction_id?: Prisma.StringFieldUpdateOperationsInput | string
   product_sku_id?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  stock_batches_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   buy_price?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.IntFieldUpdateOperationsInput | number
   discounted_price?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1219,6 +1452,7 @@ export type TransactionItemCreateManyTransactionInput = {
   note?: string | null
   product_sku_id: string
   quantity: runtime.Decimal | runtime.DecimalJsLike | number | string
+  stock_batches_id?: string | null
   buy_price: number
   price: number
   discounted_price: number
@@ -1252,6 +1486,7 @@ export type TransactionItemUpdateWithoutTransactionInput = {
   updated_at?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   discount?: Prisma.PromotionItemUpdateOneWithoutTransactionItemsNestedInput
   productSku?: Prisma.ProductSkuUpdateOneRequiredWithoutTransactionItemsNestedInput
+  stockBatch?: Prisma.StockBatchesUpdateOneWithoutTransactionItemsNestedInput
 }
 
 export type TransactionItemUncheckedUpdateWithoutTransactionInput = {
@@ -1259,6 +1494,7 @@ export type TransactionItemUncheckedUpdateWithoutTransactionInput = {
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   product_sku_id?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  stock_batches_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   buy_price?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.IntFieldUpdateOperationsInput | number
   discounted_price?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1279,6 +1515,7 @@ export type TransactionItemUncheckedUpdateManyWithoutTransactionInput = {
   note?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   product_sku_id?: Prisma.StringFieldUpdateOperationsInput | string
   quantity?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  stock_batches_id?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   buy_price?: Prisma.IntFieldUpdateOperationsInput | number
   price?: Prisma.IntFieldUpdateOperationsInput | number
   discounted_price?: Prisma.IntFieldUpdateOperationsInput | number
@@ -1302,6 +1539,7 @@ export type TransactionItemSelect<ExtArgs extends runtime.Types.Extensions.Inter
   transaction_id?: boolean
   product_sku_id?: boolean
   quantity?: boolean
+  stock_batches_id?: boolean
   buy_price?: boolean
   price?: boolean
   discounted_price?: boolean
@@ -1318,6 +1556,7 @@ export type TransactionItemSelect<ExtArgs extends runtime.Types.Extensions.Inter
   discount?: boolean | Prisma.TransactionItem$discountArgs<ExtArgs>
   productSku?: boolean | Prisma.ProductSkuDefaultArgs<ExtArgs>
   transaction?: boolean | Prisma.TransactionDefaultArgs<ExtArgs>
+  stockBatch?: boolean | Prisma.TransactionItem$stockBatchArgs<ExtArgs>
 }, ExtArgs["result"]["transactionItem"]>
 
 
@@ -1328,6 +1567,7 @@ export type TransactionItemSelectScalar = {
   transaction_id?: boolean
   product_sku_id?: boolean
   quantity?: boolean
+  stock_batches_id?: boolean
   buy_price?: boolean
   price?: boolean
   discounted_price?: boolean
@@ -1343,11 +1583,12 @@ export type TransactionItemSelectScalar = {
   updated_at?: boolean
 }
 
-export type TransactionItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "note" | "transaction_id" | "product_sku_id" | "quantity" | "buy_price" | "price" | "discounted_price" | "subtotal" | "discount_id" | "discount_value" | "discount_type" | "discount_amount" | "discount_total" | "discount_min_qty" | "discount_is_multiple_allowed" | "created_at" | "updated_at", ExtArgs["result"]["transactionItem"]>
+export type TransactionItemOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "note" | "transaction_id" | "product_sku_id" | "quantity" | "stock_batches_id" | "buy_price" | "price" | "discounted_price" | "subtotal" | "discount_id" | "discount_value" | "discount_type" | "discount_amount" | "discount_total" | "discount_min_qty" | "discount_is_multiple_allowed" | "created_at" | "updated_at", ExtArgs["result"]["transactionItem"]>
 export type TransactionItemInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   discount?: boolean | Prisma.TransactionItem$discountArgs<ExtArgs>
   productSku?: boolean | Prisma.ProductSkuDefaultArgs<ExtArgs>
   transaction?: boolean | Prisma.TransactionDefaultArgs<ExtArgs>
+  stockBatch?: boolean | Prisma.TransactionItem$stockBatchArgs<ExtArgs>
 }
 
 export type $TransactionItemPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1356,6 +1597,7 @@ export type $TransactionItemPayload<ExtArgs extends runtime.Types.Extensions.Int
     discount: Prisma.$PromotionItemPayload<ExtArgs> | null
     productSku: Prisma.$ProductSkuPayload<ExtArgs>
     transaction: Prisma.$TransactionPayload<ExtArgs>
+    stockBatch: Prisma.$StockBatchesPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1363,6 +1605,7 @@ export type $TransactionItemPayload<ExtArgs extends runtime.Types.Extensions.Int
     transaction_id: string
     product_sku_id: string
     quantity: runtime.Decimal
+    stock_batches_id: string | null
     buy_price: number
     price: number
     discounted_price: number
@@ -1719,6 +1962,7 @@ export interface Prisma__TransactionItemClient<T, Null = never, ExtArgs extends 
   discount<T extends Prisma.TransactionItem$discountArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TransactionItem$discountArgs<ExtArgs>>): Prisma.Prisma__PromotionItemClient<runtime.Types.Result.GetResult<Prisma.$PromotionItemPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   productSku<T extends Prisma.ProductSkuDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProductSkuDefaultArgs<ExtArgs>>): Prisma.Prisma__ProductSkuClient<runtime.Types.Result.GetResult<Prisma.$ProductSkuPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   transaction<T extends Prisma.TransactionDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TransactionDefaultArgs<ExtArgs>>): Prisma.Prisma__TransactionClient<runtime.Types.Result.GetResult<Prisma.$TransactionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
+  stockBatch<T extends Prisma.TransactionItem$stockBatchArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.TransactionItem$stockBatchArgs<ExtArgs>>): Prisma.Prisma__StockBatchesClient<runtime.Types.Result.GetResult<Prisma.$StockBatchesPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1753,6 +1997,7 @@ export interface TransactionItemFieldRefs {
   readonly transaction_id: Prisma.FieldRef<"TransactionItem", 'String'>
   readonly product_sku_id: Prisma.FieldRef<"TransactionItem", 'String'>
   readonly quantity: Prisma.FieldRef<"TransactionItem", 'Decimal'>
+  readonly stock_batches_id: Prisma.FieldRef<"TransactionItem", 'String'>
   readonly buy_price: Prisma.FieldRef<"TransactionItem", 'Int'>
   readonly price: Prisma.FieldRef<"TransactionItem", 'Int'>
   readonly discounted_price: Prisma.FieldRef<"TransactionItem", 'Int'>
@@ -2130,6 +2375,25 @@ export type TransactionItem$discountArgs<ExtArgs extends runtime.Types.Extension
    */
   include?: Prisma.PromotionItemInclude<ExtArgs> | null
   where?: Prisma.PromotionItemWhereInput
+}
+
+/**
+ * TransactionItem.stockBatch
+ */
+export type TransactionItem$stockBatchArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the StockBatches
+   */
+  select?: Prisma.StockBatchesSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the StockBatches
+   */
+  omit?: Prisma.StockBatchesOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StockBatchesInclude<ExtArgs> | null
+  where?: Prisma.StockBatchesWhereInput
 }
 
 /**
